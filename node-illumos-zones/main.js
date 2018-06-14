@@ -190,8 +190,8 @@ function create_zone_spec(resources) {
         zonepath: "",
         brand: "",
         'ip-type': "exclusive",
-        //   			'dns-domain': "", 
-        //	   		resolvers: ["8.8.8.8", "8.8.8.4"],
+        'dns-domain': "", 
+   	resolvers: ["8.8.8.8", "8.8.8.4"],
     };
     if (resources != null &&  ("net", "brand" in resources)) {
         Object.keys(resources).forEach(function(key) {
@@ -213,20 +213,28 @@ function spec2script(spec) {
     if ("brand", "net" in spec) {
         script = "create;"
         Object.keys(spec).forEach(function(key) {
-            if (key == "net") {
-                spec.net.forEach(function(e) {
-                    script +=
-                        " add net ;"; 
-        		Object.keys(e).forEach(function(key) {
-	                        script += " set " + key + "=" + e[key] + ";" ; 
-			});
-                     script+= " end;"
-                });
-            } else {
-                script += " set " + key + "=" + spec[key] + ";"
-            }
+
+		switch(key) {
+
+		case "net":
+		            spec.net.forEach(function(e) {
+	                    script +=
+	                        " add net ;"; 
+	        		Object.keys(e).forEach(function(key) {
+		                        script += " set " + key + "=" + e[key] + ";" ; 
+				});
+	                     script+= " end;"
+	                });
+			break;
+
+                case "resolvers":					
+				break;
+
+  		default:
+               		 script += " set " + key + "=" + spec[key] + ";"
+				break;
+	     }
         });
-        if ("net" in spec) {}
         script += "verify; commit;";
     } else {
         console.log("error not a valid spec");
@@ -243,8 +251,8 @@ var o = {
     zonepath: "/zones/test01",
     net: [{
         physical: "vnic0",
-        //	gateway: "192.168.1.1", 
-        //	ips: ["192.168.1.108"], 
+       	gateway: "192.168.1.1", 
+        ips: ["192.168.1.108"], 
     }],
 };
 //start("test04");
@@ -253,3 +261,4 @@ var z  = create_zone_spec(o);
 spec2script(z);
 //create(z);
 //destroy("test003");
+
