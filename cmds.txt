@@ -1,9 +1,0 @@
-# zoneadm -z omni boot
-# zlogin omni
-
-# ipadm create-if omni0
-# ipadm create-addr -T static -a local=x.x.x.x/y omni0/v4
-# echo x.x.x.x > /etc/defaultrouter
-# echo nameserver 80.80.80.80 > /etc/resolv.conf
-# cp /etc/nsswitch.{dns,conf}
-# svcadm restart routing-setup

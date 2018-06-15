@@ -1,18 +1,20 @@
 {
-  "name": "illumos-zones",
+  "name": "zcage",
   "version": "1.0.0",
-  "description": "Library to manage illumos zones",
+  "description": "illumos zone administration tool",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "illumos",
-    "zones"
+    "zones",
+    "containers"
   ],
   "author": "neirac <cneirabustos@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "xml2js": "^0.4.19"
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5"
   }
 }
