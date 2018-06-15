@@ -1,0 +1,4 @@
+ ./zcage  create --alias=test04 --ipaddr "vnic0|192.168.1.1/24,vnic0|192.168.1.8/28" -b lx -c 4
+# this works, more that one ip is not working
+ ./zcage  create --alias=test04 --net "vnic0|192.168.1.1/24" -b sparse -c 4 
+ ./zcage create  --alias test04 --net "vnic0|192.168.1.220/24|192.168.1.1" -b sparse -c 4

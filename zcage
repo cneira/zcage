@@ -1,21 +1,8 @@
-#!/opt/ooce/bin/node --abort_on_uncaught_exception
+#!/opt/ooce/bin/node
+// --abort_on_uncaught_exception
 
 const zone = require('zonelib');
-//// Tests
-//var o = {
-//    brand: "sparse",
-//    autoboot: "false",
-//    zonepath: "/zones/test01",
-//    net: [{
-//        physical: "vnic0",
-//        gateway: "192.168.1.1",
-//        ips: ["192.168.1.108"],
-//    }],
-//};
-//
-//zone.destroy("test04");
-//var z = zone.create_zone_spec(o);
-//zone.create("test04", z);
+const uuidv4 = require('uuid/v4');
 
 
 
@@ -28,38 +15,94 @@ let mainDefinitions = [
 const mainCommand = commandLineArgs(mainDefinitions, { stopAtFirstUnknown: true })
 let argv = mainCommand._unknown || []
 
-console.log('mainCommand is '); 
-console.log(mainCommand)
 
 /* second - parse the main command options */
-if (mainCommand.name === 'create') {
-  const runDefinitions = [
-    { name: 'alias', alias: 'a' },
-    { name: 'brand', alias: 'b', defaultValue: "sparse" },
-    { name: 'count', alias: 'c' , defaultValue: 1},
-    { name: 'ipaddr'  },
-    { name: 'boot', type: Boolean }
-  ]
-  const runOptions = commandLineArgs(runDefinitions, { argv, stopAtFirstUnknown: true })
-  argv = runOptions._unknown || []
+switch (mainCommand.name) {
 
-  console.log(' runOptions are ')
-   if("ipaddr" in runOptions) {
+  case "create" : 
+		  const createDefinitions = [
+	            { name: 'alias', alias: 'a'},  
+		    { name: 'brand', alias: 'b', defaultValue: "sparse" },
+		    { name: 'count', alias: 'c' , defaultValue: 1},
+		    { name: 'net'   },
+		    { name: 'boot', type: Boolean }
+		  ]
+		  const createOptions = commandLineArgs(createDefinitions, { argv, stopAtFirstUnknown: true })
+		  argv = createOptions._unknown || []
+		
+		
+		   if("net" in createOptions) {
+			   //TODO: validate options 
+			   //TODO: destroy zone by uuid or name currently only works by name
+			        var zname;
+			        createOptions["net"] = 
+				zone.ipaddrcmd2netobject(createOptions["net"]);
+			        if ( "alias" in createOptions) {
+				   zname = createOptions["alias"];
+			           delete createOptions["alias"];
+				}else {
+			            zname = uuidv4();
+				}
+			        createOptions["zonepath"] = `/zones/${zname}`;
+			   	var count =  createOptions["count"];
+			        delete createOptions["count"];
+			        console.log("zone spec" , createOptions);
+				var z = zone.create_zone_spec(createOptions);
+			   // TODO: validate spec here before creating the zone 
+				if (zone.create(zname, z) == 0) {
+			             console.log("created vm : ", zname);
+				}
+			        break;
+			}else {
+				console.log('Error missing --net=nic|ipaddr');
+				break ;
+			}
+		
+ case "destroy" :
+		  const destroyDefinitions = [
+		    { name: 'zonename', alias: 'z' } 
+		  ]
+		  const destroyOptions = commandLineArgs(destroyDefinitions, { argv, stopAtFirstUnknown: true })
+		  argv = destroyOptions._unknown || []
 
-  		console.log(runOptions)
-	   	zone.ipaddrcmd2netobject(runOptions["ipaddr"]);
-	        
-	}else {
-		console.log("Error missing ipaddr on zone ");
-		return ;
-	}
+		if ("zonename" in destroyOptions) {
+			zone.destroy(destroyOptions["zonename"]);
+		} else {
+			console.log("need zone name to destroy");
+		}
+		break;
+case "list" :
+		zone.listzones();	
+		break;
+case "start" :
+		  const startDefinitions = [
+		    { name: 'zonename', alias: 'z' } 
+		  ]
+		  const startOptions = commandLineArgs(startDefinitions, { argv, stopAtFirstUnknown: true })
+		  argv = startOptions._unknown || []
 
-//  /* third - parse the sub-command  */
-//  const subCommandDefinitions = [
-//    { name: 'network', defaultOption: true }
-//  ]
-//  const subCommand = commandLineArgs(subCommandDefinitions, { argv, stopAtFirstUnknown: true })
-//
-//  console.log(' subCommand is')
-//  console.log(subCommand)
+		if ("zonename" in startOptions) {
+			zone.start(startOptions["zonename"]);
+		} else {
+			console.log("need zonename to start");
+		}
+		break;
+case "stop" :
+		  const stopDefinitions = [
+		    { name: 'zonename', alias: 'z' } 
+		  ]
+		  const stopOptions = commandLineArgs(stopDefinitions, { argv, stopAtFirstUnknown: true })
+		  argv = stopOptions._unknown || []
+
+		if ("zonename" in stopOptions) {
+			zone.halt(stopOptions["zonename"]);
+		} else {
+			console.log("need zonename to stop");
+		}
+		break;
+
+
+default:
+		console.log("bad options");
+		break;
 }
