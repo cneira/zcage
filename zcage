@@ -1,0 +1,65 @@
+#!/opt/ooce/bin/node --abort_on_uncaught_exception
+
+const zone = require('zonelib');
+//// Tests
+//var o = {
+//    brand: "sparse",
+//    autoboot: "false",
+//    zonepath: "/zones/test01",
+//    net: [{
+//        physical: "vnic0",
+//        gateway: "192.168.1.1",
+//        ips: ["192.168.1.108"],
+//    }],
+//};
+//
+//zone.destroy("test04");
+//var z = zone.create_zone_spec(o);
+//zone.create("test04", z);
+
+
+
+const commandLineArgs = require('command-line-args')
+
+/* first - parse the main command name */
+let mainDefinitions = [
+  { name: 'name', defaultOption: true }
+]
+const mainCommand = commandLineArgs(mainDefinitions, { stopAtFirstUnknown: true })
+let argv = mainCommand._unknown || []
+
+console.log('mainCommand is '); 
+console.log(mainCommand)
+
+/* second - parse the main command options */
+if (mainCommand.name === 'create') {
+  const runDefinitions = [
+    { name: 'alias', alias: 'a' },
+    { name: 'brand', alias: 'b', defaultValue: "sparse" },
+    { name: 'count', alias: 'c' , defaultValue: 1},
+    { name: 'ipaddr'  },
+    { name: 'boot', type: Boolean }
+  ]
+  const runOptions = commandLineArgs(runDefinitions, { argv, stopAtFirstUnknown: true })
+  argv = runOptions._unknown || []
+
+  console.log(' runOptions are ')
+   if("ipaddr" in runOptions) {
+
+  		console.log(runOptions)
+	   	zone.ipaddrcmd2netobject(runOptions["ipaddr"]);
+	        
+	}else {
+		console.log("Error missing ipaddr on zone ");
+		return ;
+	}
+
+//  /* third - parse the sub-command  */
+//  const subCommandDefinitions = [
+//    { name: 'network', defaultOption: true }
+//  ]
+//  const subCommand = commandLineArgs(subCommandDefinitions, { argv, stopAtFirstUnknown: true })
+//
+//  console.log(' subCommand is')
+//  console.log(subCommand)
+}
