@@ -104,14 +104,20 @@ function getinfo(zonename) {
 
 function exec(zonename, cmd) {
     var zlogin = spawnSync('pfexec', ['zlogin', zonename, cmd]);
-    console.log("executing ", zlogin.stdout.toString());
-    return zlogin.stdout.toString();
+
+	if (zlogin.err != null)
+	    console.log("err \n", zlogin.stderr.toString());
+
+	return zlogin.status;
 }
 
 function start(zonename) {
     var start = spawnSync('pfexec', ['zoneadm', '-z', zonename, 'boot']);
-    console.log("info ", start.stdout.toString());
-    return start.stdout.toString();
+    console.log("starting ", start.stdout.toString());
+   if (start.error != null )	
+	console.log("error starting region");
+    console.log("start status ", start.status.toString());
+    return start.status.toString();
 }
 
 function halt(zonename) {
@@ -153,38 +159,53 @@ function uninstall(zonename) {
     return stop.stdout.toString();
 }
 
-function addattr(zoneobj, attr) {
+function addattr(zonename, zoneobj, attr) {
     var cmd, attr;
     if ("brand" in zoneobj) {
         cmd = 'add attr; set name=' + attr.name + ';' +
             'set type=' + attr.type + ';'
         'set value=' + attr.value + ';' + 'end';
-        attr = spawnSync('zonecfg', ['-z', zoneobj.name, cmd]);
+        attr = spawnSync('zonecfg', ['-z', zonename, cmd]);
     } else {
         console.log("Error zoneobj does not have brand property");
         return null;
     }
 }
 
-function create(zone_spec) {
-    var script = spec2script(zone_spec);
+function create(zonename, zone_spec) {
+    var script = spec2script(zonename, zone_spec);
     if (script != null) {
-        var zonecfg = spawnSync('pfexec', ['zonecfg', '-z', zone_spec.name, script]);
+        var zonecfg = spawnSync('pfexec', ['zonecfg', '-z', zonename, script]);
         console.log("creating ", zonecfg.stderr.toString());
-        install(zone_spec.name);
-	var postsetup = genpostscript(zone_spec);
-
-	if (postsetup != null) 
-	    exec(zone_spec.name,postsetup); 
-
-        return zonecfg.stdout.toString();
+        install(zonename);
+   	setupzone(zonename,zone_spec); 
+	return true;    
     }
     return null;
 }
 
+function setupzone(zonename, zone_spec) {
+
+    switch (zone_spec.brand) {
+	    case "sparse":
+		    		start(zonename);
+				var setup = genpostscript(zone_spec);
+				var status = exec(zonename,"svcs svc:/milestone/multi-user | grep online");
+				while(status != 0 ) {
+					 status = exec(zonename,"svcs svc:/milestone/multi-user | grep online"); 
+				}
+				exec(zonename,setup);
+		    		halt(zonename);
+		    		break;
+				
+	  default: 
+		    break;
+    }
+}
+
+
 function create_zone_spec(resources) {
     var spec = {
-        name: "",
         zonepath: "",
         brand: "",
         'ip-type': "exclusive",
@@ -200,9 +221,9 @@ function create_zone_spec(resources) {
     return spec;
 }
 
-function spec2script(spec) {
+function spec2script(zname, spec) {
     var script = "";
-    var zone = getdata(spec.name);
+    var zone = getdata(zname);
     if (zone != null) {
         console.log("Error : zone name already exists");
         return null;
@@ -255,45 +276,47 @@ function spec2script(spec) {
  */
 
 function genpostscript(zone_spec) {
-	var postshellcmd = "" ;
-	switch(zone_spec.brand) 
-	{
-		case "sparse": 
-	         	 zone_spec.net.forEach(function(e) {
-                            Object.keys(e).forEach(function(key) {
-				    if(key == "ips") {
-					    var ips = e[key].toString().split(",");
-    					for (var i = 0, len = ips.length; i < len; i++) {
-	                                	postshellcmd += 
-							"ipadm create-addr -T static -a local=" 
-							+ ips[i] 
-							+ " " 
-							+ e["physical"] +"/v4;";
-					}
-				    }
-  				  if(key == "gateway") {
-					postshellcmd+=  "; echo " + e[key] + " >> /etc/defaultrouter ;" ;
-				 }
-                            });
-                   });
-			var resolvers = zone_spec.resolvers.toString().split(",");
- 			for (var i = 0, len = resolvers.length; i < len; i++) {
-				postshellcmd += ";echo nameserver " + resolvers[i] + " >> /etc/resolv.conf"; 
-			}
- 			postshellcmd +=  "; cp /etc/nsswitch.{dns,conf} ; svcadm restart routing-setup ;";
-                    break;
-	  default: 
-			postshellcmd = null;
-	}
+    var postshellcmd = "";
+    switch (zone_spec.brand) {
+        case "sparse":
+		    postshellcmd = "sleep 1; "
+            zone_spec.net.forEach(function(e) {
+                Object.keys(e).forEach(function(key) {
+                   if (key == "physical") {	
+	   	   	postshellcmd += "ipadm create-if " + e["physical"] + " && "; 
+		   }
+                    if (key == "ips") {
+                        var ips = e[key].toString().split(",");
+                        for (var i = 0, len = ips.length; i < len; i++) {
+                            postshellcmd +=
+                                "ipadm create-addr -T static -a local=" +
+                                ips[i] +
+                                " " +
+                                e["physical"] + "/v4 && ";
+                        }
+                    }
+                    if (key == "gateway") {
+                        postshellcmd += " echo " + e[key] + " >> /etc/defaultrouter &&";
+                    }
+                });
+            });
+	
+            var resolvers = zone_spec.resolvers.toString().split(",");
+            for (var i = 0, len = resolvers.length; i < len; i++) {
+                postshellcmd += " echo nameserver " + resolvers[i] + " >> /etc/resolv.conf &&";
+            }
+            postshellcmd += " cp /etc/nsswitch.{dns,conf} && svcadm restart routing-setup ";
+            break;
 
-	console.log("shell ", postshellcmd);
-
-	return postshellcmd;
+        default:
+            postshellcmd = null;
+    }
+    console.log("shell ", postshellcmd);
+    return postshellcmd;
 }
-
+// Tests
 var o = {
     brand: "sparse",
-    name: "test04",
     autoboot: "false",
     zonepath: "/zones/test01",
     net: [{
@@ -305,4 +328,5 @@ var o = {
 
 destroy("test04");
 var z = create_zone_spec(o);
-create(z);
+create("test04",z);
+
