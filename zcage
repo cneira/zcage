@@ -4,6 +4,7 @@
 const zone = require('zonelib');
 const uuidv4 = require('uuid/v4');
 const commandLineArgs = require('command-line-args')
+const fs = require('zfs');
 
 let mainDefinitions = [{
     name: 'name',
@@ -48,8 +49,6 @@ switch (mainCommand.name) {
 
 
         if ("net" in createOptions) {
-            //TODO: validate options 
-            //TODO: destroy zone by uuid or name currently only works by name
             var zname;
             createOptions["net"] =
                 zone.ipaddrcmd2netobject(createOptions["net"]);
@@ -62,9 +61,7 @@ switch (mainCommand.name) {
             createOptions["zonepath"] = `/zones/${zname}`;
             var count = createOptions["count"];
             delete createOptions["count"];
-            console.log("zone spec", createOptions);
             var z = zone.create_zone_spec(createOptions);
-            // TODO: validate spec here before creating the zone 
             if (zone.create(zname, z) == 0) {
                 console.log("created vm : ", zname);
             }
