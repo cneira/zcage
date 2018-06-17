@@ -45,29 +45,8 @@ switch (mainCommand.name) {
         })
         argv = createOptions._unknown || []
 
-
-        if ("net" in createOptions) {
-            var zname;
-            createOptions["net"] =
-                zone.ipaddrcmd2netobject(createOptions["net"]);
-            if ("alias" in createOptions) {
-                zname = createOptions["alias"];
-                delete createOptions["alias"];
-            } else {
-                zname = uuidv4();
-            }
-            createOptions["zonepath"] = `/zones/${zname}`;
-            var count = createOptions["count"];
-            delete createOptions["count"];
-            var z = zone.create_zone_spec(createOptions);
-            if (zone.create(zname, z) == 0) {
-                console.log("created vm : ", zname);
-            }
-            break;
-        } else {
-            console.log('Error missing --net=nic|ipaddr');
-            break;
-        }
+	zone.build(createOptions);
+		break;
 
     case "destroy":
         const destroyDefinitions = [{
