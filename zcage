@@ -1,10 +1,8 @@
-#!/opt/ooce/bin/node
- // --abort_on_uncaught_exception
+#!/opt/ooce/bin/node --abort_on_uncaught_exception
 
 const zone = require('zonelib');
 const uuidv4 = require('uuid/v4');
 const commandLineArgs = require('command-line-args')
-const fs = require('zfs');
 
 let mainDefinitions = [{
     name: 'name',
