@@ -2,7 +2,8 @@
 
 const zone = require('zonelib');
 const uuidv4 = require('uuid/v4');
-const commandLineArgs = require('command-line-args')
+const commandLineArgs = require('command-line-args');
+const chalk = require('chalk');
 
 let mainDefinitions = [{
     name: 'name',
@@ -44,7 +45,7 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         })
         argv = createOptions._unknown || []
-
+	console.log(chalk.blue('creating vm'));
 	zone.build(createOptions);
 		break;
 
@@ -66,8 +67,19 @@ switch (mainCommand.name) {
         }
         break;
     case "list":
-        zone.listzones();
+	        const listDefinitions = [{
+            name: 'state',
+        }]
+        const listOptions = commandLineArgs(listDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        })
+        argv = listOptions._unknown || []
+
+		console.log(chalk.blue('listing zones'));
+		zone.listzones(listOptions);
         break;
+
     case "start":
         const startDefinitions = [{
             name: 'zonename',
@@ -90,7 +102,7 @@ switch (mainCommand.name) {
             name: 'zonename',
             alias: 'z'
         }]
-        const stopOptions = commandLineArgs(stopDefinitions, {
+		const stopOptions = commandLineArgs(stopDefinitions, {
             argv,
             stopAtFirstUnknown: true
         })
