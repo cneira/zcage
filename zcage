@@ -76,7 +76,6 @@ switch (mainCommand.name) {
         })
         argv = listOptions._unknown || []
 
-		console.log(chalk.blue('listing zones'));
 		zone.listzones(listOptions);
         break;
 
