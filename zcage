@@ -39,7 +39,10 @@ switch (mainCommand.name) {
             {
                 name: 'boot',
                 type: Boolean
-            }
+            },
+	    {
+		name: "dram"
+	    }
         ]
         const createOptions = commandLineArgs(createDefinitions, {
             argv,
@@ -82,7 +85,7 @@ switch (mainCommand.name) {
     case "start":
         const startDefinitions = [{
             name: 'zonename',
-            alias: 'z'
+            alias: 'nz'
         }]
         const startOptions = commandLineArgs(startDefinitions, {
             argv,
