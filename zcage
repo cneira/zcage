@@ -37,12 +37,24 @@ switch (mainCommand.name) {
                 name: 'net'
             },
             {
-                name: 'boot',
+                name: 'autoboot',
                 type: Boolean
             },
 	    {
 		name: "dram"
-	    }
+	    },
+	    {
+		name: "cpu-shares"
+            },
+            {
+		name: "dedicated-cpu"
+            },
+            {
+		name: "dedicated-cpu-importance"
+            },
+            {
+		name: "max-lwps"
+            }
         ]
         const createOptions = commandLineArgs(createDefinitions, {
             argv,
@@ -69,6 +81,7 @@ switch (mainCommand.name) {
             console.log("need zone name to destroy");
         }
         break;
+
     case "list":
 	        const listDefinitions = [{
             name: 'state',
