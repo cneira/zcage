@@ -38,20 +38,20 @@ switch (mainCommand.name) {
                 name: 'autoboot',
                 type: Boolean
             },
-	    {
-		name: "dram"
-	    },
-	    {
-		name: "cpu-shares"
+            {
+                name: "dram"
             },
             {
-		name: "dedicated-cpu"
+                name: "cpu-shares"
             },
             {
-		name: "dedicated-cpu-importance"
+                name: "dedicated-cpu"
             },
             {
-		name: "max-lwps"
+                name: "dedicated-cpu-importance"
+            },
+            {
+                name: "max-lwps"
             }
         ]
         const createOptions = commandLineArgs(createDefinitions, {
@@ -59,8 +59,8 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         })
         argv = createOptions._unknown || []
-	zone.build(createOptions);
-		break;
+        zone.build(createOptions);
+        break;
 
     case "destroy":
         const destroyDefinitions = [{
@@ -81,7 +81,7 @@ switch (mainCommand.name) {
         break;
 
     case "list":
-	        const listDefinitions = [{
+        const listDefinitions = [{
             name: 'state',
         }]
         const listOptions = commandLineArgs(listDefinitions, {
@@ -90,7 +90,7 @@ switch (mainCommand.name) {
         })
         argv = listOptions._unknown || []
 
-		zone.listzones(listOptions);
+        zone.listzones(listOptions);
         break;
 
     case "start":
@@ -115,7 +115,7 @@ switch (mainCommand.name) {
             name: 'zonename',
             alias: 'z'
         }]
-		const stopOptions = commandLineArgs(stopDefinitions, {
+        const stopOptions = commandLineArgs(stopDefinitions, {
             argv,
             stopAtFirstUnknown: true
         })
@@ -131,37 +131,37 @@ switch (mainCommand.name) {
     case "rctl":
 
         const rctlDefinitions = [{
-            name: 'zonename',
-            alias: 'z'
-        },
-	{
+                name: 'zonename',
+                alias: 'z'
+            },
+            {
                 name: 'autoboot',
                 type: Boolean
             },
-	    {
-		name: "dram"
-	    },
-	    {
-		name: "cpu-shares"
+            {
+                name: "dram"
             },
             {
-		name: "dedicated-cpu"
+                name: "cpu-shares"
             },
             {
-		name: "dedicated-cpu-importance"
+                name: "dedicated-cpu"
             },
             {
-		name: "max-lwps"
+                name: "dedicated-cpu-importance"
+            },
+            {
+                name: "max-lwps"
             }
-]
-		const rctlOptions = commandLineArgs(rctlDefinitions, {
+        ]
+        const rctlOptions = commandLineArgs(rctlDefinitions, {
             argv,
             stopAtFirstUnknown: true
         })
         argv = rctlOptions._unknown || []
-	console.log(rctlOptions);
+        console.log(rctlOptions);
         if ("zonename" in rctlOptions) {
-            zone.rctl(rctlOptions["zonename"],rctlOptions);
+            zone.rctl(rctlOptions["zonename"], rctlOptions);
         } else {
             console.log("need zonename to stop");
         }
