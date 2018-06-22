@@ -2,9 +2,7 @@
 //--abort_on_uncaught_exception
 
 const zone = require('zonelib');
-const uuidv4 = require('uuid/v4');
 const commandLineArgs = require('command-line-args');
-const chalk = require('chalk');
 
 let mainDefinitions = [{
     name: 'name',
@@ -98,7 +96,7 @@ switch (mainCommand.name) {
     case "start":
         const startDefinitions = [{
             name: 'zonename',
-            alias: 'nz'
+            alias: 'z'
         }]
         const startOptions = commandLineArgs(startDefinitions, {
             argv,
@@ -130,6 +128,44 @@ switch (mainCommand.name) {
         }
         break;
 
+    case "rctl":
+
+        const rctlDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        },
+	{
+                name: 'autoboot',
+                type: Boolean
+            },
+	    {
+		name: "dram"
+	    },
+	    {
+		name: "cpu-shares"
+            },
+            {
+		name: "dedicated-cpu"
+            },
+            {
+		name: "dedicated-cpu-importance"
+            },
+            {
+		name: "max-lwps"
+            }
+]
+		const rctlOptions = commandLineArgs(rctlDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        })
+        argv = rctlOptions._unknown || []
+	console.log(rctlOptions);
+        if ("zonename" in rctlOptions) {
+            zone.rctl(rctlOptions["zonename"],rctlOptions);
+        } else {
+            console.log("need zonename to stop");
+        }
+        break;
 
     default:
         console.log("bad options");
