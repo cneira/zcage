@@ -14,12 +14,17 @@
   "author": "neirac <cneirabustos@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "ajv": "^6.5.1",
+    "bytes": "^3.0.0",
+    "chalk": "^2.4.1",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
     "install": "^0.11.0",
     "ipaddr.js": "^1.7.0",
     "npm": "^6.1.0",
     "request": "^2.87.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.2.1",
+    "validator": "^10.4.0",
+    "xml2js": "^0.4.19"
   }
 }
