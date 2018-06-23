@@ -1,1 +1,2 @@
-./zcage create --alias=test07 --net "vnic0|192.168.1.225/24|192.168.1.1" --dram 2gb --max-lwps 3000
+./zcage create --alias=test07 --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb --max-lwps 3000
+./zcage rctl -z test07 --ram 4gb --max-lwps 5000
