@@ -39,7 +39,7 @@ switch (mainCommand.name) {
                 type: Boolean
             },
             {
-                name: "dram"
+                name: "ram"
             },
             {
                 name: "cpu-shares"
@@ -139,7 +139,7 @@ switch (mainCommand.name) {
                 type: Boolean
             },
             {
-                name: "dram"
+                name: "ram"
             },
             {
                 name: "cpu-shares"
@@ -164,6 +164,24 @@ switch (mainCommand.name) {
             zone.rctl(rctlOptions["zonename"], rctlOptions);
         } else {
             console.log("need zonename to stop");
+        }
+        break;
+
+    case "get":
+        const getDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        }]
+        const getOptions = commandLineArgs(getDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        })
+        argv = getOptions._unknown || []
+
+        if ("zonename" in getOptions) {
+            zone.getzonedata(getOptions["zonename"]);
+        } else {
+            console.log("missing zone name ");
         }
         break;
 
