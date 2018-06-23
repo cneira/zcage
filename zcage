@@ -135,10 +135,6 @@ switch (mainCommand.name) {
                 alias: 'z'
             },
             {
-                name: 'autoboot',
-                type: Boolean
-            },
-            {
                 name: "ram"
             },
             {
@@ -159,7 +155,6 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         })
         argv = rctlOptions._unknown || []
-        console.log(rctlOptions);
         if ("zonename" in rctlOptions) {
             zone.rctl(rctlOptions["zonename"], rctlOptions);
         } else {
