@@ -19,7 +19,23 @@ It's intended to be easy to use with a simple command line syntax that's is stra
 
 This is work in progress. 
 
+= EXAMPLES
+
+* Create a container using virtual network interface _vnic0_ using ip: 192.168.1.225, netmask and 192.168.1.1 as gateway and only allowed to use 2GB of RAM. 
+```bash
+# zcage create --alias=test07 --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  
+```
+Now you can reference the container by it's alias test07. If you don't provide an alias a UUID will be generated for the container.
+
+
 
 = FEATURES
 
-* Easy to use
+* Ease of use
+* Resource control
+* Observability features
+* Reference containers by UUID or alias
+* Rapid container creation within seconds 
+* Exclusive IP networking by default
+* Brands sparse, ipkg, lipkg and lx available for container creation
+
