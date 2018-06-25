@@ -14,7 +14,7 @@ It's intended to be easy to use with a simple command line syntax that's is stra
 
 ## WARNING
 
-[This is work in progress 
+This is work in progress 
 
 ## EXAMPLES
 
