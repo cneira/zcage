@@ -37,6 +37,16 @@ Now you can reference the container by it's alias test07. If you don't provide a
 # zcage destroy -z test07 
 ```
 
+* List containers
+```bash
+#zcage list 
+UUID                                     TYPE           STATE            ALIAS
+2ff83af6-01a3-622a-e831-f65966465624     OS             [red]#stopped#          nodejs
+ecc9627e-6515-cd96-9fd0-b06973e4423f     OS             stopped          test07
+2585e1a7-ef50-eb1d-e85b-cbf5631ced5e     OS             stopped          test08
+c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
+```
+
 = FEATURES
 
 * Ease of use
