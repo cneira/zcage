@@ -1,25 +1,22 @@
-= Zcage 
-:author: Carlos Neira 
-:email: <cneirabustos@gmail.com>
-:revnumber: v1.1
-:revdate: 26.06.2018
+# Zcage 
 
 Zcage is a container manager for Illumos based distributions inspired by FreeBSD's iocage and SmartOS's vmadm.  
 It's intended to be easy to use with a simple command line syntax that's is straight forward to understand.
 
 
-= Installation: Github
+## Installation 
+
+### Github
 
   * 'git clone  http://github.com/cneira/zcage.git'
   *  npm install -g zcage
   
 
+## WARNING
 
-= WARNING
+[This is work in progress 
 
-This is work in progress. 
-
-= EXAMPLES
+## EXAMPLES
 
 * Create a container using virtual network interface _vnic0_ using ip: 192.168.1.225, netmask and 192.168.1.1 as gateway and only allowed to use 2GB of RAM. 
 ```bash
@@ -41,13 +38,14 @@ Now you can reference the container by it's alias test07. If you don't provide a
 ```bash
 #zcage list 
 UUID                                     TYPE           STATE            ALIAS
-2ff83af6-01a3-622a-e831-f65966465624     OS             [red]#stopped#          nodejs
+2ff83af6-01a3-622a-e831-f65966465624     OS             stopped          nodejs
 ecc9627e-6515-cd96-9fd0-b06973e4423f     OS             stopped          test07
 2585e1a7-ef50-eb1d-e85b-cbf5631ced5e     OS             stopped          test08
 c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 ```
 
-= FEATURES
+
+## FEATURES
 
 * Ease of use
 * Resource control
