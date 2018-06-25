@@ -28,6 +28,7 @@
 
 const zone = require('zonelib');
 const commandLineArgs = require('command-line-args');
+const commandLineUsage = require('command-line-usage');
 
 let mainDefinitions = [{
     name: 'name',
@@ -205,7 +206,18 @@ switch (mainCommand.name) {
         }
         break;
 
-    default:
-        console.log("bad options");
+case  "help": 
+
+const sections = [
+  {
+    header: 'zcage',
+    content: 'Zcage is a container manager for Illumos based distributions inspired by FreeBSD\'s iocage and SmartOS\'s vmadm. intended to be easy to use with a simple command line syntax that\'s is easy to follow.\n\nOptions\n\n{underline create}: \n\nGenerates a container using the following flags:\n\n--alias: Names container so it could be referenced by alias instead of UUID.\n\n--net:   Configures network for container format is nic|ip/mask|gateway.\n\n--ram : Assigns maximum RAM memory allowed for the container to use.\n\n--autoboot: This container will be started when host is booted by default the value false.\n\n--max-lwps:   Assigns maximum of lightweight threads that is container is allowed to use.\n\n{underline list}\n\n --zonename <container name or UUID>:  Destroys a container (cannot be undone)\n\n{underline start}\n\n --zonename <container name or UUID>:  Starts the container\n\n{underline stop}:\n\n--zonename <container name or UUID>: Stops the running container\n\n{underline get}:\n\n --zonename <container name or UUID>: Returns information for the container.\n\n{underline Resource Control}:\n\nResource control could be specified at container creation or updated to a running container\n\nOptions\n\n--ram : Updates or sets maxium RAM available for container.\n\n--max-lwps: Updates or sets the maximum amount of lightweight threads for container.\n\n--cpu-shares: Updates or sets the number of cpu shares for container\n\n--dedicated-cpu: Updates or sets the amount of dedicated cpus for container\n\n--dedicated-cpu-importance: Updates or sets the dedicated cpu importance for container\n\n\n{underline Examples}:\n\nTo create a vm with 2gb of ram using with ip address/mask 192.168.1.225/24 and gateway 192.168.1.1\n\n#zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb'
+
+  }
+ ]; 
+	const usage = commandLineUsage(sections)
+	console.log(usage)
         break;
+default :
+        console.log("zcage --help for usage");
 }
