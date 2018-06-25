@@ -1,5 +1,4 @@
-#!/usr/bin/env node
-//--abort_on_uncaught_exception
+#!/usr/bin/env node --abort_on_uncaught_exception
 /*
  * CDDL HEADER START
  *
@@ -217,6 +216,11 @@ const sections = [
 	const usage = commandLineUsage(sections)
 	console.log(usage)
         break;
+
+
+case "version":
+	console.log("1.0.0");
+	break;
 default :
         console.log("zcage help for usage ");
 }
