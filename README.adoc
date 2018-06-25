@@ -1,0 +1,66 @@
+= Zcage 
+:author: Carlos Neira 
+:email: <cneirabustos@gmail.com>
+:revnumber: v1.1
+:revdate: 26.06.2018
+
+Zcage is a container manager for Illumos based distributions inspired by FreeBSD's iocage and SmartOS's vmadm.  
+It's intended to be easy to use with a simple command line syntax that's is straight forward to understand.
+
+
+= Installation: Github
+
+  * 'git clone  http://github.com/cneira/zcage.git'
+  *  npm install -g zcage
+  
+
+
+= WARNING
+
+This is work in progress. 
+
+
+= FEATURES
+
+* Easy to use
+* Fast
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Interfaces for Zone Creation and querying
+
+### Zone Attributes methods
+Library should be able to return the following:
+
+* DONE:  Get Resources belonging to a Zone
+* DONE:  Get Zone information : name, brand, state, could add metadata like uptime,vmstat.
+ 
+### Zone Administration
+TODO: 
+*  Create 
+*  Delete
+*  Clone
+*  Modify
+*  Start
+*  Halt
+*  Execute commands
