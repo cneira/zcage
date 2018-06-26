@@ -26,6 +26,7 @@
 
 
 const zone = require('./lib/zonelib');
+const img = require('./lib/imageadm');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
 
@@ -221,6 +222,37 @@ const sections = [
 case "version":
 	console.log("1.0.0");
 	break;
+
+	case "images" :
+        const listimgDefinitions = [{
+            name: 'os',
+					  name: 'version',
+					  name: 'name',
+					  name: 'uuid',
+					  name: 'type'
+        }]
+        const listimgOptions = commandLineArgs(listimgDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        })
+        argv = listimgOptions._unknown || []
+		    if(listimgOptions['type'] == 'avail')
+				  img.list_images();
+			  break;
+
+
+	case "pull" :
+	        const pullDefinitions = [{
+						name: 'image' 
+        }]
+        const pullOptions = commandLineArgs(pullDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        })
+        argv = pullOptions._unknown || []
+				  img.getzss(pullOptions["image"]);
+			  break;
+		     
 default :
         console.log("zcage help for usage ");
 }
