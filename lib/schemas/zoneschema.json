@@ -2,7 +2,7 @@
   "type": "object",
   "properties": {
     "zonepath": {"type":"string"},
-    "brand": { "type": "string", "enum": ["sparse"] },
+    "brand": { "type": "string", "enum": ["sparse","ipkg","lipkg","lx"] },
     "ip-type": {"type": "string", "enum": ["exclusive"]},
     "autoboot": {"type": "boolean"},
     "net":{ 
@@ -21,8 +21,10 @@
 	    "type": "object",   
             "properties": {
              "max-physical-memory": {"type": "string"},
-        "max-locked-memory": {"type": "string"},
-        "max-swap": {"type": "string"}
+             "max-locked-memory": {"type": "string"},
+	    "max-swap": {"type": "string"},
+	    "dedicated-cpu": {"type": "string", "pattern": "^[1-9]-[1-9]$"},
+	    "dedicated-cpu-importance": {"type": "string" , "pattern": "^[1-9]$" }
      }
     }
    }
