@@ -22,11 +22,13 @@
     "curl-request": "^1.1.1",
     "install": "^0.11.0",
     "ipaddr.js": "^1.7.0",
+    "mt-files-downloader": "^0.2.5",
     "npm": "^6.1.0",
     "request": "^2.87.0",
     "underscore": "^1.9.1",
     "uuid": "^3.2.1",
     "validator": "^10.4.0",
+    "verror": "^1.10.0",
     "xml2js": "^0.4.19",
     "zfs": "^1.3.0"
   },
