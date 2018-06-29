@@ -29,5 +29,6 @@
   },
   "bin": {
     "zcage": "./zcage"
-  }
+  },
+  "directories": [ "lib" , "lib/schemas" ]
 }
