@@ -77,5 +77,5 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 * Resource control
 * Rapid container creation within seconds 
 * Exclusive IP networking by default
-* Brands sparse, ipkg, lipkg and lx available for container creation
+* Brands sparse and lx are available for container creation
 
