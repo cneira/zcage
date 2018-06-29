@@ -1,7 +1,7 @@
 # Zcage 
 
 Zcage is a container manager for Illumos based distributions inspired by FreeBSD's iocage and SmartOS's vmadm.  
-It's intended to be easy to use with a simple command line syntax that's is straight forward to understand.
+It's intended to be easy to use with a simple command line syntax.
 
 
 ## Installation 
@@ -25,6 +25,29 @@ First we need to setup a nic for containers to use, in this case we will create 
 ```bash
 # zcage create --alias=test07 --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  
 ```
+* List remotely available linux images from Joyent
+```bash
+# zcage images --list  avail
+UID                                            NAME                            VERSION         OS                      PUBLISHED
+f7c19252-c998-11e4-be95-3315493f3741             lx-centos-6                     20150313        linux           2015-03-13T15:52:35Z
+818cc79e-ceb3-11e4-99ee-7bc8c674e754             lx-ubuntu-14.04                 20150320        linux           2015-03-20T03:45:09Z
+116deb8c-cf03-11e4-9b2d-7b1066800a6a             lx-debian-7                     20150320        linux           2015-03-20T13:14:41Z
+eb4128ec-cf12-11e4-960d-8780cec6463f             lx-centos-6                     20150320        linux           2015-03-20T15:08:0
+```
+* List locally available linux images to create containers
+```bash
+# zcage images --list local 
+UUID                                            NAME                            VERSION         OS                      PUBLISHED
+96bb1fac-c87d-11e5-b5bf-ff4703459205             alpine-3                        20160201        linux           2016-02-01T00:49:02Z
+```
+* Pull a linux image to create containers
+```bash
+# zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205  
+`
+* To create a lxbrand container, you need to specify the image to use and brand as lx 
+```bash
+# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205 --alias lx 
+```
 Now you can reference the container by it's alias test07. If you don't provide an alias a UUID will be generated for the container.
 
 * Update the container to allow it to use more ram if needed and restrict maximum lwps to 3000
@@ -47,13 +70,21 @@ ecc9627e-6515-cd96-9fd0-b06973e4423f     OS             stopped          test07
 c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 ```
 
+## Networking setup for native containers
+ Currently to setup resolvers these steps are needed inside the container
+```bash
+ # echo nameserver 80.80.80.80 > /etc/resolv.conf
+ # cp /etc/nsswitch.{dns,conf}
+ # svcadm restart routing-setup
+```
+
+
+
 
 ## FEATURES
 
 * Ease of use
 * Resource control
-* Observability features
-* Reference containers by UUID or alias
 * Rapid container creation within seconds 
 * Exclusive IP networking by default
 * Brands sparse, ipkg, lipkg and lx available for container creation

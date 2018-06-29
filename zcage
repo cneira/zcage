@@ -91,9 +91,10 @@ switch (mainCommand.name) {
         })
         argv = createOptions._unknown || []
 
-        if ( img.Isactivated == 0) {
-       		 zone.build(createOptions);
+        if (img.Isactivated() == 0) {
+            zone.build(createOptions);
         }
+
         break;
 
     case "destroy":
@@ -230,10 +231,10 @@ switch (mainCommand.name) {
         break;
 
     case "activate":
-        if ( img.Isactivated() != 0) {
-		img.ActivateZcage();
-        } else  {
-	 console.log("zcage is already activated, create some containers");
+        if (img.Isactivated() != 0) {
+            img.ActivateZcage();
+        } else {
+            console.log("zcage is already activated, create some containers");
         }
 
     case "images":
@@ -242,7 +243,8 @@ switch (mainCommand.name) {
             name: 'version',
             name: 'name',
             name: 'uuid',
-            name: 'list', alias: 'l' 
+            name: 'list',
+            alias: 'l'
         }]
         const listimgOptions = commandLineArgs(listimgDefinitions, {
             argv,
@@ -250,7 +252,7 @@ switch (mainCommand.name) {
         })
         argv = listimgOptions._unknown || []
         if (listimgOptions['list']) {
-            switch (listimgOptions.type) {
+            switch (listimgOptions.list) {
                 case 'local':
                     img.list_avail();
                     break;
@@ -260,8 +262,10 @@ switch (mainCommand.name) {
                     img.list_images();
                     break;
             }
-        }
-
+        } else {
+	 console.log("you need to specify to list remote or local images");
+}
+	
         break;
 
 
@@ -274,12 +278,12 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         })
         argv = pullOptions._unknown || []
- 
-        if ( img.Isactivated == 0) {
-	if(pullOptions["image"])
-        img.getzss(pullOptions["image"]);
-	else 
-	console.log("specify image to pull ");
+
+        if (img.Isactivated == 0) {
+            if (pullOptions["image"])
+                img.getzss(pullOptions["image"]);
+            else
+                console.log("specify image to pull ");
         }
         break;
 
