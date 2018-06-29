@@ -232,14 +232,14 @@ switch (mainCommand.name) {
             name: 'version',
             name: 'name',
             name: 'uuid',
-            name: 'type'
+            name: 'list', alias: 'l' 
         }]
         const listimgOptions = commandLineArgs(listimgDefinitions, {
             argv,
             stopAtFirstUnknown: true
         })
         argv = listimgOptions._unknown || []
-        if (listimgOptions['type']) {
+        if (listimgOptions['list']) {
             switch (listimgOptions.type) {
                 case 'local':
                     img.list_avail();
