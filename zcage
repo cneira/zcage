@@ -90,7 +90,10 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         })
         argv = createOptions._unknown || []
-        zone.build(createOptions);
+
+        if ( img.Isactivated == 0) {
+       		 zone.build(createOptions);
+        }
         break;
 
     case "destroy":
@@ -226,6 +229,13 @@ switch (mainCommand.name) {
         console.log(ZCAGE_VERSION);
         break;
 
+    case "activate":
+        if ( img.Isactivated() != 0) {
+		img.ActivateZcage();
+        } else  {
+	 console.log("zcage is already activated, create some containers");
+        }
+
     case "images":
         const listimgDefinitions = [{
             name: 'os',
@@ -264,10 +274,13 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         })
         argv = pullOptions._unknown || []
+ 
+        if ( img.Isactivated == 0) {
 	if(pullOptions["image"])
         img.getzss(pullOptions["image"]);
 	else 
 	console.log("specify image to pull ");
+        }
         break;
 
     default:
