@@ -259,13 +259,13 @@ switch (mainCommand.name) {
                         img.list_avail();
                         break;
 
-                    case 'avail':
+                    case 'remote':
                     default:
                         img.list_images();
                         break;
                 }
             } else {
-                console.log("you need to specify to list remote or local images");
+                console.log("you need to specify to list remote or local images --list local | remote");
             }
         }
         break;
