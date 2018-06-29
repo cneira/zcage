@@ -30,6 +30,7 @@ const zone = require('./lib/zonelib');
 const img = require('./lib/imageadm');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
+const ZCAGE_VERSION = '1.0.1'
 
 let mainDefinitions = [{
     name: 'name',
@@ -222,7 +223,7 @@ switch (mainCommand.name) {
 
 
     case "version":
-        console.log("1.0.0");
+        console.log(ZCAGE_VERSION);
         break;
 
     case "images":
