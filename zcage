@@ -30,7 +30,7 @@ const zone = require('./lib/zonelib');
 const img = require('./lib/imageadm');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
-const ZCAGE_VERSION = '1.0.1'
+const ZCAGE_VERSION = '1.0.2'
 
 let mainDefinitions = [{
     name: 'name',
@@ -281,12 +281,12 @@ case "pull":
     })
     argv = pullOptions._unknown || []
 
-    if (img.Isactivated == 0) {
+    if (img.Isactivated() == 0) {
         if (pullOptions["image"])
             img.getzss(pullOptions["image"]);
         else
-            console.log("specify image to pull ");
-    }
+            console.log("specify image to pull --image uuid ");
+    } 
     break;
 
 default:
