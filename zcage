@@ -251,42 +251,44 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         })
         argv = listimgOptions._unknown || []
-        if (listimgOptions['list']) {
-            switch (listimgOptions.list) {
-                case 'local':
-                    img.list_avail();
-                    break;
 
-                case 'avail':
-                default:
-                    img.list_images();
-                    break;
+        if (img.Isactivated() == 0) {
+            if (listimgOptions['list']) {
+                switch (listimgOptions.list) {
+                    case 'local':
+                        img.list_avail();
+                        break;
+
+                    case 'avail':
+                    default:
+                        img.list_images();
+                        break;
+                }
+            } else {
+                console.log("you need to specify to list remote or local images");
             }
-        } else {
-	 console.log("you need to specify to list remote or local images");
-}
-	
-        break;
-
-
-    case "pull":
-        const pullDefinitions = [{
-            name: 'image'
-        }]
-        const pullOptions = commandLineArgs(pullDefinitions, {
-            argv,
-            stopAtFirstUnknown: true
-        })
-        argv = pullOptions._unknown || []
-
-        if (img.Isactivated == 0) {
-            if (pullOptions["image"])
-                img.getzss(pullOptions["image"]);
-            else
-                console.log("specify image to pull ");
         }
         break;
 
-    default:
-        console.log("zcage help for usage ");
-}
+
+case "pull":
+    const pullDefinitions = [{
+        name: 'image'
+    }]
+    const pullOptions = commandLineArgs(pullDefinitions, {
+        argv,
+        stopAtFirstUnknown: true
+    })
+    argv = pullOptions._unknown || []
+
+    if (img.Isactivated == 0) {
+        if (pullOptions["image"])
+            img.getzss(pullOptions["image"]);
+        else
+            console.log("specify image to pull ");
+    }
+    break;
+
+default:
+    console.log("zcage help for usage ");
+    }
