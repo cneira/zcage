@@ -1,6 +1,6 @@
 {
   "name": "zcage",
-  "version": "1.0.9",
+  "version": "1.1.1",
   "description": "illumos container management tool",
   "main": "zcage",
   "keywords": [
@@ -30,5 +30,5 @@
   "bin": {
     "zcage": "./zcage"
   },
-  "directories": [ "lib" , "lib/schemas" ]
+  "directories": [ "lib"  ]
 }
