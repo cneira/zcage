@@ -236,6 +236,7 @@ switch (mainCommand.name) {
         } else {
             console.log("zcage is already activated, create some containers");
         }
+        break;
 
     case "images":
         const listimgDefinitions = [{
