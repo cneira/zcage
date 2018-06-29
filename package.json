@@ -1,11 +1,8 @@
 {
   "name": "zcage",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "illumos container management tool",
   "main": "zcage",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "illumos",
     "zones",
