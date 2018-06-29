@@ -30,7 +30,7 @@ const zone = require('./lib/zonelib');
 const img = require('./lib/imageadm');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
-const ZCAGE_VERSION = '1.0.3'
+const ZCAGE_VERSION = '1.0.6'
 
 let mainDefinitions = [{
     name: 'name',
