@@ -15,38 +15,48 @@
 	        "autoboot": {
 	            "type": "boolean"
 	        },
-	 "additionalProperties": false,
+	        "additionalProperties": false,
 	        "net": {
 	            "type": "array",
 	            "items": {
-			"type": "object",
-			"properties": {
+	                "type": "object",
+	                "properties": {
 	                    "physical": {
 	                        "type": "string"
 	                    },
 	                    "address": {
-	                        "type": "string", "format": "ipv4"
+	                        "type": "string",
+	                        "format": "ipv4"
 	                    },
 	                    "netmask": {
-	                        "type": "string", "format": "ipv4"
+	                        "type": "string",
+	                        "format": "ipv4"
 	                    },
 	                    "gateway": {
-	                        "type": "string", "format": "ipv4"
+	                        "type": "string",
+	                        "format": "ipv4"
 	                    }
-			}
+	                }
 	            }
 	        },
 	        "rctl": {
 	            "type": "object",
 	            "properties": {
 	                "max-physical-memory": {
-	                    "type": "number"
+	                    "type": "string",
+	                    "pattern": "^[0-9]+$"
 	                },
 	                "max-locked-memory": {
-	                    "type": "number"
+	                    "type": "string",
+	                    "pattern": "^[0-9]+$"
 	                },
 	                "max-swap": {
-	                    "type": "number"
+	                    "type": "string",
+	                    "pattern": "^[0-9]+$"
+	                },
+	                "cpu-shares": {
+	                    "type": "string",
+	                    "pattern": "^[0-9]+$"
 	                },
 	                "dedicated-cpu": {
 	                    "type": "string",
