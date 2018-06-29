@@ -43,7 +43,7 @@ UUID                                            NAME                            
 * Pull a linux image to create containers
 ```bash
 # zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205  
-`
+```
 * To create a lxbrand container, you need to specify the image to use and brand as lx 
 ```bash
 # zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205 --alias lx 
@@ -69,16 +69,6 @@ ecc9627e-6515-cd96-9fd0-b06973e4423f     OS             stopped          test07
 2585e1a7-ef50-eb1d-e85b-cbf5631ced5e     OS             stopped          test08
 c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 ```
-
-## Networking setup for native containers
- Currently to setup resolvers these steps are needed inside the container
-```bash
- # echo nameserver 80.80.80.80 > /etc/resolv.conf
- # cp /etc/nsswitch.{dns,conf}
- # svcadm restart routing-setup
-```
-
-
 
 
 ## FEATURES
