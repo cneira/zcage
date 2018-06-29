@@ -238,8 +238,20 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         })
         argv = listimgOptions._unknown || []
-        if (listimgOptions['type'] == 'avail')
-            img.list_images();
+         if (listimgOptions['type']) { 
+	  switch (listimgOptions.type) 
+	{
+	  case 'local':  	
+            		     img.list_avail();
+			     break;
+	     
+	  case 'avail' :
+	  default:
+            		     img.list_images();
+			     break;
+	}
+	}
+
         break;
 
 
