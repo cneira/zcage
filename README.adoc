@@ -10,11 +10,7 @@ To use zcage you need an user account with Primary administrator role
 ### Github
 
   *  npm install zcage -g 
-  
 
-## WARNING
-
-This is work in progress 
 ## Quickstart 
 
 * zcage needs to be activated before any container could be created. 
@@ -76,7 +72,7 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 ```
 
 
-## FEATURES
+## FEATURES Version 1.1.4
 
 * Ease of use
 * Resource control
