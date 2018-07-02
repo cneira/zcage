@@ -31,7 +31,7 @@ const img = require('./lib/imageadm');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
 var os = require('os');
-const ZCAGE_VERSION = '1.1.8';
+const ZCAGE_VERSION = '1.1.9';
 
 let mainDefinitions = [{
     name: 'name',
@@ -238,11 +238,7 @@ switch (mainCommand.name) {
 
     case "activate":
         if (img.Isactivated() != 0) {
-            if (!isAbletoexec()) {
-                img.ActivateZcage();
-            } else {
-                console.log("You must be root or use an account with Primary Administrator Role to Activate zcage (pfexec zcage activate)");
-            }
+            img.ActivateZcage();
         } else {
             console.log("zcage is already activated, create some containers");
         }
@@ -297,6 +293,8 @@ switch (mainCommand.name) {
                 img.getzss(pullOptions["image"]);
             else
                 console.log("specify image to pull --image uuid ");
+        } else {
+            console.log("zcage must be activated to be able to pull images : zcage activate ");
         }
         break;
 
