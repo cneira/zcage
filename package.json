@@ -13,7 +13,7 @@
   "repository" :
   { "type" : "git"
   , "url" : "https://github.com/cneira/zcage"
-  }
+  },
   "dependencies": {
     "ajv": "^6.5.1",
     "bytes": "^3.0.0",
