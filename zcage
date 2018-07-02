@@ -31,7 +31,7 @@ const img = require('./lib/imageadm');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
 var os = require('os');
-const ZCAGE_VERSION = '1.1.5';
+const ZCAGE_VERSION = '1.1.7';
 
 let mainDefinitions = [{
     name: 'name',
@@ -42,11 +42,11 @@ const mainCommand = commandLineArgs(mainDefinitions, {
 })
 let argv = mainCommand._unknown || []
 
-if ((os.type() != 'SunOS') && (os.type() != 'Unleashed') ) {
-	console.log('Kid, get yerself a System www.illumos.org');	
-	return null;
- }
-	
+if ((os.type() != 'SunOS') && (os.type() != 'Unleashed')) {
+    console.log('Kid, get yerself a System  https://wiki.illumos.org/display/illumos/Distributions');
+    return null;
+}
+
 
 switch (mainCommand.name) {
 
@@ -238,7 +238,11 @@ switch (mainCommand.name) {
 
     case "activate":
         if (img.Isactivated() != 0) {
-            img.ActivateZcage();
+            if (!isAbletoexec()) {
+                img.ActivateZcage();
+            } else {
+                console.log("You must be root or use an account with Primary Administrator Role to Activate zcage (pfexec zcage activate)");
+            }
         } else {
             console.log("zcage is already activated, create some containers");
         }
@@ -278,24 +282,24 @@ switch (mainCommand.name) {
         break;
 
 
-case "pull":
-    const pullDefinitions = [{
-        name: 'image'
-    }]
-    const pullOptions = commandLineArgs(pullDefinitions, {
-        argv,
-        stopAtFirstUnknown: true
-    })
-    argv = pullOptions._unknown || []
+    case "pull":
+        const pullDefinitions = [{
+            name: 'image'
+        }]
+        const pullOptions = commandLineArgs(pullDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        })
+        argv = pullOptions._unknown || []
 
-    if (img.Isactivated() == 0) {
-        if (pullOptions["image"])
-            img.getzss(pullOptions["image"]);
-        else
-            console.log("specify image to pull --image uuid ");
-    } 
-    break;
+        if (img.Isactivated() == 0) {
+            if (pullOptions["image"])
+                img.getzss(pullOptions["image"]);
+            else
+                console.log("specify image to pull --image uuid ");
+        }
+        break;
 
-default:
-    console.log("zcage help for usage ");
-    }
+    default:
+        console.log("zcage help for usage ");
+}

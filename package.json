@@ -1,6 +1,6 @@
 {
   "name": "zcage",
-  "version": "1.1.5",
+  "version": "1.1.7",
   "description": "illumos container management tool",
   "main": "zcage",
   "keywords": [
@@ -9,7 +9,11 @@
     "containers"
   ],
   "author": "neirac <cneirabustos@gmail.com>",
-  "license": "CDDL 1.0",
+  "license": "CDDL-1.0",
+  "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/cneira/zcage"
+  }
   "dependencies": {
     "ajv": "^6.5.1",
     "bytes": "^3.0.0",
@@ -19,6 +23,7 @@
     "install": "^0.11.0",
     "ipaddr.js": "^1.7.0",
     "npm": "^6.1.0",
+    "posix": "^4.1.2",
     "request": "^2.87.0",
     "underscore": "^1.9.1",
     "uuid": "^3.2.1",
@@ -30,5 +35,7 @@
   "bin": {
     "zcage": "./zcage"
   },
-  "directories": [ "lib"  ]
+  "directories": [
+    "lib"
+  ]
 }
