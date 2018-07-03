@@ -84,7 +84,7 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 
 [![asciicast](https://asciinema.org/a/189466.png)](https://asciinema.org/a/189466)
 
-## FEATURES Version 1.1.4
+## FEATURES Version 1.1.9
 
 * Ease of use
 * Resource control
