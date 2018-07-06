@@ -93,7 +93,7 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 * Exclusive IP networking by default
 * Brands sparse and lx are available for container creation
 
-##  Fixes version 1.2.1
+##  Fixes version 1.2.2
 
 * Progress status downloading images
 * Don't allow to start vms when vnic is being used

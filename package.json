@@ -1,6 +1,6 @@
 {
   "name": "zcage",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "illumos container management tool",
   "main": "zcage",
   "keywords": [
