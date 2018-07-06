@@ -1,6 +1,6 @@
 {
   "name": "zcage",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "illumos container management tool",
   "main": "zcage",
   "keywords": [
@@ -10,9 +10,9 @@
   ],
   "author": "neirac <cneirabustos@gmail.com>",
   "license": "CDDL-1.0",
-  "repository" :
-  { "type" : "git"
-  , "url" : "https://github.com/cneira/zcage"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cneira/zcage"
   },
   "dependencies": {
     "ajv": "^6.5.1",
