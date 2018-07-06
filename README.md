@@ -84,7 +84,8 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 
 [![asciicast](https://asciinema.org/a/189466.png)](https://asciinema.org/a/189466)
 
-## FEATURES Version 1.1.9
+
+## FEATURES 
 
 * Ease of use
 * Resource control
@@ -92,3 +93,9 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 * Exclusive IP networking by default
 * Brands sparse and lx are available for container creation
 
+##  Fixes version 1.2.1
+
+* Progress status downloading images
+* Don't allow to start vms when vnic is being used
+* Don't allow to create vms with ip values 0.0.0.0
+* Don't allow to create vms with a used vnic 
