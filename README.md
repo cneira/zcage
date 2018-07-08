@@ -55,7 +55,7 @@ UUID                                            NAME                            
 * To create a lxbrand container, you need to specify the image to use and brand as lx 
 
 ```bash
-# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205 --alias lx 
+# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205 --alias lxvm --brand lx
 ```
 Now you can reference the container by it's alias test07. If you don't provide an alias a UUID will be generated for the container.
 
