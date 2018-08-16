@@ -89,6 +89,12 @@ switch (mainCommand.name) {
             },
             {
                 name: "with-image"
+            },
+            {
+                name: "fs-allowed"
+            },
+            {
+                name: "limitpriv"
             }
         ]
         const createOptions = commandLineArgs(createDefinitions, {
