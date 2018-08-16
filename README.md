@@ -8,6 +8,12 @@ To use zcage you need an user account with Primary administrator role
 ## Installation 
 
 ### Github
+  Currently there is a bug in npm 5.X so npm 4.X must be used to install. 
+  
+  *  npm install npm@4 -g 
+  
+  Also you need GNU Make in your PATH to build the posix module, in Omnios you
+  could export PATH=/usr/gnu/bin:$PATH, then type:
 
   *  npm install zcage -g 
 
