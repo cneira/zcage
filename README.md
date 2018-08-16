@@ -7,8 +7,7 @@ To use zcage you need an user account with Primary administrator role
 
 ## Installation 
 
-### Github
-  Currently there is a bug in npm 5.X so npm 4.X must be used to install. 
+  Currently there is a bug in npm 5.X so npm 4.X must be used to install https://github.com/npm/npm/issues/16766
   
   *  npm install npm@4 -g 
   
