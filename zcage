@@ -95,7 +95,20 @@ switch (mainCommand.name) {
             },
             {
                 name: "limitpriv"
-            }
+            },
+            {
+                name: "disk"
+            },
+            {
+                name: "cdrom"
+            },
+            {
+                name: "hostbridge"
+            },
+            {
+                name: "cpu"
+            },
+
         ]
         const createOptions = commandLineArgs(createDefinitions, {
             argv,
@@ -205,7 +218,7 @@ switch (mainCommand.name) {
         if ("zonename" in rctlOptions) {
             zone.rctl(rctlOptions["zonename"], rctlOptions);
         } else {
-            console.log("need zonename to stop");
+            console.log("need zonename to update rclt info");
         }
         break;
 
