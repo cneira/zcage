@@ -20,6 +20,7 @@
     "chalk": "^2.4.1",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
+    "debug": "^3.1.0",
     "install": "^0.11.0",
     "ipaddr.js": "^1.7.0",
     "npm": "^6.1.0",
