@@ -101,6 +101,9 @@ switch (mainCommand.name) {
                 name: "disk"
             },
             {
+                name: "bootdisk"
+            },
+            {
                 name: "cdrom"
             },
             {
