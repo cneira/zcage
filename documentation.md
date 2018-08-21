@@ -48,7 +48,7 @@ A zone definition is supplied by command line using the create option, the follo
 A zone definition will be converted to the following json object 
 
 ```json
-zone_spec: {
+{
     "zonepath": "/zcage/vms/bhyvetest",
     "brand": "bhyve",
     "ip-type": "exclusive",
