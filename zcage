@@ -98,9 +98,6 @@ switch (mainCommand.name) {
                 name: "limitpriv"
             },
             {
-                name: "disk"
-            },
-            {
                 name: "bootdisk"
             },
             {
