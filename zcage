@@ -62,11 +62,6 @@ switch (mainCommand.name) {
                 defaultValue: "sparse"
             },
             {
-                name: 'count',
-                alias: 'c',
-                defaultValue: 1
-            },
-            {
                 name: 'net'
             },
             {
@@ -75,18 +70,6 @@ switch (mainCommand.name) {
             },
             {
                 name: "ram"
-            },
-            {
-                name: "cpu-shares"
-            },
-            {
-                name: "dedicated-cpu"
-            },
-            {
-                name: "dedicated-cpu-importance"
-            },
-            {
-                name: "max-lwps"
             },
             {
                 name: "with-image"
@@ -169,7 +152,7 @@ switch (mainCommand.name) {
         if ("zonename" in startOptions) {
             zone.start(startOptions.zonename);
         } else {
-            console.log("need zonename to start");
+            console.log("need zone alias or uuid to start");
         }
         break;
 
@@ -188,11 +171,32 @@ switch (mainCommand.name) {
         if ("zonename" in stopOptions) {
             zone.halt(stopOptions.zonename);
         } else {
-            console.log("need zonename to stop");
+            console.log("need zone alias or uuid to stop");
         }
         break;
 
-    case "rctl":
+    case "reboot":
+
+        const rebootDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        }];
+        const rebootOptions = commandLineArgs(rebootDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = rebootOptions._unknown || [];
+
+        if ("zonename" in rebootOptions) {
+            zone.halt(rebootOptions.zonename);
+            zone.start(rebootOptions.zonename);
+        } else {
+            console.log("need zone alias or uuid to reboot");
+        }
+        break;
+
+
+    case "update":
 
         const rctlDefinitions = [{
                 name: 'zonename',
@@ -222,7 +226,7 @@ switch (mainCommand.name) {
         if ("zonename" in rctlOptions) {
             zone.rctl(rctlOptions.zonename, rctlOptions);
         } else {
-            console.log("need zonename to update rclt info");
+            console.log("need zone alias or uuid  to update");
         }
         break;
 
@@ -241,7 +245,7 @@ switch (mainCommand.name) {
         if ("zonename" in getOptions) {
             zone.getzonedata(getOptions.zonename);
         } else {
-            console.log("missing zone name ");
+            console.log("missing zone alias or uuid ");
         }
         break;
 
