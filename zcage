@@ -92,6 +92,9 @@ switch (mainCommand.name) {
             {
                 name: "cpu"
             },
+	    {
+		name: "quota"
+	    }
 
         ];
         const createOptions = commandLineArgs(createDefinitions, {
@@ -216,7 +219,14 @@ switch (mainCommand.name) {
             },
             {
                 name: "max-lwps"
-            }
+            },
+            {
+                name: "autoboot",
+		type: Boolean
+            },
+	   {
+	       name : "quota"
+	   }
         ];
         const rctlOptions = commandLineArgs(rctlDefinitions, {
             argv,
@@ -230,7 +240,7 @@ switch (mainCommand.name) {
         }
         break;
 
-    case "get":
+    case "info":
 
         const getDefinitions = [{
             name: 'zonename',
