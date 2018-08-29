@@ -191,8 +191,7 @@ switch (mainCommand.name) {
         argv = rebootOptions._unknown || [];
 
         if ("zonename" in rebootOptions) {
-            zone.halt(rebootOptions.zonename);
-            zone.start(rebootOptions.zonename);
+            zone.reboot(rebootOptions.zonename);
         } else {
             console.log("need zone alias or uuid to reboot");
         }
