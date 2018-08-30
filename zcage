@@ -53,12 +53,10 @@ switch (mainCommand.name) {
 
     case "create":
         const createDefinitions = [{
-                name: 'alias',
-                alias: 'a'
+                name: 'alias'
             },
             {
                 name: 'brand',
-                alias: 'b',
                 defaultValue: "sparse"
             },
             {
@@ -69,7 +67,8 @@ switch (mainCommand.name) {
                 type: Boolean
             },
             {
-                name: "ram"
+                name: "ram",
+                defaultValue: '1gb'
             },
             {
                 name: "with-image"
@@ -92,9 +91,10 @@ switch (mainCommand.name) {
             {
                 name: "cpu"
             },
-	    {
-		name: "quota"
-	    }
+            {
+                name: "quota",
+                defaultValue: "8G"
+            }
 
         ];
         const createOptions = commandLineArgs(createDefinitions, {
@@ -102,7 +102,8 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         });
         argv = createOptions._unknown || [];
-
+        if (argv)
+            console.log("unknow option", argv);
         if (img.Isactivated() == 0) {
             zone.build(createOptions);
         }
@@ -221,11 +222,11 @@ switch (mainCommand.name) {
             },
             {
                 name: "autoboot",
-		type: Boolean
+                type: Boolean
             },
-	   {
-	       name : "quota"
-	   }
+            {
+                name: "quota"
+            }
         ];
         const rctlOptions = commandLineArgs(rctlDefinitions, {
             argv,

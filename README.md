@@ -123,8 +123,4 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 * Check if host memory allows it to create more zones.
 * Create zones using a json file.
 * Create machine templates for cpu/memory/disk.
-* Improve info command to obtain more information from zones.
-* Add more sources for importing images for ex:   
-  http://download.proxmox.com/images/system/   
-  https://cloud-images.ubuntu.com/ 
-* 
+* Improve info command to obtain more information from zones. 
