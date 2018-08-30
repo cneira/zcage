@@ -18,7 +18,7 @@ To use zcage you need an user account with Primary administrator role
 
 ## Quickstart 
 
-* zcage needs to be activated before any container could be created. 
+* zcage needs to be activated before any container could be created, it will create all the needed datasets for zone management. 
 
 ```bash
 # zcage activate
@@ -30,11 +30,17 @@ Currently each container need to have a different vnic otherwise it won't start.
 ```bash
 # dladm create-vnic -l igb0 omni0
 ```
-* Create a container using virtual network interface _vnic0_ using ip: 192.168.1.225, netmask and 192.168.1.1 as gateway and only allowed to use 2GB of RAM. 
+* Create a container using virtual network interface _vnic0_ using ip: 192.168.1.225/network mask and 192.168.1.1 as gateway and memory capped to use 2GB of RAM. 
 
 ```bash
 # zcage create --alias=test07 --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  
 ```
+* Update the capped memory of the previously defined zone and also set/update a disk quota
+```
+# zcage update -z test07 --ram 4gb --quota 16G
+```
+
+
 * List remotely available linux images from Joyent
 
 ```bash
@@ -89,14 +95,18 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 
 [![asciicast](https://asciinema.org/a/189466.png)](https://asciinema.org/a/189466)
 
+## Bhyve Demo
+
+[![asciicast](https://asciinema.org/a/189466.png)](https://asciinema.org/a/189466)
+
 
 ## FEATURES 
 
 * Ease of use
 * Resource control
-* Rapid container creation within seconds 
 * Exclusive IP networking by default
-* Brands sparse and lx are available for container creation
+* Supports for brands sparse, bhyve and lx.
+ 
 
 ##  Fixes version 1.2.2
 
@@ -104,3 +114,13 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 * Don't allow to start vms when vnic is being used
 * Don't allow to create vms with ip values 0.0.0.0
 * Don't allow to create vms with a used vnic 
+
+
+## TODO
+
+* Remove hardcoded pool usage (currently rpool).
+* Validate if a vnic exists before creating a zone.
+* Check if host memory allows it to create more zones.
+* Create zones using a json file.
+* Create machine templates for cpu/memory/disk.
+* Improve info command to obtain more information from zones. 

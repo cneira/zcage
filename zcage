@@ -31,39 +31,33 @@ const img = require('./lib/imageadm');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
 var os = require('os');
-const ZCAGE_VERSION = '1.2.3';
+const ZCAGE_VERSION = '1.2.5';
 
 let mainDefinitions = [{
     name: 'name',
     defaultOption: true
-}]
+}];
 const mainCommand = commandLineArgs(mainDefinitions, {
     stopAtFirstUnknown: true
-})
-let argv = mainCommand._unknown || []
+});
+let argv = mainCommand._unknown || [];
 
-if ((os.type() != 'SunOS') && (os.type() != 'Unleashed')) {
-    console.log('Kid, get yerself a System  https://wiki.illumos.org/display/illumos/Distributions');
+if ((os.type() != 'SunOS')) {
+    console.log(
+        'Kid, get yerself a System  https://wiki.illumos.org/display/illumos/Distributions'
+    );
     return null;
 }
-
 
 switch (mainCommand.name) {
 
     case "create":
         const createDefinitions = [{
-                name: 'alias',
-                alias: 'a'
+                name: 'alias'
             },
             {
                 name: 'brand',
-                alias: 'b',
                 defaultValue: "sparse"
-            },
-            {
-                name: 'count',
-                alias: 'c',
-                defaultValue: 1
             },
             {
                 name: 'net'
@@ -73,29 +67,41 @@ switch (mainCommand.name) {
                 type: Boolean
             },
             {
-                name: "ram"
-            },
-            {
-                name: "cpu-shares"
-            },
-            {
-                name: "dedicated-cpu"
-            },
-            {
-                name: "dedicated-cpu-importance"
-            },
-            {
-                name: "max-lwps"
+                name: "ram",
+                defaultValue: '1gb'
             },
             {
                 name: "with-image"
+            },
+            {
+                name: "fs-allowed"
+            },
+            {
+                name: "limitpriv"
+            },
+            {
+                name: "bootdisk"
+            },
+            {
+                name: "cdrom"
+            },
+            {
+                name: "hostbridge"
+            },
+            {
+                name: "cpu"
+            },
+            {
+                name: "quota",
+                defaultValue: "8G"
             }
-        ]
+
+        ];
         const createOptions = commandLineArgs(createDefinitions, {
             argv,
             stopAtFirstUnknown: true
-        })
-        argv = createOptions._unknown || []
+        });
+        argv = createOptions._unknown || [];
 
         if (img.Isactivated() == 0) {
             zone.build(createOptions);
@@ -107,15 +113,15 @@ switch (mainCommand.name) {
         const destroyDefinitions = [{
             name: 'zonename',
             alias: 'z'
-        }]
+        }];
         const destroyOptions = commandLineArgs(destroyDefinitions, {
             argv,
             stopAtFirstUnknown: true
-        })
-        argv = destroyOptions._unknown || []
+        });
+        argv = destroyOptions._unknown || [];
 
         if ("zonename" in destroyOptions) {
-            zone.destroy(destroyOptions["zonename"]);
+            zone.destroy(destroyOptions.zonename);
         } else {
             console.log("need zone name to destroy");
         }
@@ -124,52 +130,76 @@ switch (mainCommand.name) {
     case "list":
         const listDefinitions = [{
             name: 'state',
-        }]
+        }];
         const listOptions = commandLineArgs(listDefinitions, {
             argv,
             stopAtFirstUnknown: true
-        })
-        argv = listOptions._unknown || []
+        });
+
+        argv = listOptions._unknown || [];
 
         zone.listzones(listOptions);
         break;
 
     case "start":
+
         const startDefinitions = [{
             name: 'zonename',
             alias: 'z'
-        }]
+        }];
         const startOptions = commandLineArgs(startDefinitions, {
             argv,
             stopAtFirstUnknown: true
-        })
-        argv = startOptions._unknown || []
+        });
+        argv = startOptions._unknown || [];
 
         if ("zonename" in startOptions) {
-            zone.start(startOptions["zonename"]);
+            zone.start(startOptions.zonename);
         } else {
-            console.log("need zonename to start");
+            console.log("need zone alias or uuid to start");
         }
         break;
+
     case "stop":
+
         const stopDefinitions = [{
             name: 'zonename',
             alias: 'z'
-        }]
+        }];
         const stopOptions = commandLineArgs(stopDefinitions, {
             argv,
             stopAtFirstUnknown: true
-        })
-        argv = stopOptions._unknown || []
+        });
+        argv = stopOptions._unknown || [];
 
         if ("zonename" in stopOptions) {
-            zone.halt(stopOptions["zonename"]);
+            zone.halt(stopOptions.zonename);
         } else {
-            console.log("need zonename to stop");
+            console.log("need zone alias or uuid to stop");
         }
         break;
 
-    case "rctl":
+    case "reboot":
+
+        const rebootDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        }];
+        const rebootOptions = commandLineArgs(rebootDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = rebootOptions._unknown || [];
+
+        if ("zonename" in rebootOptions) {
+            zone.reboot(rebootOptions.zonename);
+        } else {
+            console.log("need zone alias or uuid to reboot");
+        }
+        break;
+
+
+    case "update":
 
         const rctlDefinitions = [{
                 name: 'zonename',
@@ -189,35 +219,44 @@ switch (mainCommand.name) {
             },
             {
                 name: "max-lwps"
+            },
+            {
+                name: "autoboot",
+                type: Boolean
+            },
+            {
+                name: "quota"
             }
-        ]
+        ];
         const rctlOptions = commandLineArgs(rctlDefinitions, {
             argv,
             stopAtFirstUnknown: true
-        })
-        argv = rctlOptions._unknown || []
+        });
+        argv = rctlOptions._unknown || [];
+
         if ("zonename" in rctlOptions) {
-            zone.rctl(rctlOptions["zonename"], rctlOptions);
+            zone.rctl(rctlOptions.zonename, rctlOptions);
         } else {
-            console.log("need zonename to stop");
+            console.log("need zone alias or uuid  to update");
         }
         break;
 
-    case "get":
+    case "info":
+
         const getDefinitions = [{
             name: 'zonename',
             alias: 'z'
-        }]
+        }];
         const getOptions = commandLineArgs(getDefinitions, {
             argv,
             stopAtFirstUnknown: true
-        })
-        argv = getOptions._unknown || []
+        });
+        argv = getOptions._unknown || [];
 
         if ("zonename" in getOptions) {
-            zone.getzonedata(getOptions["zonename"]);
+            zone.getzonedata(getOptions.zonename);
         } else {
-            console.log("missing zone name ");
+            console.log("missing zone alias or uuid ");
         }
         break;
 
@@ -225,10 +264,35 @@ switch (mainCommand.name) {
 
         const sections = [{
             header: 'zcage',
-            content: 'Zcage is a container manager for Illumos based distributions inspired by FreeBSD\'s iocage and SmartOS\'s vmadm. intended to be easy to use with a simple command line syntax that\'s is easy to follow.\n\nOptions\n\n{underline create}: \n\nGenerates a container using the following flags:\n\n--alias: Names container so it could be referenced by alias instead of UUID.\n\n--net:   Configures network for container format is nic|ip/mask|gateway.\n\n--ram : Assigns maximum RAM memory allowed for the container to use.\n\n--with-image:  use image uuuid when creating the container (needed for lx brand)\n\n--autoboot: This container will be started when host is booted by default the value false.\n\n--max-lwps:   Assigns maximum of lightweight threads that is container is allowed to use.\n\n {underline destroy}:\n\n --zonename <container name or UUID>:  Destroys a container (cannot be undone)\n\n{underline start}\n\n --zonename <container name or UUID>:  Starts the container\n\n{underline stop}:\n\n--zonename <container name or UUID>: Stops the running container\n\n{underline get}:\n\n --zonename <container name or UUID>: Returns information for the container.\n\n{underline Resource control}:\n\nResource control could be specified at container creation or updated to a running container\n\nOptions\n\n{underline rctl}\n\n--ram : Updates or sets maxium RAM available for container.\n\n--max-lwps: Updates or sets the maximum amount of lightweight threads for container.\n\n--cpu-shares: Updates or sets the number of cpu shares for container\n\n--dedicated-cpu: Updates or sets the amount of dedicated cpus for container\n\n--dedicated-cpu-importance: Updates or sets the dedicated cpu importance for container\n\n\n{underline Image management}:\n\n{underline pull}\n\n --image <uuid> :  Retrieves image using uuid and stores for later usage.\n\n\n{underline images}\n\n --type  avail|local : Displays current available images in remote host or locally available for container creation\n\n\n{underline Examples}:\n\nTo create a vm with 2gb of ram using with ip address/mask 192.168.1.225/24 and gateway 192.168.1.1\n\nzcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb'
+            content: 'Zcage is a container manager ' +
+                'for Illumos based distributions inspired by ' +
+                'FreeBSD\'s iocage and SmartOS\'s vmadm. intended ' +
+                'to be easy to use with a simple command line ' +
+                'syntax that\'s is easy to follow.\n\nOptions\n\n{underline create}:' +
+                '\n\nGenerates a container using the following flags:\n\n--alias: ' +
+                'Names container so it could be referenced by alias instead of UUID.\n\n' +
+                '--net:   Configures network for container format is nic|ip/mask|gateway.\n\n' +
+                '--ram : Assigns maximum RAM memory allowed for the container to use.\n\n' +
+                '--with-image:  use image uuuid when creating the container (needed for lx brand)\n\n' +
+                '--autoboot: This container will be started when host is booted by default the value false.\n\n' +
+                '--max-lwps:   Assigns maximum of lightweight threads that is container is allowed to use.\n\n ' +
+                '{underline destroy}:\n\n --zonename <container name or UUID>:  Destroys a container (cannot be undone)' +
+                '\n\n{underline start}\n\n --zonename <container name or UUID>:  Starts the container\n\n' +
+                '{underline stop}:\n\n--zonename <container name or UUID>: Stops the running container\n\n' +
+                '{underline get}:\n\n --zonename <container name or UUID>: Returns information for the container.\n\n' +
+                '{underline Resource control}:\n\nResource control could be specified at container creation or updated to a running container\n\n' +
+                'Options\n\n{underline rctl}\n\n--ram : Updates or sets maxium RAM available for container.\n\n' +
+                '--max-lwps: Updates or sets the maximum amount of lightweight threads for container.\n\n' +
+                '--cpu-shares: Updates or sets the number of cpu shares for container\n\n' +
+                '--dedicated-cpu: Updates or sets the amount of dedicated cpus for container\n\n' +
+                '--dedicated-cpu-importance: Updates or sets the dedicated cpu importance for container\n\n\n' +
+                '{underline Image management}:\n\n{underline pull}\n\n --image <uuid> :  Retrieves image using uuid and stores for later usage.\n\n\n' +
+                '{underline images}\n\n --type  avail|local : Displays current available images in remote host or locally available for container creation\n\n\n' +
+                '{underline Examples}:\n\nTo create a vm with 2gb of ram using with ip address/mask 192.168.1.225/24 and gateway 192.168.1.1\n\n' +
+                'zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb'
         }];
-        const usage = commandLineUsage(sections)
-        console.log(usage)
+        const usage = commandLineUsage(sections);
+        console.log(usage);
         break;
 
 
@@ -246,33 +310,43 @@ switch (mainCommand.name) {
 
     case "images":
         const listimgDefinitions = [{
-            name: 'os',
-            name: 'version',
-            name: 'name',
-            name: 'uuid',
-            name: 'list',
-            alias: 'l'
-        }]
+                name: 'os'
+            },
+            {
+                name: 'version'
+            },
+            {
+                name: 'name'
+            },
+            {
+                name: 'uuid'
+            },
+            {
+                name: 'list',
+                alias: 'l'
+            }
+        ];
         const listimgOptions = commandLineArgs(listimgDefinitions, {
             argv,
             stopAtFirstUnknown: true
-        })
-        argv = listimgOptions._unknown || []
+        });
+        argv = listimgOptions._unknown || [];
 
         if (img.Isactivated() == 0) {
-            if (listimgOptions['list']) {
+            if (listimgOptions.list) {
                 switch (listimgOptions.list) {
                     case 'local':
                         img.list_avail();
                         break;
 
                     case 'remote':
-                    default:
                         img.list_images();
                         break;
                 }
             } else {
-                console.log("you need to specify to list remote or local images --list local | remote");
+                console.log(
+                    "you need to specify to list remote or local images --list local | remote"
+                );
             }
         }
         break;
@@ -281,20 +355,22 @@ switch (mainCommand.name) {
     case "pull":
         const pullDefinitions = [{
             name: 'image'
-        }]
+        }];
         const pullOptions = commandLineArgs(pullDefinitions, {
             argv,
             stopAtFirstUnknown: true
-        })
-        argv = pullOptions._unknown || []
+        });
+        argv = pullOptions._unknown || [];
 
         if (img.Isactivated() == 0) {
-            if (pullOptions["image"])
-                img.getzss(pullOptions["image"]);
+            if (pullOptions.image)
+                img.getzss(pullOptions.image);
             else
                 console.log("specify image to pull --image uuid ");
         } else {
-            console.log("zcage must be activated to be able to pull images : zcage activate ");
+            console.log(
+                "zcage must be activated to be able to pull images : zcage activate "
+            );
         }
         break;
 
