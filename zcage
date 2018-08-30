@@ -31,7 +31,7 @@ const img = require('./lib/imageadm');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
 var os = require('os');
-const ZCAGE_VERSION = '1.2.3';
+const ZCAGE_VERSION = '1.2.5';
 
 let mainDefinitions = [{
     name: 'name',
@@ -103,10 +103,6 @@ switch (mainCommand.name) {
         });
         argv = createOptions._unknown || [];
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
         if (img.Isactivated() == 0) {
             zone.build(createOptions);
         }
@@ -124,11 +120,6 @@ switch (mainCommand.name) {
         });
         argv = destroyOptions._unknown || [];
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
- 
         if ("zonename" in destroyOptions) {
             zone.destroy(destroyOptions.zonename);
         } else {
@@ -145,11 +136,6 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true
         });
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
- 
         argv = listOptions._unknown || [];
 
         zone.listzones(listOptions);
@@ -167,11 +153,6 @@ switch (mainCommand.name) {
         });
         argv = startOptions._unknown || [];
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
- 
         if ("zonename" in startOptions) {
             zone.start(startOptions.zonename);
         } else {
@@ -191,11 +172,6 @@ switch (mainCommand.name) {
         });
         argv = stopOptions._unknown || [];
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
- 
         if ("zonename" in stopOptions) {
             zone.halt(stopOptions.zonename);
         } else {
@@ -215,11 +191,6 @@ switch (mainCommand.name) {
         });
         argv = rebootOptions._unknown || [];
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
- 
         if ("zonename" in rebootOptions) {
             zone.reboot(rebootOptions.zonename);
         } else {
@@ -263,11 +234,6 @@ switch (mainCommand.name) {
         });
         argv = rctlOptions._unknown || [];
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
- 
         if ("zonename" in rctlOptions) {
             zone.rctl(rctlOptions.zonename, rctlOptions);
         } else {
@@ -287,11 +253,6 @@ switch (mainCommand.name) {
         });
         argv = getOptions._unknown || [];
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
- 
         if ("zonename" in getOptions) {
             zone.getzonedata(getOptions.zonename);
         } else {
@@ -371,11 +332,6 @@ switch (mainCommand.name) {
         });
         argv = listimgOptions._unknown || [];
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
- 
         if (img.Isactivated() == 0) {
             if (listimgOptions.list) {
                 switch (listimgOptions.list) {
@@ -406,11 +362,6 @@ switch (mainCommand.name) {
         });
         argv = pullOptions._unknown || [];
 
-        if (argv){
-            console.log("unknow option", argv);
-            return;
-        }
- 
         if (img.Isactivated() == 0) {
             if (pullOptions.image)
                 img.getzss(pullOptions.image);
