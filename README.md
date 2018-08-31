@@ -1,9 +1,13 @@
 # Zcage
 
-Zcage is a zone manager for Illumos based distributions inspired by FreeBSD's iocage and SmartOS's vmadm.
+Zcage is a zone manager for illumos based distributions inspired by FreeBSD's iocage and SmartOS's vmadm.
 It's intended to be easy to use with a simple command line syntax.
-To use zcage you need an user account with Primary administrator role
+To use zcage you need an user account with Primary administrator role.  
 
+<aside class="warning">
+Zcage only has been tested in OmniOSce.
+</aside>
+   
 
 ## Installation
 
@@ -118,6 +122,16 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 
 ```
 # Bhyve branded zones
+
+First you need install the bhyve in OmniOSce:
+
+```bash
+# pfexec pkg install system/bhyve
+```
+And also the bhyve brand
+```bash
+# pfexec pkg install system/zones/brand/bhyve  
+```
 
 To create a bhyve branded zone, first we need to create a disk for it to use:
 
