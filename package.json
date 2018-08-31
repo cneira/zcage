@@ -1,7 +1,7 @@
 {
   "name": "zcage",
   "version": "1.2.5",
-  "description": "illumos container management tool",
+  "description": "illumos zone management tool",
   "main": "zcage",
   "keywords": [
     "illumos",
@@ -9,7 +9,7 @@
     "containers"
   ],
   "author": "neirac <cneirabustos@gmail.com>",
-  "license": "CDDL-1.0",
+  "license": "MPL-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/cneira/zcage"
