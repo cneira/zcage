@@ -15,13 +15,13 @@ To use zcage you need an user account with Primary administrator role
 
 ## Quickstart
 
-* zcage needs to be activated before any container could be created, it will create all the needed datasets for zone management.
+* zcage needs to be activated before any zone could be created, it will create all the needed datasets for zone management.
 
 ```bash
 # zcage activate
 ```
 ## EXAMPLES
-First we need to setup a nic for containers to use, in this case we will create a vnic.
+First we need to setup a virtual nic for zones using dladm.
 Currently each container need to have a different vnic otherwise it won't start.
 
 ```bash
@@ -48,19 +48,19 @@ f7c19252-c998-11e4-be95-3315493f3741             lx-centos-6                    
 116deb8c-cf03-11e4-9b2d-7b1066800a6a             lx-debian-7                     20150320        linux           2015-03-20T13:14:41Z
 eb4128ec-cf12-11e4-960d-8780cec6463f             lx-centos-6                     20150320        linux           2015-03-20T15:08:0
 ```
-* List locally available linux images to create containers
+* List locally available linux images to create lx branded zones.
 
 ```bash
 # zcage images --list local
 UUID                                            NAME                            VERSION         OS                      PUBLISHED
 96bb1fac-c87d-11e5-b5bf-ff4703459205             alpine-3                        20160201        linux           2016-02-01T00:49:02Z
 ```
-* Pull a linux image to create containers
+* Pull a linux image to create a lx branded zone
 
 ```bash
 # zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205
 ```
-* To create a lxbrand container, you need to specify the image to use and brand as lx
+* To create a lx branded zone, you need to specify the image to use and brand as lx
 
 ```bash
 # zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205 --alias lxvm --brand lx
@@ -77,7 +77,7 @@ Now you can reference the container by it's alias test07. If you don't provide a
 ```bash
 # zcage destroy -z test07
 ```
-* List containers
+* List zones
 
 ```bash
 #zcage list
@@ -86,6 +86,89 @@ UUID                                     TYPE           STATE            ALIAS
 ecc9627e-6515-cd96-9fd0-b06973e4423f     OS             stopped          test07
 2585e1a7-ef50-eb1d-e85b-cbf5631ced5e     OS             stopped          test08
 c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
+```
+* General information about zone
+
+```bash
+#zcage info -z test07
+{
+    "memory": {
+        "zone.max-physical-memory": "2147483648",
+        "zone.max-locked-memory": "2147483648",
+        "zone.max-swap": "2147483648"
+    },
+    "base-data": {
+        "name": "omniosbuilds",
+        "zonepath": "/zcage/vms/omniosbuilds",
+        "autoboot": "false",
+        "brand": "sparse",
+        "ip-type": "exclusive",
+        "fs-allowed": "ufs",
+        "limitpriv": "default,dtrace_user,dtrace_proc",
+        "debugid": "27"
+    },
+    "network": {
+        "allowed-address": "192.168.1.205/24",
+        "physical": "net4",
+        "defrouter": "192.168.1.1"
+    },
+    "data": {
+        "resolvers": "8.8.8.8,8.8.8.4"
+    }
+}
+
+```
+# Bhyve branded zones
+
+To create a bhyve branded zone, first we need to create a disk for it to use:
+
+```bash
+# zfs create -V 30G rpool/vm0 
+```
+Then create the zone using the newly created disk and an iso which to install a
+new os.
+
+```bash
+#zcage create --net "net6|192.168.1.207/24|192.168.1.1" --ram 2gb  --alias bhyve0 --brand bhyve --cdrom=/home/neirac/isos/debian\-9.5.0\-amd64\-netinst.iso  --disk=rpool/vm0
+```
+Then you could connect to the newly created bhyve vm using vnc, to obtain the
+port just use the info command.
+
+```bash
+#zcage info -z bhyve0
+{
+    "memory": {
+        "zone.max-physical-memory": "2147483648",
+        "zone.max-locked-memory": "2147483648",
+        "zone.max-swap": "4294967296",
+        "zone.cpu-shares": "4096",
+        "zone.max-lwps": "3000"
+    },
+    "base-data": {
+        "name": "bhyve0",
+        "zonepath": "/zcage/vms/bhyve0",
+        "autoboot": "false",
+        "brand": "bhyve",
+        "ip-type": "exclusive",
+        "debugid": "178"
+    },
+    "network": {
+        "allowed-address": "192.168.1.206/24",
+        "physical": "net6",
+        "defrouter": "192.168.1.1"
+    },
+    "bhyve_data": {
+        "resolvers": "8.8.8.8,8.8.8.4",
+        "quota": "32G",
+        "hostbridge": "intel",
+        "vnc": "unix=/tmp/cf8848db-c3cf-494f-b43c-927a44e41dbe.vnc",
+        "vnc-port": "5920",
+        "bootrom": "BHYVE_DEBUG",
+        "vcpus": "1",
+        "ram": "2gb",
+        "bootdisk": "rpool/debian9"
+    }
+}
 ```
 
 ##  Demo
@@ -99,14 +182,13 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 
 ## FEATURES
 
-* Ease of use
 * Resource control
 * Exclusive IP networking by default
-* Supports for brands sparse, bhyve and lx.
+* Supports for brands sparse, ipkg,lipkg, bhyve and lx.
 
 
 ## TODO
 
-* Check if host memory allows it to create more zones.
 * Create zones using a json file.
 * Improve info command to obtain more information from zones.
+* Check if a vnc port is already used by a bhyve branded zone.
