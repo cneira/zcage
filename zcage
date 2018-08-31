@@ -80,7 +80,7 @@ switch (mainCommand.name) {
                 name: "limitpriv"
             },
             {
-                name: "bootdisk"
+                name: "disk"
             },
             {
                 name: "cdrom"

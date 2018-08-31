@@ -1,6 +1,6 @@
 # Zcage
 
-Zcage is a container manager for Illumos based distributions inspired by FreeBSD's iocage and SmartOS's vmadm.
+Zcage is a zone manager for Illumos based distributions inspired by FreeBSD's iocage and SmartOS's vmadm.
 It's intended to be easy to use with a simple command line syntax.
 To use zcage you need an user account with Primary administrator role
 
@@ -37,7 +37,6 @@ Currently each container need to have a different vnic otherwise it won't start.
 # zcage update -z test07 --ram 4gb --quota 16G
 ```
 
-
 * List remotely available linux images from Joyent
 
 ```bash
@@ -65,9 +64,9 @@ UUID                                            NAME                            
 ```bash
 # zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205 --alias lxvm --brand lx
 ```
-Now you can reference the container by it's alias test07. If you don't provide an alias a UUID will be generated for the container.
+Now you can reference the container by it's alias test07. If you don't provide an alias a UUID will be generated.
 
-* Update the container to allow it to use more ram if needed and restrict maximum lwps to 3000
+* Update the zone to allow it to use more ram if needed and restrict maximum lwps to 3000
 
 ```bash
 # zcage rctl -z test07 --ram 6gb --max-lwps 3000
@@ -80,7 +79,7 @@ Now you can reference the container by it's alias test07. If you don't provide a
 * List zones
 
 ```bash
-#zcage list
+# zcage list
 UUID                                     TYPE           STATE            ALIAS
 2ff83af6-01a3-622a-e831-f65966465624     OS             stopped          nodejs
 ecc9627e-6515-cd96-9fd0-b06973e4423f     OS             stopped          test07
@@ -90,7 +89,7 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 * General information about zone
 
 ```bash
-#zcage info -z test07
+# zcage info -z test07
 {
     "memory": {
         "zone.max-physical-memory": "2147483648",
@@ -123,13 +122,12 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 To create a bhyve branded zone, first we need to create a disk for it to use:
 
 ```bash
-# zfs create -V 30G rpool/vm0 
+# zfs create -V 30G rpool/vm0
 ```
-Then create the zone using the newly created disk and an iso which to install a
-new os.
+Then create the zone using the newly created disk and an iso to boot from.
 
 ```bash
-#zcage create --net "net6|192.168.1.207/24|192.168.1.1" --ram 2gb  --alias bhyve0 --brand bhyve --cdrom=/home/neirac/isos/debian\-9.5.0\-amd64\-netinst.iso  --disk=rpool/vm0
+# zcage create --net "net6|192.168.1.207/24|192.168.1.1" --ram 2gb  --alias bhyve0 --brand bhyve --cdrom=/home/neirac/isos/debian\-9.5.0\-amd64\-netinst.iso  --disk=rpool/vm0
 ```
 Then you could connect to the newly created bhyve vm using vnc, to obtain the
 port just use the info command.
@@ -166,7 +164,7 @@ port just use the info command.
         "bootrom": "BHYVE_DEBUG",
         "vcpus": "1",
         "ram": "2gb",
-        "bootdisk": "rpool/debian9"
+        "bootdisk": "rpool/vm0"
     }
 }
 ```
@@ -184,7 +182,7 @@ port just use the info command.
 
 * Resource control
 * Exclusive IP networking by default
-* Supports for brands sparse, ipkg,lipkg, bhyve and lx.
+* Supports for brands sparse, ipkg, lipkg, bhyve and lx.
 
 
 ## TODO
@@ -192,3 +190,4 @@ port just use the info command.
 * Create zones using a json file.
 * Improve info command to obtain more information from zones.
 * Check if a vnc port is already used by a bhyve branded zone.
+* Add boot order flag for bhyve zones.
