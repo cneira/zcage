@@ -204,3 +204,5 @@ port just use the info command.
 * Improve info command to obtain more information from zones.
 * Check if a vnc port is already used by a bhyve branded zone.
 * Add boot order flag for bhyve zones.
+* Import docker images for lx zones.
+* Changes settings by json or yaml.
