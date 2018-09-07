@@ -58,6 +58,13 @@ eb4128ec-cf12-11e4-960d-8780cec6463f             lx-centos-6                    
 UUID                                            NAME                            VERSION         OS                      PUBLISHED
 96bb1fac-c87d-11e5-b5bf-ff4703459205             alpine-3                        20160201        linux           2016-02-01T00:49:02Z
 ```
+# LX branded zones
+
+* First you need install the lx brand package in OmniOSce:
+
+```bash
+# pkg install pkg:/system/zones/brand/lx
+```
 * Pull a linux image to create a lx branded zone
 
 ```bash
@@ -123,7 +130,7 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 ```
 # Bhyve branded zones
 
-First you need install the bhyve in OmniOSce:
+First you need install bhyve and bhyve brand packages in OmniOSce:
 
 ```bash
 # pfexec pkg install system/bhyve
