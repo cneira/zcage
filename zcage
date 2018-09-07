@@ -93,7 +93,6 @@ switch (mainCommand.name) {
             },
             {
                 name: "quota",
-                defaultValue: "8G"
             }
 
         ];
@@ -302,7 +301,7 @@ switch (mainCommand.name) {
         if (img.Isactivated() != 0) {
             img.ActivateZcage();
         } else {
-            console.log("zcage is already activated, create some containers");
+            console.log("zcage is already activated, you should be able to create zones.");
         }
         break;
 
