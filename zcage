@@ -274,15 +274,14 @@ switch (mainCommand.name) {
                 '--ram : Assigns maximum RAM memory allowed for the container to use.\n\n' +
                 '--with-image:  use image uuuid when creating the container (needed for lx brand)\n\n' +
                 '--autoboot: This container will be started when host is booted by default the value false.\n\n' +
-                '--max-lwps:   Assigns maximum of lightweight threads that is container is allowed to use.\n\n ' +
                 '{underline destroy}:\n\n --zonename <container name or UUID>:  Destroys a container (cannot be undone)' +
                 '\n\n{underline start}\n\n --zonename <container name or UUID>:  Starts the container\n\n' +
                 '{underline stop}:\n\n--zonename <container name or UUID>: Stops the running container\n\n' +
                 '{underline get}:\n\n --zonename <container name or UUID>: Returns information for the container.\n\n' +
                 '{underline Resource control}:\n\nResource control could be specified at container creation or updated to a running container\n\n' +
-                'Options\n\n{underline rctl}\n\n--ram : Updates or sets maxium RAM available for container.\n\n' +
-                '--max-lwps: Updates or sets the maximum amount of lightweight threads for container.\n\n' +
-                '--cpu-shares: Updates or sets the number of cpu shares for container\n\n' +
+                'Options\n\n{underline update}\n\n--ram : Updates or sets maximum memory available for zone.\n\n' +
+                '--max-lwps: Updates or sets the maximum amount of lightweight threads for zone.\n\n' +
+                '--cpu-shares: Updates or sets the number of cpu shares for zone\n\n' +
                 '{underline Image management}:\n\n{underline pull}\n\n --image <uuid> :  Retrieves image using uuid and stores for later usage.\n\n\n' +
                 '{underline images}\n\n --type  avail|local : Displays current available images in remote host or locally available for container creation\n\n\n' +
                 '{underline Examples}:\n\nTo create a vm with 2gb of ram using with ip address/mask 192.168.1.225/24 and gateway 192.168.1.1\n\n' +

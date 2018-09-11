@@ -4,9 +4,7 @@ Zcage is a zone manager for illumos based distributions inspired by FreeBSD's io
 It's intended to be easy to use with a simple command line syntax.
 To use zcage you need an user account with Primary administrator role.  
 
-<aside class="warning">
-Zcage only has been tested in OmniOSce.
-</aside>
+****Zcage only has been tested in OmniOSce.****
    
 
 ## Installation
@@ -16,6 +14,61 @@ Zcage only has been tested in OmniOSce.
   *  npm install npm@4 -g
 
   *  npm install zcage -g
+
+
+## Options when creating a zone
+
+### ram (brand: ALL , not required, defaults to 1GB)  
+
+* Assigns maximum amount of memory allowed for the container to use.
+
+### net (brand: ALL , required)   
+
+* Configures network for zone format is vnic|ip/mask|gateway
+
+### alias (brand: ALL, not required, defaults to UUID v4) 
+
+* Sets the zone name for later reference instead of UUID v4.
+
+### quota (brand: ALL, not required) 
+
+* Sets disk quota for zone.
+
+### limitpriv (brand: ALL, not required)
+
+* Adds privileges to a zone  
+
+### fs-allowed (brand: ALL, not required)
+
+* Allows file system mounts other than the default
+  
+### with-image (brand: LX, required)
+
+* Uses the image specified when creating a zone.
+
+### disk (brand: BHYVE, required)
+
+* Sets the disk that bhyve will use to start the vm.
+
+### autoboot (brand: ALL, not required, defaults to false)
+
+* Sets if a zone should be started at boot.
+
+### brand (brand: ALL, not required, defaults to sparse)
+
+*  Sets the zone brand for zone creation.
+
+### cdrom (brand: BHYVE, not required)
+
+* Specifies iso to use when booting a bhyve vm)
+
+### hostbridge (brand: BHYVE, not required, defaults to intel)
+
+* Specifies which hostbridge should bhyve present to the guest.
+
+### cpu (brand: BHYVE, not required, defaults to 1)
+
+* Specified the number of cpus the vm will use.
 
 ## Quickstart
 
