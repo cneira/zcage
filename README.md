@@ -36,8 +36,8 @@ To use zcage you need an user account with Primary administrator role.
 
 ### limitpriv (brand: ALL, not required)
 
-* Adds privileges to a zone, priveleges must be separated by comma. 
-  For example : 
+* Adds privileges to a zone, priveleges must be separated by comma.   
+  For example :   
   --limitpriv=default,dtrace_user,dtrace_proc 
 
 ### fs-allowed (brand: ALL, not required)
@@ -267,4 +267,5 @@ port just use the info command.
 * Check if a vnc port is already used by a bhyve branded zone.
 * Add boot order flag for bhyve zones.
 * Import docker images for lx zones.
-* Changes settings by json or yaml.
+* Check if ip is already in use by a zone.
+* Add tests
