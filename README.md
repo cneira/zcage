@@ -36,9 +36,7 @@ To use zcage you need an user account with Primary administrator role.
 
 ### limitpriv (brand: ALL, not required)
 
-* Adds privileges to a zone, priveleges must be separated by comma.   
-  For example :   
-  --limitpriv=default,dtrace_user,dtrace_proc 
+* Adds privileges to a zone, priveleges must be comman separated values. 
 
 ### fs-allowed (brand: ALL, not required)
 
