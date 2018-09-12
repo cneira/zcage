@@ -255,6 +255,7 @@ port just use the info command.
 ## FEATURES
 
 * Resource control
+* Simple to use
 * Exclusive IP networking by default
 * Supports for brands sparse, ipkg, lipkg, bhyve and lx.
 
@@ -267,3 +268,6 @@ port just use the info command.
 * Import docker images for lx zones.
 * Check if ip is already in use by a zone.
 * Add tests
+* Clean up json in info command 
+* Improve documentation
+
