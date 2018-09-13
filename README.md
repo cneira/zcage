@@ -16,10 +16,10 @@ To use zcage you need an user account with Primary administrator role and instal
   *  npm install zcage -g
 
 ## Installing from source 
-   
-   * git clone https://github.com/cneira/zcage.git
-   * cd zcage &&  pfexec npm install -g 
-
+   ```bash
+   # git clone https://github.com/cneira/zcage.git
+   # cd zcage &&  pfexec npm install -g 
+   ```
 ## Options when creating a zone
 
 ### ram (brand: ALL , not required, defaults to 1GB)  
