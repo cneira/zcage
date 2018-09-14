@@ -274,4 +274,5 @@ port just use the info command.
 * Add tests
 * Clean up json in info command 
 * Improve documentation
+* Bhyve update ram does not reflect in vm
 
