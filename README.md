@@ -1,13 +1,13 @@
 # Zcage
 
-Zcage is a zone manager for illumos based distributions inspired by FreeBSD's iocage and SmartOS's vmadm.
+Zcage is a zone manager for illumos inspired by FreeBSD's iocage and SmartOS's vmadm.
 It's intended to be easy to use with a simple command line syntax.
-To use zcage you need an user account with Primary administrator role.  
+To use zcage you need an user account with Primary administrator role and install nodejs https://nodejs.org/   
 
 ****Zcage only has been tested in OmniOSce.****
    
 
-## Installation
+## Installing using npm
 
   Currently there is a bug in npm 5.X so npm 4.X must be used to install https://github.com/npm/npm/issues/16766
 
@@ -15,7 +15,11 @@ To use zcage you need an user account with Primary administrator role.
 
   *  npm install zcage -g
 
-
+## Installing from source 
+   ```bash
+   # git clone https://github.com/cneira/zcage.git
+   # cd zcage &&  pfexec npm install -g 
+   ```
 ## Options when creating a zone
 
 ### ram (brand: ALL , not required, defaults to 1GB)  
