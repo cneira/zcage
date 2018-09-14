@@ -31,7 +31,7 @@ const img = require('./lib/imageadm');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
 var os = require('os');
-const ZCAGE_VERSION = '1.3.3';
+const ZCAGE_VERSION = '1.3.4';
 
 let mainDefinitions = [{
     name: 'name',
@@ -82,10 +82,7 @@ switch (mainCommand.name) {
             {
                 name: "disk"
             },
-            {
-                name: "cdrom"
-            },
-            {
+           {
                 name: "hostbridge"
             },
             {
@@ -143,20 +140,26 @@ switch (mainCommand.name) {
     case "start":
 
         const startDefinitions = [{
-            name: 'zonename',
-            alias: 'z'
-        }];
+                name: 'zonename',
+                alias: 'z'
+            },
+            {
+                name: 'with-iso'
+            }
+        ];
         const startOptions = commandLineArgs(startDefinitions, {
             argv,
             stopAtFirstUnknown: true
         });
         argv = startOptions._unknown || [];
 
-        if ("zonename" in startOptions) {
+        if ("zonename" in startOptions && !("with-iso" in startOptions)) {
             zone.start(startOptions.zonename);
-        } else {
+        } else if ( ("zonename" in startOptions) && ("with-iso" in startOptions)){
+            zone.start(startOptions.zonename, startOptions['with-iso']);
+        }else {
             console.log("need zone alias or uuid to start");
-        }
+	}
         break;
 
     case "stop":
