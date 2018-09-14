@@ -119,7 +119,7 @@ switch (mainCommand.name) {
         });
         argv = destroyOptions._unknown || [];
 
-        if ("zonename" in destroyOptions) {
+        if ("zonename" in destroyOptions && (destroyOptions.zonename != null)) {
             zone.destroy(destroyOptions.zonename);
         } else {
             console.log("need zone name to destroy");
@@ -156,9 +156,9 @@ switch (mainCommand.name) {
         });
         argv = startOptions._unknown || [];
 
-        if ("zonename" in startOptions && !("with-iso" in startOptions)) {
+        if ((startOptions.zonename != null ) && ("zonename" in startOptions) && !("with-iso" in startOptions)) {
             zone.start(startOptions.zonename);
-        } else if ( ("zonename" in startOptions) && ("with-iso" in startOptions)){
+        } else if ( (startOptions.zonename != null ) && ("zonename" in startOptions) && ("with-iso" in startOptions)){
             zone.start(startOptions.zonename, startOptions['with-iso']);
         }else {
             console.log("need zone alias or uuid to start");
@@ -177,7 +177,7 @@ switch (mainCommand.name) {
         });
         argv = stopOptions._unknown || [];
 
-        if ("zonename" in stopOptions) {
+        if ("zonename" in stopOptions && (stopOptions.zonename != null)) {
             zone.halt(stopOptions.zonename);
         } else {
             console.log("need zone alias or uuid to stop");
@@ -196,7 +196,7 @@ switch (mainCommand.name) {
         });
         argv = rebootOptions._unknown || [];
 
-        if ("zonename" in rebootOptions) {
+        if (("zonename" in rebootOptions) && (rebootOptions.zonename != null)) {
             zone.reboot(rebootOptions.zonename);
         } else {
             console.log("need zone alias or uuid to reboot");
@@ -239,7 +239,7 @@ switch (mainCommand.name) {
         });
         argv = rctlOptions._unknown || [];
 
-        if ("zonename" in rctlOptions) {
+        if ("zonename" in rctlOptions && (rctlOptions.zonename != null)) {
             zone.rctl(rctlOptions.zonename, rctlOptions);
         } else {
             console.log("need zone alias or uuid  to update");
@@ -258,7 +258,7 @@ switch (mainCommand.name) {
         });
         argv = getOptions._unknown || [];
 
-        if ("zonename" in getOptions) {
+        if ("zonename" in getOptions && (getOptions.zonename != null)) {
             zone.getzonedata(getOptions.zonename);
         } else {
             console.log("missing zone alias or uuid ");
