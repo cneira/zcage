@@ -137,7 +137,7 @@ Now you can reference the container by it's alias test07. If you don't provide a
 * Update the zone to allow it to use more ram if needed and restrict maximum lwps to 3000
 
 ```bash
-# zcage rctl -z test07 --ram 6gb --max-lwps 3000
+# zcage update -z test07 --ram 6gb --max-lwps 3000
 ```
 * Destroy the container (cannot be undone)
 
@@ -202,10 +202,10 @@ To create a bhyve branded zone, first we need to create a disk for it to use:
 ```bash
 # zfs create -V 30G rpool/vm0
 ```
-Then create the zone using the newly created disk and an iso to boot from.
+Then create the zone using the newly created disk.
 
 ```bash
-# zcage create --net "net6|192.168.1.207/24|192.168.1.1" --ram 2gb  --alias bhyve0  --disk=rpool/vm0 --cdrom /home/neirac/isos/FreeBSD-11.2-RELEASE-amd64-bootonly.iso
+# zcage create --net "net6|192.168.1.207/24|192.168.1.1" --ram 2gb  --alias bhyve0  --disk=rpool/vm0
 
 ```
 You could specify the iso which to use at boot using the --with-iso option
