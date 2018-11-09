@@ -93,7 +93,12 @@ switch (mainCommand.name) {
             },
             {
                 name: "cdrom",
-            }
+            },
+ 	    {
+		name: "debug",
+                defaultValue: false, 
+                type: Boolean
+	    },
 
         ];
         const createOptions = commandLineArgs(createDefinitions, {
