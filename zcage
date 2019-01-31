@@ -33,7 +33,7 @@ const commandLineUsage = require('command-line-usage');
 var os = require('os');
 var fs = require('fs');
 
-const ZCAGE_VERSION = '1.4.2';
+const ZCAGE_VERSION = '1.4.4';
 
 let mainDefinitions = [{
     name: 'name',
@@ -101,6 +101,9 @@ switch (mainCommand.name) {
                 defaultValue: false,
                 type: Boolean
             },
+            {
+                name: "docker"
+            }
 
         ];
         const createOptions = commandLineArgs(createDefinitions, {
@@ -138,6 +141,7 @@ switch (mainCommand.name) {
         break;
 
     case "list":
+
         const listDefinitions = [{
             name: 'state',
         }];
@@ -167,12 +171,12 @@ switch (mainCommand.name) {
         });
         argv = startOptions._unknown || [];
 
-    	if (("with-iso" in startOptions) && !(fs.existsSync(startOptions['with-iso']))) {
-		console.log("Error:" + startOptions['with-iso'] + ": does not exists.");
-		return;
-	}
+        if (("with-iso" in startOptions) && !(fs.existsSync(startOptions['with-iso']))) {
+            console.log("Error:" + startOptions['with-iso'] + ": does not exists.");
+            return;
+        }
 
-        if ( ("zonename" in startOptions) && !("with-iso" in startOptions)) {
+        if (("zonename" in startOptions) && !("with-iso" in startOptions)) {
             zone.start(startOptions.zonename);
         } else if (("zonename" in startOptions) && ("with-iso" in startOptions)) {
             zone.start(startOptions.zonename, startOptions['with-iso']);
@@ -328,10 +332,15 @@ switch (mainCommand.name) {
                     case 'remote':
                         img.list_images();
                         break;
+
+                    case 'docker':
+                        img.docker_list(listimgOptions._unknown[0]);
+                        break;
                 }
             } else {
                 console.log(
-                    "you need to specify to list remote or local images --list local | remote"
+                    "You need to specify to list remote or local images or from docker hub for example :\n \
+zcage images --list (local | remote | docker <ubuntu, alpine, centos..>)"
                 );
             }
         }

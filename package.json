@@ -1,6 +1,6 @@
 {
   "name": "zcage",
-  "version": "1.4.2",
+  "version": "1.4.4",
   "description": "illumos zone management tool",
   "main": "zcage",
   "keywords": [
@@ -32,6 +32,11 @@
     "zfs": "^1.3.0"
   },
   "bin": {
-    "zcage": "./zcage"
-  }
+    "zcage": "./zcage",
+    "jq-solaris11-64": "./tools/jq-solaris11-64",
+    "list-tags.sh": "./tools/list-tags.sh",
+    "pull-by-tag.sh": "./tools/pull-by-tag.sh"
+  },
+"directories" : {"bin":"./tools"}
+
 }
