@@ -50,6 +50,10 @@ To use zcage you need an user account with Primary administrator role and instal
 
 * Uses the image specified when creating a zone.
 
+### docker (brand: LX, required )
+
+* Uses the image specified from dockerhub registry v2 
+
 ### disk (brand: BHYVE, required)
 
 * Sets the disk that bhyve will use to start the vm.
@@ -115,6 +119,32 @@ eb4128ec-cf12-11e4-960d-8780cec6463f             lx-centos-6                    
 UUID                                            NAME                            VERSION         OS                      PUBLISHED
 96bb1fac-c87d-11e5-b5bf-ff4703459205             alpine-3                        20160201        linux           2016-02-01T00:49:02Z
 ```
+
+* List images available in docker hub
+
+```bash
+# zcage images --list docker alpine  
+{
+  "name": "library/alpine",
+  "tags": [
+    "2.6",
+    "2.7",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.6",
+    "3.7",
+    "3.8",
+    "3.9",
+    "edge",
+    "latest"
+  ]
+}
+
+```
+
 # LX branded zones
 
 * First you need install the lx brand package in OmniOSce:
@@ -132,6 +162,11 @@ UUID                                            NAME                            
 ```bash
 # zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205 --alias lxvm --brand lx
 ```
+* Also you could specify an image from docker hub using the docker parameter
+```bash
+# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --docker alpine/latest --alias lxvm --brand lx
+```
+
 Now you can reference the container by it's alias test07. If you don't provide an alias a UUID will be generated.
 
 * Update the zone to allow it to use more ram if needed and restrict maximum lwps to 3000
