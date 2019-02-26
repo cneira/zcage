@@ -1,7 +1,7 @@
 
 # Networking
 
-Zones created by :command: `zcage` are setup as an exclusive-IP zone, this  
+Zones created by :command: `zcage` are setup as an exclusive-IP zone, this 
 means that each zone have its distinct IP layer configuration and state
 Network virtualization is provided by Crossbow. 
   
@@ -20,6 +20,10 @@ properties.
 
 
 ## Configuring Zone networking
+  
+The **--net** flag is used to configure networking, values are separated by '|': 
+  
+vnic name | ip address/netmask (CIDR format) | default gateway 
 
 ### IPv4
    
