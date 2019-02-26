@@ -1,10 +1,7 @@
 # Basic Usage
-===========
 
 This section is about basic zcage usage and is meant as a "how-to"
 reference for new users.
-  
-
 zcage first needs to be activated before is able to create new zones
 and interact with them.
   
@@ -13,19 +10,17 @@ and interact with them.
 -----------------
 
 Before zcage is able to create new zones, it needs to `activate`.  
-
-this allows zcage to create all the zfs datasets needed for storing zones 
+This allows zcage to create all the zfs datasets needed for storing zones 
 and images. Also zcage checks if required packages are already installed.
-
 Once zcage is ready  users are able to immediately
 begin creating zones and downloading images for lx branded zones.
 
 ## Fetching images 
 ------------------
 Fetching images is only needed when creating lx branded zones. 
-:command:`zcage images --list remote` lists linux images from Joyent's repos.
+`zcage images --list remote` lists linux images from Joyent's repos.
 Then users can choose which image to download, using 
-:command:`zcage pull --image <uuid>` as seen in this example:
+`zcage pull --image <uuid>` as seen in this example:
 
 ```
 # zcage images --list  avail
@@ -53,25 +48,19 @@ Create a Zone
 There are five types of brands: **sparse**, **bhyve**, **lx**, **lipkg** and
 **pkgsrc**. More details about these zone brands can be found in the 
 [Brands types](https://github.com/cneira/zcage/blob/master/docs/brand-types.md) sections of this documentation. 
-   
 
 Depending on the user's requirements, the command `create` could create either zone brand.  
 By default, `zcage create` creates a **sparse** zone, but invoking the
 **-type** option changes the creation of the zone brand. 
-   
 
 First we need to setup a virtual network interface using [DLADM(1)](https://illumos.org/man/1M/dladm).  
 
 Currently each zone needs to have a different vnic otherwise it won't start.
    
-
 ```
 # pfexec dladm create-vnic -l igb0 omni0
-  
- 
 ```
   
- 
 Here is an example of creating a sparse zone using virtual network interface 
 omni0 using ip: 192.168.1.225/network mask, 192.168.1.1 as gateway and memory 
 capped to use 2GB of RAM:  
@@ -93,13 +82,11 @@ also set or update a disk quota of the zfs dataset for that zone.
 More information about zone properties are available  
 in [Available Options](https://github.com/cneira/zcage/blob/master/docs/Options.md).   
   
-   
 
 ## Listing Zones
 -------------
 
 To list all zones, use: `zcage list`
-
 To see all downloaded linux images, use: `zcage images --list local`
 
 
@@ -118,19 +105,14 @@ Start
 
 Use `zcage start -z <alias or UUID>` to start a zone.
 
-### Examples
-
 Start a zone with the alias **apache01**:
    
-
 ```
 # zcage start -z apache01
 ```
-    
 
 If no alias provided by the user, `zcage` automatically assigns a complex UUID to a new zone.  
 This UUID is always usable when doing `zcage` operations like starting a zone:
-   
    
 
 ```
@@ -140,34 +122,24 @@ This UUID is always usable when doing `zcage` operations like starting a zone:
 
 Stop
 -----
-  
 
 `zcage stop` uses the same syntax as `zcage start`.
 
-### Examples
 ```
 # zcage stop -z www01
 # zcage stop -z 26e8e027-f00c-11e4-8f7f-3c970e80eb61
 ```
-  
-  
-
 
 Reboot
 --------
   
-
 `zcage reboot` also uses the same syntax as **start** and **stop**:
-   
-  
 
 ```
 # zcage reboot -z apache01
 
 # zcage reboot -z 26e8e027-f00c-11e4-8f7f-3c970e80eb61
 ```
-   
-   
 
 Get Zone information 
 ----------------------
@@ -184,10 +156,10 @@ Destroy a Zone
 
 Destroy a specific zone using the **destroy** subcommand:
    
-
 ```
 # zcage destroy -z apache01
 ```
+  
 <aside class="warning">
  This irreversibly destroys the zone. 
 </aside>

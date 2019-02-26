@@ -26,8 +26,8 @@ Sparse zones are created by default if ***--type*** is not specified.
    
 
 In a sparse zone critical file systems like /usr, /lib, /etc, /platform etc are inherited from
-the global zone to the non-global zone as a read-only loopback file system.  
- This allows to use little disk space and be created faster.
+the global zone to the non-global zone as a read-only loopback file system.
+This allows to use little disk space and be created faster.
   
   
 Ipkg (ipkg) 
@@ -61,30 +61,25 @@ Linux Branded Zone (lx)
 ------------------------
 
 Linux branded zones are creating by specifying ***--type lx*** on creation, this type of brand needs an 
-extra parameter to be specified on creation ***--image <image uuid>*** or ***--docker <container image name>***.
-   
+extra parameter to be specified on creation ***--image*** or ***--docker***.
   
 When using the **--image** flag the user needs to specify an already download linux image, 
 this image could be downloaded using ***zcage pull --image***. 
-   
 
 ```
-#zcage images --list remote
-   
-
-#zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205
-   
- 
+# zcage images --list remote
+```
+```
+# zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205
+```
 # zcage create --alias=test07 --net "omni0|192.168.1.225/24|192.168.1.1" --type lx --ram 2gb --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205
 ```
-    
+  
 When using the ***--docker*** flag the user needs to specify the container image name from docker hub (https://hub.docker.com/search?q=&type=image) that will be used when creating the zone.
    
 ```
 # zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --docker alpine/latest --alias lxvm --brand lx
-   
 ```
-    
 
 Bhyve (bhyve) 
 --------------

@@ -18,6 +18,7 @@ It's intended to be easy to use with a simple command syntax.
 
 ## Documentation:
 --------------
+   [Quickstart](https://github.com/cneira/zcage/blob/master/docs/quickstart.md)  
    [Install](https://github.com/cneira/zcage/blob/master/docs/install.md)  
    [Basic usage](https://github.com/cneira/zcage/blob/master/docs/basic-use.md)  
    [Networking](https://github.com/cneira/zcage/blob/master/docs/networking.md)  
