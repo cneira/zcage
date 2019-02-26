@@ -72,6 +72,7 @@ this image could be downloaded using ***zcage pull --image***.
 ```
 # zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205
 ```
+```
 # zcage create --alias=test07 --net "omni0|192.168.1.225/24|192.168.1.1" --type lx --ram 2gb --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205
 ```
   
@@ -90,10 +91,10 @@ To create a bhyve branded zone, first we need to create a disk for it to use:
    
 ```
 # zfs create -V 30G rpool/vm0
-   
+``` 
+```
 # zcage create --brand bhyve --net "net6|192.168.1.207/24|192.168.1.1" --ram 2gb  --alias bhyve0  --disk=rpool/vm0
 ```
-   
    
 This will create a bhyve zone that will use the dataset specified on the ***--disk*** parameter as a disk.  
 You could specify the iso which to use at boot using the --with-iso option
