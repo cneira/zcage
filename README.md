@@ -18,8 +18,8 @@ It's intended to be easy to use with a simple command syntax.
 
 ## Documentation:
 --------------
-   [Install] (https://github.com/cneira/zcage/blob/master/docs/install.md)
-   [Basic usage] (https://github.com/cneira/zcage/blob/master/docs/basic-use.md)
-   [Networking] (https://github.com/cneira/zcage/blob/master/docs/networking.md)
-   [Brand types] (https://github.com/cneira/zcage/blob/master/docs/brand-types.md)
-   [Options available] (https://github.com/cneira/zcage/blob/master/docs/Options.md)  
+   [Install] (https://github.com/cneira/zcage/blob/master/docs/install.md)  
+   [Basic usage] (https://github.com/cneira/zcage/blob/master/docs/basic-use.md)  
+   [Networking] (https://github.com/cneira/zcage/blob/master/docs/networking.md)  
+   [Brand types] (https://github.com/cneira/zcage/blob/master/docs/brand-types.md)  
+   [Options available] (https://github.com/cneira/zcage/blob/master/docs/Options.md)    
