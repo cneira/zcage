@@ -1,4 +1,4 @@
-# Zcage - An Illumos Zone manager
+# Zcage - An Illumos zone manager
 
 Zcage is a zone manager for Illumos written in nodejs, is inspired by FreeBSD's 
 iocage and SmartOS's vmadm, combining some of the best features of Illumos, like
