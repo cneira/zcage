@@ -332,6 +332,9 @@ case "images":
 			case 'remote':
 				img.list_images();
 				break;
+			case 'proxmox':
+				img.list_proxmox();
+				break;
 
 			case 'docker':
 				img.docker_list(listimgOptions._unknown[0]);
