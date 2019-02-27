@@ -418,8 +418,8 @@ function help(helpOptions) {
 		break;
 	case 'start':
 		console.log(
-			'\nstart:\n\n    -z <zone name or UUID>:  Starts the zone\n\n\t' +
-			'-with-iso: starts zone using iso image (bhyve only)\n\n');
+			'\nstart:\n\n    -z :       Starts a zone by name or UUID\n' +
+			'    -with-iso: Starts zone using iso image (bhyve only)\n\n');
 		break;
 	case 'stop':
 		console.log(
