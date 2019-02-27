@@ -18,27 +18,110 @@ begin creating zones and downloading images for lx branded zones.
 ## Fetching images 
 ------------------
 Fetching images is only needed when creating lx branded zones. 
-`zcage images --list remote` lists linux images from Joyent's repos.
+  
+`zcage images --list joyent` lists linux images from [Joyent](https://www.joyent.com/).
+  
+`zcage images --list proxmox` lists [Proxmox images](https://www.proxmox.com/en/).
+  
+`zcage images --list docker ubuntu` lists docker images for ubuntu.
+  
 Then users can choose which image to download, using 
 `zcage pull --image <uuid>` as seen in this example:
 
 ```
-# zcage images --list  avail
-UID                                        NAME               VERSION         OS                      PUBLISHED
-f7c19252-c998-11e4-be95-3315493f3741       lx-centos-6        20150313        linux           2015-03-13T15:52:35Z
-818cc79e-ceb3-11e4-99ee-7bc8c674e754       lx-ubuntu-14.04    20150320        linux           2015-03-20T03:45:09Z
-116deb8c-cf03-11e4-9b2d-7b1066800a6a       lx-debian-7        20150320        linux           2015-03-20T13:14:41Z
-eb4128ec-cf12-11e4-960d-8780cec6463f       lx-centos-6        20150320        linux           2015-03-20T15:08:0
+# zcage images --list proxmox
+Proxmox Available images
+-------------------------
+alpine-3.7-default_20180913_amd64.aplinfo
+alpine-3.7-default_20180913_amd64.tar.xz
+alpine-3.8-default_20180913_amd64.aplinfo
+alpine-3.8-default_20180913_amd64.tar.xz
+alpine-3.9-default_20190224_amd64.aplinfo
+alpine-3.9-default_20190224_amd64.tar.xz
+archlinux-base_20161207-1_amd64.tar.gz
+archlinux-base_20170704-1_amd64.tar.gz
+archlinux-base_20171214-1_amd64.tar.gz
+archlinux-base_20180906-1_amd64.tar.gz
+archlinux-base_20190124-1_amd64.aplinfo
+archlinux-base_20190124-1_amd64.tar.gz
+centos-6-default_20161207_amd64.aplinfo
+centos-6-default_20161207_amd64.tar.xz
+centos-7-default_20170504_amd64.tar.xz
+centos-7-default_20171212_amd64.aplinfo
+centos-7-default_20171212_amd64.tar.xz
+debian-6.0-standard_6.0-7_amd64.tar.gz
+debian-7.0-standard_7.11-1_amd64.tar.gz
+debian-8.0-standard_8.11-1_amd64.aplinfo
+debian-8.0-standard_8.11-1_amd64.tar.gz
 ```
    
 ```
-# zcage pull --image 96bb1fac-c87d-11e5-b5bf-ff4703459205 
+# zcage images --list joyent
+UUID                                      NAME                VERSION     OS      PUBLISHED
+f7c19252-c998-11e4-be95-3315493f3741      lx-centos-6         20150313    linux   2015-03-13T15:52:35Z
+818cc79e-ceb3-11e4-99ee-7bc8c674e754      lx-ubuntu-14.04     20150320    linux   2015-03-20T03:45:09Z
+116deb8c-cf03-11e4-9b2d-7b1066800a6a      lx-debian-7         20150320    linux   2015-03-20T13:14:41Z
+eb4128ec-cf12-11e4-960d-8780cec6463f      lx-centos-6         20150320    linux   2015-03-20T15:08:09Z
+430da066-e3a7-11e4-9657-332a2dbdf565      lx-ubuntu-14.04     20150415    linux   2015-04-15T19:40:25Z
+
+```
+  
+```
+# zcage images --list docker alpine
+{
+  "name": "library/alpine",
+  "tags": [
+    "2.6",
+    "2.7",
+    "3.1",
+    "3.2",
+    "3.3",
+    "3.4",
+    "3.5",
+    "3.6",
+    "3.7",
+    "3.8",
+    "3.9",
+    "edge",
+    "latest"
+  ]
+}
+
+```
+  
+```
 # zcage images --list local
-UUID                                       NAME               VERSION         OS                      PUBLISHED
-96bb1fac-c87d-11e5-b5bf-ff4703459205       alpine-3           20160201        linux           2016-02-01T00:49:02Z
+
+Locally available Joyent images
+------------------------------------
+UUID                                     NAME         VERSION     OS      PUBLISHED
+63d6e664-3f1f-11e8-aef6-a3120cf8dd9d     debian-9     20180404    linux   2018-04-04T15:28:29Z
+77bc3f50-8f4c-11e6-90b6-f7b69b9dcf20     alpine-3     20161011    linux   2016-10-11T00:48:47Z
+
+Locally available Proxmox images
+------------------------------------
+ubuntu-18.10-standard_18.10-1_amd64.tar.gz
+
+Locally available Docker images
+------------------------------------
+alpine-latest-0b199873-8a80-e519-c710-c3f01a67bebf.gz
+alpine-latest-5d51211d-460e-e603-9e27-e77b2b724c12.gz
+alpine-latest-9d1c5dea-f91a-ce75-96bb-e18336b37870.gz
 
 ```
    
+To fetch an image from Joyent, we just use the uuid.
+  
+```
+# zcage pull --image 63d6e664-3f1f-11e8-aef6-a3120cf8dd9d
+```   
+   
+To fetch an image from Proxmox, just use the name  
+```
+# zcage pull --image  alpine-3.7-default_20180913_amd64.tar
+```
+
+  
 ## Basic Zone Creation
    
 
