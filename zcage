@@ -338,7 +338,10 @@ case "images":
 				break;
 
 			case 'docker':
+				if (listimgOptions._unknown)
 				img.docker_list(listimgOptions._unknown[0]);
+				else 
+				console.log("Usage: --docker <library> for ex: --docker ubuntu");
 				break;
 			}
 		} else {
