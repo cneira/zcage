@@ -473,7 +473,7 @@ function help(helpOptions) {
 		console.log('For help on a specific command type zcage help <Option>\n');
 		console.log(
 			'Examples:\n\nTo create a zone with 2gb of ram using with ip address/mask 192.168.1.225/24 and gateway 192.168.1.1:\n\n' +
-			'\t# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb' +
+			'# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb' +
 			"\n");
 
 		break;
