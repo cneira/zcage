@@ -414,27 +414,27 @@ function help(helpOptions) {
 		break;
 	case 'start':
 		console.log(
-			'\nstart:\n    -z <zone name or UUID>:  Starts the zone\n\n\t' +
+			'\nstart:\n\n    -z <zone name or UUID>:  Starts the zone\n\n\t' +
 			'-with-iso: starts zone using iso image (bhyve only)\n\n');
 		break;
 	case 'stop':
 		console.log(
-			'\nstop:\n    -z <container name or UUID>: Stops the running zone\n\n');
+			'\nstop:\n\n    -z <container name or UUID>: Stops the running zone\n\n');
 		break;
 	case 'info':
 		console.log(
-			'\ninfo:\n    -z <container name or UUID>: Returns information for the zone.\n\n'
+			'\ninfo:\n\n    -z <container name or UUID>: Returns information for the zone.\n\n'
 		);
 		break;
 
 	case 'destroy':
 		console.log(
-			'\ndestroy:\n    -z <container name or UUID>: Destroys the zone, cannot be undone.\n\n'
+			'\ndestroy:\n\n    -z <container name or UUID>: Destroys the zone, cannot be undone.\n\n'
 		);
 		break;
 	case 'pull':
 		console.log(
-			'\npull:\n    --image <uuid> :  Retrieves image using uuid and stores for later usage.\n\n\n'
+			'\npull:\n\n    --image <uuid> :  Retrieves image using uuid and stores for later usage.\n\n\n'
 		);
 		break;
 	case 'reboot':
@@ -445,7 +445,7 @@ function help(helpOptions) {
 
 	case 'images':
 		console.log(
-			'images:\n   --list  avail|local : Displays available images in remote host or locally available\n\n\n\n'
+			'\nimages:\n\n   --list  avail|local : Displays available images in remote host or locally available\n'
 		);
 		break;
 
@@ -461,7 +461,6 @@ function help(helpOptions) {
 		);
 		break;
 	default:
-		console.log('Unknown command\n');
 		console.log('\nOptions:');
 		console.log('-----------------------');
 		console.log(
