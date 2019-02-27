@@ -13,7 +13,7 @@ It's intended to be easy to use with a simple command syntax.
 * Virtual networking
 * Resource control
 * Exclusive IP networking by default
-* Supports for brands sparse, ipkg, lipkg, bhyve and lx.
+* Support for brands sparse, ipkg, lipkg, bhyve and lx.
 * Import docker images to create lx branded zones
 
 ## Documentation:
