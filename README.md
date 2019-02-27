@@ -3,7 +3,7 @@
 Zcage is a zone manager for Illumos written in nodejs, is inspired by FreeBSD's 
 iocage and SmartOS's vmadm, combining some of the best features of Illumos, like
 crossbow and zones to create secure containers.  
-It's intended to be easy to use with a simple command syntax. 
+It's intended to be easy to use with simple command syntax. 
   
   
 ## FEATURES:
