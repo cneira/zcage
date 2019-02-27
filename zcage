@@ -464,7 +464,7 @@ function help(helpOptions) {
 		console.log('\nOptions:');
 		console.log('-----------------------');
 		console.log(
-			'create:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\n'
+			'create:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\nversion: Prints zcage version\n'
 		);
 		console.log('For help on a specific command type zcage help <Option>\n');
 		console.log(
