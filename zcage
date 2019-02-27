@@ -329,9 +329,10 @@ case "images":
 				img.list_avail();
 				break;
 
-			case 'remote':
+			case 'joyent':
 				img.list_images();
 				break;
+
 			case 'proxmox':
 				img.list_proxmox();
 				break;
@@ -343,7 +344,7 @@ case "images":
 		} else {
 			console.log(
 				"You need to specify to list remote or local images or from docker hub for example :\n \
-zcage images --list (local | remote | docker <ubuntu, alpine, centos..>)"
+zcage images --list (local | joyent | proxmox | docker <ubuntu, alpine, centos..>)"
 			);
 		}
 	}
