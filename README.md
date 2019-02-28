@@ -16,6 +16,11 @@ It's intended to be easy to use with simple command syntax.
 * Support for brands sparse, ipkg, lipkg, bhyve and lx.
 * Import docker images to create lx branded zones
 
+##  Demo
+
+[![asciicast](https://asciinema.org/a/230321.svg)](https://asciinema.org/a/230321)
+  
+
 ## Documentation:
 --------------
    [Quickstart](https://github.com/cneira/zcage/blob/master/docs/quickstart.md)  
