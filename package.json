@@ -36,7 +36,8 @@
     "zcage": "./zcage",
     "jq-solaris11-64": "./tools/jq-solaris11-64",
     "list-tags.sh": "./tools/list-tags.sh",
-    "pull-by-tag.sh": "./tools/pull-by-tag.sh"
+    "pull-by-tag.sh": "./tools/pull-by-tag.sh",
+    "bhyve-zvol.sh": "./tools/bhyve-zvol.sh"
   },
   "directories": {
     "bin": "./tools"

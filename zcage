@@ -73,7 +73,8 @@ case "create":
 			name: "cpu"
 		},
 		{
-			name: "quota"
+			name: "quota",
+			defaultValue: "32G"
 		},
 		{
 			name: "cdrom"
@@ -350,18 +351,28 @@ zcage images --list (local | joyent | proxmox | docker <ubuntu, alpine, centos..
 
 case "pull":
 	const pullDefinitions = [{
-		name: 'image'
-	} 
+			name: 'image'
+		},
+		{
+			name: 'provider'
+		}
 	];
 	const pullOptions = commandLineArgs(pullDefinitions, {
 		argv,
 		stopAtFirstUnknown: true
 	});
 	argv = pullOptions._unknown || [];
-	console.log(pullOptions);
 	if (img.Isactivated() == 0) {
+		if (pullOptions.provider == 'cloud-init' && pullOptions.image) {
+			if (pullOptions._unknown)
+				img.fetch_by_provider('cloud-init', pullOptions._unknown[0],
+					pullOptions.image);
+			else
+				console.log("Usage: --provider cloud-init centos  for ex: --docker ubuntu");
+			break;
+		} else
 		if (pullOptions.image)
-			img.getzss(pullOptions.image, pullOptions.source);
+			img.getzss(pullOptions.image, pullOptions.provider);
 		else
 			console.log("specify image to pull --image uuid ");
 	} else {
@@ -478,11 +489,14 @@ function help(helpOptions) {
 			'    --quota:      Updates disk quota \n\n'
 		);
 		break;
+	case 'fetch':
+		console.log('fetch <url> : Download image from url for later use ');
+		break;
 	default:
 		console.log('\nOptions:');
 		console.log('-----------------------');
 		console.log(
-			'create:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\nversion: Prints zcage version\n'
+			'create:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\nversion: Prints zcage version\nfetch:\t Downloads an image from url for later use (lx,bhyve brands)\n'
 		);
 		console.log('For help on a specific command type zcage help <Option>\n');
 		console.log(
