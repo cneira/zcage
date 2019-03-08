@@ -1,78 +1,125 @@
 #!/bin/sh
-# Convert img to zvol so bhyve could use it as disk
-# $1 filename , filename extension should be: .gz, .img or.xz, or raw  
-# $2 size for zvol
-# $3 zvol name  
+# This script will be called when a zone is installed and --with-image option
+# is used.
+# $1 filename value from --with-image: valid file extensions: .gz, .img
+# or.xz, or raw
+# $2 size for zvol : quota value from zone definition.
+# $3 zvol name: disk value from zone definition by default will be pool/zname
 
-if [ $# -lt 3 ]
-	then
-	echo "you need specify filename, size and zvol name"
-	exit 1;
-fi 
+if [ $# -lt 3 ]; then
+  echo "you need specify image name, zvol size and zvol name"
+  exit 1
+fi
 
-img=$1
-filename=$(basename $1)
-fileext=${filename##*.} 
-tmp=$(uuidgen)
+# full path for physical device.
 zvol=/dev/zvol/dsk/$3
+# where the zvol will be created.
+zpool=$3
+# $1 filename value from --with-image: filename extension should be: .gz, .img
+img=$1
+# file name without path.
+filename=$(basename $1)
+# file extension to decide how to procede.
+fileext=${filename##*.}
+# tmp file that will be used for decompression
+tmp=$(uuidgen)
+# $2 size for zvol : quota value from zone definition.
+volsize=$2
 
-function convert {
-	img=$1
-	fileext=$2
-	tmp=$3
-	fname=$4	
-	case ${fname} in 
-	*raw*)
-		if [ ${fileext} == 'xz' ]
-		 then 
-			 xz -dkc ${img} > /zcage/images/${tmp}.raw
-			 dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M
-			 rm /zcage/images/${tmp}.raw
-		else 
-		if [ ${fileext} == 'gz' ]
-		then
-			name=$(gtar xvfz /zcage/images/${img} -C /zcage/images/)
-			dd if=/zcage/images/${name} of=${zvol} bs=1M
-			rm /zcage/images/${name}
-		fi 
-		fi 
-		;;
-	*qcow2*)
-		if [ ${fileext} == 'xz' ]
-		 then 
-			 xz -dkc ${img} > /zcage/images/${tmp}.qcow2
-			 qemu-img convert -f qcow2 -O raw /zcage/images/${tmp}.qcow2  /zcage/images/${tmp}.raw
-			 dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M
-			 rm /zcage/images/${tmp}.qcow2
-		else 
-			if [ ${fileext} == 'gz' ]
-		then
-			name=$(gtar xvfz /zcage/images/${img} -C /zcage/images/)
-			dd if=/zcage/images/${name} of=${zvol} bs=1M
-			rm /zcage/images/${name}
-		fi 
-	fi 
-;;
-		
-esac
+# Will catch last command return value
+# and exit if not 0
+
+catch_error() {
+  rc=$1
+  reason=$2
+  if [ ${rc} -ne 0 ]; then
+    printf "Error:errcode: %d reason: %s" ${rc} ${reason}
+    exit -1
+  fi
+}
+
+# convert
+# Description:
+# 	When image is compressed, we decompress and write to zvol
+# Params:
+# $1  : image name
+# $2  : file extension of image
+# $3  : tmp file name to use for decompression and writing
+# $4  : file name without path
+
+convert() {
+  img=$1
+  fileext=$2
+  tmp=$3
+  fname=$4
+
+  case ${fname} in
+    *raw*)
+      if [ ${fileext} == 'xz' ]; then
+        err=$(xz -dkc ${img} >/zcage/images/${tmp}.raw)
+        catch_error $? ${err}
+        err=$(dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M)
+        catch_error $? ${err}
+        rm /zcage/images/${tmp}.raw
+      else
+        if [ ${fileext} == 'gz' ]; then
+          name=$(gtar xvfz /zcage/images/${img} -C /zcage/images/)
+          catch_error $? ${name}
+          err=$(dd if=/zcage/images/${name} of=${zvol} bs=1M 2>&1)
+          catch_error $? ${err}
+          rm /zcage/images/${name}
+        fi
+      fi
+      ;;
+    *qcow2*)
+      if [ ${fileext} == 'xz' ]; then
+        err=$(xz -dkc ${img} >/zcage/images/${tmp}.qcow2 2>&1)
+        catch_error $? ${err}
+        err=$(qemu-img convert -f qcow2 -O raw /zcage/images/${tmp}.qcow2 /zcage/images/${tmp}.raw 2>&1)
+        catch_error $? ${err}
+        err=$(dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M 2>&1)
+        catch_error $? ${err}
+        rm /zcage/images/${tmp}.qcow2
+      else
+        if [ ${fileext} == 'gz' ]; then
+          name=$(gtar xvfz /zcage/images/${img} -C /zcage/images/)
+          catch_error $? ${name}
+          err=$(dd if=/zcage/images/${name} of=${zvol} bs=1M 2>&1)
+          catch_error $? ${err}
+          rm /zcage/images/${name}
+        fi
+      fi
+      ;;
+
+  esac
 }
 
 
+# Process image and create zvol
+
+ok=$(zfs create -V ${volsize} ${zpool})
+catch_error $? ${ok}
+
 case ${fileext} in
-	qcow2|img)   
-		qemu-img convert -f qcow2 -O raw ${img}  /zcage/images/${tmp}.raw
-		dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M
-		rm /zcage/images/${tmp}.raw
-		;;
-	 raw)  	
-	       	dd if=${img} of=${zvol} bs=1M 
-		;;
-	 gz|xz)  convert ${img} ${fileext} ${tmp} ${filename} 
-		;;
- 
-	*)
-		echo "Cannot convert: Not a valid image format."
-		exit 1;
+  qcow2 | img)
+    err=$(qemu-img convert -f qcow2 -O raw ${img} /zcage/images/${tmp}.raw 2>&1)
+    catch_error $? ${err}
+    err=$(dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M 2>&1)
+    catch_error $? ${err}
+    rm /zcage/images/${tmp}.raw
+    ;;
+  raw)
+    err=$(dd if=${img} of=${zvol} bs=1M 2>&1)
+    catch_error $?  ${err}
+    ;;
+  gz | xz)
+    convert ${img} ${fileext} ${tmp} ${filename}
+    ;;
+
+  *)
+    echo "Cannot convert: Not a valid image format."
+    exit 1
+    ;;
 esac
 
-echo ${zvol}
+exit 0
