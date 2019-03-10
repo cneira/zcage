@@ -12,7 +12,7 @@ if [ $# -lt 3 ]; then
 fi
 
 # full path for physical device.
-zvol=/dev/zvol/dsk/$3
+zvol=/dev/zvol/rdsk/$3
 # where the zvol will be created.
 zpool=$3
 # $1 filename value from --with-image: filename extension should be: .gz, .img
@@ -101,14 +101,14 @@ ok=$(zfs create -V ${volsize} ${zpool})
 catch_error $? ${ok}
 
 case ${fileext} in
-  qcow2 | img)
+  qcow2)
     err=$(qemu-img convert -f qcow2 -O raw ${img} /zcage/images/${tmp}.raw 2>&1)
     catch_error $? ${err}
     err=$(dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M 2>&1)
     catch_error $? ${err}
     rm /zcage/images/${tmp}.raw
     ;;
-  raw)
+  img|raw)
     err=$(dd if=${img} of=${zvol} bs=1M 2>&1)
     catch_error $?  ${err}
     ;;
