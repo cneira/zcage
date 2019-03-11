@@ -15,6 +15,7 @@ It's intended to be easy to use with simple command syntax.
 * Exclusive IP networking by default
 * Support for brands sparse, ipkg, lipkg, bhyve and lx.
 * Import docker images to create lx branded zones
+* Import cloud-init images to be used by bhyve.
 
 ##  Demo
 

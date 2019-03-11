@@ -5,6 +5,19 @@
 ```bash
 # zcage activate
 ```
+## Requirements
+
+zcage needs the following packages to be installed to work properly:
+
+* cdrtools 
+* brand/bhyve
+* brand/lx
+* brand/pkgsrc
+* brand/sparse
+* brand/lipkg
+
+which are available in Omniosce.
+
 ## EXAMPLES
 First we need to setup a virtual nic for zones using dladm.
 Currently each container need to have a different vnic otherwise it won't start.

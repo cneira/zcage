@@ -117,6 +117,49 @@ Or just use the serial terminal
 ```
 # zlogin -C bhyve0
 ```
+Cloud init
+-----------
+To import cloud init images into bhyve, the --with-image parameter can be used, cloud init images need
+the --udata parameter that contains the user name and authorized ssh keys to be used to login into the host.
+
+* udata 
+--udata parameter should a json file with the following format:
+
+```json
+{ "userid": "youruser", "pubkey": "ssh-rsa your key" }
+```
+The image should be previously fetched by ***zcage --pull***
+```
+# zcage images --list cloud-init centos/7 
+
+centos cloud-init Available images
+-------------------------
+CentOS-7-x86_64-GenericCloud-1503.qcow2.xz
+CentOS-7-x86_64-GenericCloud-1503.raw.xz
+CentOS-7-x86_64-GenericCloud-1508.qcow2.xz
+CentOS-7-x86_64-GenericCloud-1509.qcow2.xz
+CentOS-7-x86_64-GenericCloud-1510.qcow2.xz
+CentOS-7-x86_64-GenericCloud-1511.qcow2.xz
+CentOS-7-x86_64-GenericCloud-1511.qcow2c.xz
+CentOS-7-x86_64-OracleCloud.raw.tar.gz
+
+# zcage pull  --image CentOS-7-x86_64-GenericCloud-1503.qcow2.xz --provider cloud-init centos/7
+Downloading image CentOS-7-x86_64-GenericCloud-1503.qcow2.xz
+1.2344791010857434% |  3538944  bytes out of 286675084 bytes..
+
+# zcage create --debug --net="vnic1|192.168.1.209/24|192.168.1.1" --brand bhyve --alias cloud-init --with-image=CentOS-7-x86_64-GenericCloud.qcow2.xz --udata=/home/cneira/udata
+
+```
+* Third party images :
+
+To use images from other sources the ***zcage --fetch <url>*** command could be used, then that image could be
+used by a lx or bhyve by specifying the image name. The image fetched will be stored in /zcage/images.
+
+```
+# zcage fetch https://download.openvz.org/template/precreated/centos-6-x86-devel.tar.gz
+
+ 
+``` 
    
 bhyve was originally integrated into FreeBSD by NetApp in around 2011 where it became part of the base system with FreeBSD 10.0-RELEASE.   
 It continued to evolve and was ported to illumos by Pluribus Networks in around 2013 and they contributed  
