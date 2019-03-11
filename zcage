@@ -87,8 +87,10 @@ case "create":
 	},
 	{
 	    name: "docker"
-	}
-
+	},
+	{
+	    name: "udata"
+	},
     ];
     const createOptions = commandLineArgs(createDefinitions, {
 	argv,
