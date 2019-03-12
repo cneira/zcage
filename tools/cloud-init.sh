@@ -48,6 +48,7 @@ uid=$(cat ${udata} | $JQ -r .userid)
 
 pubkey=$(cat ${udata} | $JQ -r .pubkey)
 
+nic=$(echo ${json} | $JQ -r .cloud_nic)
 echo  ${uid}
 echo ${pubkey}
 
@@ -55,8 +56,8 @@ cat <<EOF > ${meta}
 instance-id: ${instanceid};
 local-hostname: ${instanceid}
 network-interfaces: |
-  auto eth0
-  iface eth0 inet static
+  auto ${nic}
+  iface ${nic} inet static
   address $(sed -e 's/^"//' -e 's/"$//' <<< ${address})
   netmask $(sed -e 's/^"//' -e 's/"$//' <<< ${netmask})
   gateway $(sed -e 's/^"//' -e 's/"$//' <<< ${gateway})
@@ -67,7 +68,7 @@ cat <<EOF > ${user}
  users:
    - default
    - name:  ${uid} 
-     ssh_import_id: ${uid}
+#     ssh_import_id: ${uid}
      sudo: ALL=(ALL) NOPASSWD:ALL
      shell: /bin/bash   
      lock_passwd: false

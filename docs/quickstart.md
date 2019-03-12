@@ -15,6 +15,7 @@ zcage needs the following packages to be installed to work properly:
 * brand/pkgsrc
 * brand/sparse
 * brand/lipkg
+* system/kvm (provides qemu-img)
 
 which are available in Omniosce.
 

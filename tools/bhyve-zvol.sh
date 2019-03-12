@@ -58,14 +58,14 @@ convert() {
       if [ ${fileext} == 'xz' ]; then
         err=$(xz -dkc ${img} >/zcage/images/${tmp}.raw)
         catch_error $? ${err}
-        err=$(dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M)
+        err=$(qemu-img convert -f raw -O host_device /zcage/images/${tmp}.raw ${zvol})
         catch_error $? ${err}
         rm /zcage/images/${tmp}.raw
       else
         if [ ${fileext} == 'gz' ]; then
           name=$(gtar xvfz /zcage/images/${img} -C /zcage/images/)
           catch_error $? ${name}
-          err=$(dd if=/zcage/images/${name} of=${zvol} bs=1M 2>&1)
+          err=$(qemu-img convert -f qcow2 -O host_device /zcage/images/${name} ${zvol})
           catch_error $? ${err}
           rm /zcage/images/${name}
         fi
@@ -75,16 +75,14 @@ convert() {
       if [ ${fileext} == 'xz' ]; then
         err=$(xz -dkc ${img} >/zcage/images/${tmp}.qcow2 2>&1)
         catch_error $? ${err}
-        err=$(qemu-img convert -f qcow2 -O raw /zcage/images/${tmp}.qcow2 /zcage/images/${tmp}.raw 2>&1)
-        catch_error $? ${err}
-        err=$(dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M 2>&1)
+        err=$(qemu-img convert -f qcow2 -O host_device /zcage/images/${tmp}.qcow2 ${zvol})
         catch_error $? ${err}
         rm /zcage/images/${tmp}.qcow2
       else
         if [ ${fileext} == 'gz' ]; then
           name=$(gtar xvfz /zcage/images/${img} -C /zcage/images/)
           catch_error $? ${name}
-          err=$(dd if=/zcage/images/${name} of=${zvol} bs=1M 2>&1)
+          err=$(qemu-img convert -f qcow2 -O host_device /zcage/images/${name} ${zvol})
           catch_error $? ${err}
           rm /zcage/images/${name}
         fi
@@ -102,18 +100,19 @@ catch_error $? ${ok}
 
 case ${fileext} in
   qcow2)
-    err=$(qemu-img convert -f qcow2 -O raw ${img} /zcage/images/${tmp}.raw 2>&1)
-    catch_error $? ${err}
-    err=$(dd if=/zcage/images/${tmp}.raw of=${zvol} bs=1M 2>&1)
-    catch_error $? ${err}
-    rm /zcage/images/${tmp}.raw
+    err=$(qemu-img convert -f qcow2 -O host_device ${img} ${zvol})
+    catch_error $?  ${err}
     ;;
-  img|raw)
-    err=$(dd if=${img} of=${zvol} bs=1M 2>&1)
+  raw)
+    err=$(qemu-img convert -f raw -O host_device ${img} ${zvol})
     catch_error $?  ${err}
     ;;
   gz | xz)
     convert ${img} ${fileext} ${tmp} ${filename}
+    ;;
+   img)
+    err=$(qemu-img convert -f qcow2 -O host_device ${img} ${zvol})
+    catch_error $?  ${err}
     ;;
 
   *)
