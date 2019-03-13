@@ -21,6 +21,7 @@
     "cheerio": "^1.0.0-rc.2",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
+    "docker-names": "^1.1.1",
     "install": "^0.11.0",
     "ipaddr.js": "^1.7.0",
     "npm": "^6.7.0",

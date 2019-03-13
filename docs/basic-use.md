@@ -194,7 +194,7 @@ Start a zone with the alias **apache01**:
 # zcage start -z apache01
 ```
 
-If no alias provided by the user, `zcage` automatically assigns a complex UUID to a new zone.  
+If no alias provided by the user, `zcage` automatically assigns an alias to a new zone.  
 This UUID is always usable when doing `zcage` operations like starting a zone:
    
 
