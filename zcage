@@ -443,11 +443,11 @@ function help(helpOptions) {
 		    '    --with-image:  Image uuid to use (lx only)\n\n' +
 		    '    --alias:       Names a zone\n\n' +
 		    '    --brand:       Specifies brand for the zone\n\n' +
-		    '    --disk:        Uses zfs volume as disk (bhyve only)\n\n' +
+		    '    --disk:        Uses zfs volume as disk (bhyve and kvm only)\n\n' +
 		    '    --fs-allowed:  Allows file system mounts other than the default for ex: --fs-allowed=ufs\n\n' +
 		    '    --limitpriv:   Adds privileges to a zone,for ex:--limitpriv="default,dtrace_user,dtrace_proc".\n\n' +
-		    '    --cpu:         Number of cpus the vm will use (bhyve only).\n\n' +
-		    '    --hostbridge:  Hostbridge presented to the guest(bhyve only).\n\n' +
+		    '    --cpu:         Number of cpus the vm will use (bhyve and kvm only).\n\n' +
+		    '    --hostbridge:  Hostbridge presented to the guest(bhyve and kvm only).\n\n' +
 		    '    --autoboot:    Zone will be started at startup, default: false.\n\n' +
 		    '    --docker:      Docker hub v2 image to use (lx only) for ex: ubuntu/latest.\n\n'
 		   );
@@ -455,7 +455,7 @@ function help(helpOptions) {
     case 'start':
 	console.log(
 	    '\nstart:\n\n    -z :       Starts a zone by name or UUID\n' +
-		'    -with-iso: Starts zone using iso image (bhyve only)\n\n');
+		'    -with-iso: Starts zone using iso image (bhyve and kvm only)\n\n');
 	break;
     case 'stop':
 	console.log(
@@ -507,7 +507,7 @@ function help(helpOptions) {
 	console.log('\nOptions:');
 	console.log('-----------------------');
 	console.log(
-	    'create:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\nversion: Prints zcage version\nfetch:\t Downloads an image from url for later use (lx,bhyve brands)\n'
+	    'create:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\nversion: Prints zcage version\nfetch:\t Downloads an image from url for later use (lx,bhyve and kvm brands)\n'
 	);
 	console.log('For help on a specific command type zcage help <Option>\n');
 	console.log(
