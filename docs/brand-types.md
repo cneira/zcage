@@ -7,6 +7,7 @@ zcage supports the following zone brands:
 * ipkg
 * lipkg
 * lx
+* kvm
 * bhyve
 
 All brand types have specific benefits and drawbacks, serving a variety
