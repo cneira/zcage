@@ -150,6 +150,11 @@ case "start":
 	    alias: 'z'
 	},
 	{
+	    name: "debug",
+	    defaultValue: false,
+	    type: Boolean
+	},
+	{
 	    name: 'with-iso'
 	}
     ];
