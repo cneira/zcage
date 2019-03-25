@@ -11,6 +11,7 @@ zcage needs the following packages to be installed to work properly:
 
 * cdrtools 
 * brand/bhyve
+* brand/kvm
 * brand/lx
 * brand/pkgsrc
 * brand/sparse
@@ -154,19 +155,22 @@ c53b4cb4-f970-6d07-e64b-916c7fa23fc6     OS             stopped          test09
 }
 
 ```
-# Bhyve branded zones
+# BHYVE and KVM branded zones
 
-First you need install bhyve and bhyve brand packages in OmniOSce:
+First you need install bhyve and kvm brand packages in OmniOSce:
 
 ```bash
 # pfexec pkg install system/bhyve
+# pfexec pkg install driver/virtualization/kvm
+# pfexec pkg install kvm
 ```
-And also the bhyve brand
+And also the bhyve and KVM brands
 ```bash
 # pfexec pkg install system/zones/brand/bhyve  
+# pfexec pkg install system/zones/brand/kvm
 ```
 
-To create a bhyve branded zone, first we need to create a disk for it to use:
+To create a BHYVE or KVM branded zone, first we need to create a disk for it to use:
 
 ```bash
 # zfs create -V 30G rpool/vm0
@@ -175,12 +179,14 @@ Then create the zone using the newly created disk.
 
 ```bash
 # zcage create --brand bhyve --net "net6|192.168.1.207/24|192.168.1.1" --ram 2gb  --alias bhyve0  --disk=rpool/vm0
+# zcage create --brand kvm --net "net6|192.168.1.207/24|192.168.1.1" --ram 2gb  --alias kvm0  --disk=rpool/vm0
 
 ```
 You could specify the iso which to use at boot using the --with-iso option
 
 ```bash
 # zcage start -z bhyve0 --with-iso /home/neirac/isos/FreeBSD-11.2-RELEASE-amd64-bootonly.iso
+# zcage start -z kvm0 --with-iso /home/neirac/isos/FreeBSD-11.2-RELEASE-amd64-bootonly.iso
 ```
 Then you could connect to the newly created bhyve vm using vnc, to obtain the
 port just use the info command.

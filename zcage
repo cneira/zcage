@@ -15,7 +15,7 @@ const commandLineUsage = require('command-line-usage');
 var os = require('os');
 var fs = require('fs');
 
-const ZCAGE_VERSION = '1.4.5';
+const ZCAGE_VERSION = '1.4.6';
 
 let mainDefinitions = [{
     name: 'name',
