@@ -13,9 +13,9 @@ It's intended to be easy to use with simple command syntax.
 * Virtual networking
 * Resource control
 * Exclusive IP networking by default
-* Support for brands sparse, ipkg, lipkg, bhyve and lx.
+* Support for brands sparse, ipkg, lipkg, bhyve, kvm and lx.
 * Import docker images to create lx branded zones
-* Import cloud-init images to be used by bhyve.
+* Import cloud-init images to be used by bhyve or kvm.
 
 ##  Demo
 
