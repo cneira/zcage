@@ -127,6 +127,7 @@ case "destroy":
     break;
 
 case "list":
+case "ps":
 
     const listDefinitions = [
 	{
@@ -283,7 +284,8 @@ case "info":
 
 
 case "version":
-    console.log(ZCAGE_VERSION);
+case "-v":
+   console.log(ZCAGE_VERSION);
     break;
 
 case "activate":
