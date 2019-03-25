@@ -19,6 +19,7 @@
     "bytes": "^3.0.0",
     "chalk": "^2.4.1",
     "cheerio": "^1.0.0-rc.2",
+    "columnify": "^1.5.4",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
     "docker-names": "^1.1.1",
