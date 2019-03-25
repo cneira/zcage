@@ -128,7 +128,7 @@ To fetch an image from Proxmox, just use the name
 Create a Zone 
 -------------
 
-There are five types of brands: **sparse**, **bhyve**, **lx**, **lipkg** and
+There are five types of brands: **sparse**, **bhyve**, **kvm**, **lx**, **lipkg** and
 **pkgsrc**. More details about these zone brands can be found in the 
 [Brands types](https://github.com/cneira/zcage/blob/master/docs/brand-types.md) sections of this documentation. 
 
