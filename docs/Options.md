@@ -24,17 +24,20 @@
 
 * Allows file system mounts other than the default
   
-### with-image (brand: LX, required)
+### with-image (brand: LX|KVM|BHYVE, required)
 
 * Uses the image specified when creating a zone.
 
+### udata (brand: KVM|BHYVE, Optional)
+
+* Uses user-data from file when creating a VM using a cloud-init image.
+  Format is : 
+```json
+{ "userid": "joe", "pubkey": "ssh-rsa ...."}
+```
 ### docker (brand: LX, required )
 
 * Uses the image specified from dockerhub registry v2 
-
-### disk (brand: BHYVE, required)
-
-* Sets the disk that bhyve will use to start the vm.
 
 ### autoboot (brand: ALL, not required, defaults to false)
 
@@ -44,15 +47,11 @@
 
 *  Sets the zone brand for zone creation.
 
-### cdrom (brand: BHYVE, not required)
+### cdrom (brand: BHYVE|KVM, not required)
 
-* Specifies iso to use when booting a bhyve vm)
+* Specifies iso to use when booting a bhyve or kvm vm)
 
-### hostbridge (brand: BHYVE, not required, defaults to intel)
-
-* Specifies which hostbridge should bhyve present to the guest.
-
-### cpu (brand: BHYVE, not required, defaults to 1)
+### cpu (brand: BHYVE|KVM, not required, defaults to 1)
 
 * Specified the number of cpus the vm will use.
 

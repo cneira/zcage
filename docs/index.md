@@ -8,13 +8,14 @@ It's intended to be easy to use with a simple command syntax.
   
 ## FEATURES:
 
-* Easy to use
-* Rapid thin provisioning within seconds
-* Virtual networking
-* Resource control
-* Exclusive IP networking by default
-* Supports for brands sparse, ipkg, lipkg, bhyve and lx.
-* Import docker images to create lx branded zones
+* Easy to use.
+* Rapid thin provisioning within seconds.
+* Virtual networking.
+* Resource control.
+* Exclusive IP networking by default.
+* Supports for brands sparse, ipkg, lipkg, bhyve, kvm and lx.
+* Import docker images to create lx branded zones.
+* Import cloud init images to create kvm or bhyve branded zones (Only Centos and Ubuntu supported).
 
 ## Documentation:
 --------------
