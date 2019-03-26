@@ -112,7 +112,13 @@ case "destroy":
     const destroyDefinitions = [{
 	name: 'zonename',
 	alias: 'z'
-    }];
+    } ,
+	{
+	    name: 'with-zvol',
+	    defaultValue: false,
+	    type: Boolean
+	},
+];
     const destroyOptions = commandLineArgs(destroyDefinitions, {
 	argv,
 	stopAtFirstUnknown: true
@@ -120,9 +126,9 @@ case "destroy":
     argv = destroyOptions._unknown || [];
 
     if ("zonename" in destroyOptions && (destroyOptions.zonename != null)) {
-	zone.destroy(destroyOptions.zonename);
+	zone.destroy(destroyOptions.zonename, destroyOptions['with-zvol']);
     } else {
-	console.log("need zone name to destroy");
+	console.log("zcage destroy -z <zone name or UUID> Needed name to destroy zone");
     }
     break;
 
