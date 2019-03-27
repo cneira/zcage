@@ -45,7 +45,8 @@ case "create":
 	    defaultValue: "sparse"
 	},
 	{
-	    name: 'net'
+	    name: 'net',
+	    multiple: true
 	},
 	{
 	    name: 'autoboot',
