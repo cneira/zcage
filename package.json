@@ -27,6 +27,7 @@
     "ipaddr.js": "^1.7.0",
     "npm": "^6.7.0",
     "request": "^2.87.0",
+    "restify": "^8.2.0",
     "underscore": "^1.9.1",
     "uuid": "^3.2.1",
     "validator": "^10.4.0",
