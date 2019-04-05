@@ -110,17 +110,16 @@ alpine-latest-9d1c5dea-f91a-ce75-96bb-e18336b37870.gz
 
 ```
    
-To fetch an image from Joyent, we just use the uuid.
+To fetch an image from Joyent, we just use the uuid and the provider name.
   
 ```
-# zcage pull --image 63d6e664-3f1f-11e8-aef6-a3120cf8dd9d
-```   
+# zcage pull --image 63d6e664-3f1f-11e8-aef6-a3120cf8dd9d  --provider joyent
+``` 
    
-To fetch an image from Proxmox, just use the name  
+To fetch an image from Proxmox, just use proxmox as the provider.
 ```
-# zcage pull --image  alpine-3.7-default_20180913_amd64.tar
+# zcage pull --image  alpine-3.7-default_20180913_amd64.tar  --provider proxmox
 ```
-
   
 ## Basic Zone Creation
    
