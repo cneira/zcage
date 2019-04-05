@@ -19,6 +19,7 @@ Returns a list of containers.
 ## Start a container
 ## Stop a container
 ## Restart a container
+## Update a container
 ## Export container 
 ## Remove a container
 ## Get container stats
