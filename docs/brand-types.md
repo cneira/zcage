@@ -68,7 +68,7 @@ When using the **--image** flag the user needs to specify an already download li
 this image could be downloaded using ***zcage pull --image***. 
 
 ```
-# zcage images --list remote joyent
+# zcage images --list joyent
 ```
 ```
 # zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205 --provider joyent
