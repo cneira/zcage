@@ -1,18 +1,14 @@
 # Rest API
 
-zcage exposes a REST API that manages container creation
+zcage exposes a REST API that manages container creation.
 
 ## Endpoints
 
 Containers 
 ------------
-
 Create and manage containers.
 
 ## List Containers 
-
-Returns a list of containers.
-
 ## Create a container
 ## Inspect a container
 ## List processes running inside container
@@ -30,4 +26,3 @@ Images
 ## List images
 ## Inspect image
 ## Create image
-
