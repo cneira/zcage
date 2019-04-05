@@ -68,13 +68,13 @@ When using the **--image** flag the user needs to specify an already download li
 this image could be downloaded using ***zcage pull --image***. 
 
 ```
-# zcage images --list remote
+# zcage images --list remote joyent
 ```
 ```
-# zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205
+# zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205 --provider joyent
 ```
 ```
-# zcage create --alias=test07 --net "omni0|192.168.1.225/24|192.168.1.1" --type lx --ram 2gb --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205
+# zcage create --alias=test07 --net "omni0|192.168.1.225/24|192.168.1.1" --type lx --ram 2G --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205
 ```
   
 When using the ***--docker*** flag the user needs to specify the container image name from docker hub (https://hub.docker.com/search?q=&type=image) that will be used when creating the zone.
