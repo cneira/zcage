@@ -147,7 +147,8 @@ case "ps":
 
     argv = listOptions._unknown || [];
 
-    zone.listzones(listOptions);
+	let zones = zone.listzones(listOptions);
+	zone.displayZones(zones)
     break;
 
 case "start":
