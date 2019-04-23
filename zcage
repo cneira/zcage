@@ -8,8 +8,8 @@
  */
 
 
-const zone = require('./lib/zonelib');
-const img = require('./lib/imageadm');
+const zone = require('./lib/zone');
+const img = require('./lib/imgadm');
 const api = require('./lib/api');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
