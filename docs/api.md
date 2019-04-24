@@ -15,7 +15,7 @@ Illumos zone manager REST API
 GET 192.168.1.100:8080/containers/json
 ```
 
-List zones in host
+List containers 
 
 ----------------
 
@@ -785,9 +785,3 @@ Create a zone on host
 ----------------
 
 ----------------
-
-Built with [Postdown][PyPI].
-
-Author: [Titor](https://github.com/TitorX)
-
-[PyPI]:    https://pypi.python.org/pypi/Postdown

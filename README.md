@@ -30,3 +30,4 @@ It's intended to be easy to use with simple command syntax.
    [Networking](https://github.com/cneira/zcage/blob/master/docs/networking.md)  
    [Brand types](https://github.com/cneira/zcage/blob/master/docs/brand-types.md)  
    [Options available](https://github.com/cneira/zcage/blob/master/docs/Options.md)    
+   [Rest Api] (https://documenter.getpostman.com/view/7074848/S1EWPEso)
