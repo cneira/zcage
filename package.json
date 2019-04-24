@@ -1,7 +1,7 @@
 {
   "name": "zcage",
-  "version": "1.4.6",
-  "description": "illumos zone management tool",
+  "version": "1.4.7",
+  "description": "Zone administration API for Illumos",
   "main": "zcage",
   "keywords": [
     "illumos",
@@ -27,6 +27,7 @@
     "ipaddr.js": "^1.7.0",
     "npm": "^6.7.0",
     "request": "^2.87.0",
+    "restify": "^8.2.0",
     "underscore": "^1.9.1",
     "uuid": "^3.2.1",
     "validator": "^10.4.0",

@@ -8,14 +8,15 @@
  */
 
 
-const zone = require('./lib/zonelib');
-const img = require('./lib/imageadm');
+const zone = require('./lib/zone');
+const img = require('./lib/imgadm');
+const api = require('./lib/api');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
 var os = require('os');
 var fs = require('fs');
 
-const ZCAGE_VERSION = '1.4.6';
+const ZCAGE_VERSION = '1.4.7';
 
 let mainDefinitions = [{
     name: 'name',
@@ -114,12 +115,12 @@ case "destroy":
 	name: 'zonename',
 	alias: 'z'
     } ,
-	{
-	    name: 'with-zvol',
-	    defaultValue: false,
-	    type: Boolean
-	},
-];
+				{
+				    name: 'with-zvol',
+				    defaultValue: false,
+				    type: Boolean
+				},
+			       ];
     const destroyOptions = commandLineArgs(destroyDefinitions, {
 	argv,
 	stopAtFirstUnknown: true
@@ -293,7 +294,7 @@ case "info":
 
 case "version":
 case "-v":
-   console.log(ZCAGE_VERSION);
+    console.log(ZCAGE_VERSION);
     break;
 
 case "activate":
@@ -440,6 +441,21 @@ case "fetch":
 	help("fetch");
     break;
 
+case "daemon" :
+
+    const daemonDefinitions = [ { name: 'port'} ];
+    const daemonOptions = commandLineArgs(daemonDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = daemonOptions._unknown || [];
+    
+    if (daemonOptions.port)
+	api.start_daemon(daemonOptions.port);
+    else
+	help("port");
+    break;
+
 default:
     if (mainCommand.name)
 	console.log("zcage:\n unknown subcommand '" + mainCommand.name + "'");
@@ -517,6 +533,9 @@ function help(helpOptions) {
 	break;
     case 'fetch':
 	console.log('fetch <url> : Download image from url for later use ');
+	break;
+    case 'port':
+	console.log('daemon <port number> : Start listening on port number for requests');
 	break;
     default:
 	console.log('\nOptions:');
