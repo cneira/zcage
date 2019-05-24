@@ -455,6 +455,96 @@ case "daemon" :
 	help("port");
     break;
 
+case "stats" :
+    const statsDefinitions = [
+	{
+	    name: 'zonename',
+	    alias: 'z'
+	}];
+    const statsOptions = commandLineArgs(statsDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = statsOptions._unknown || [];
+
+    if ("zonename" in statsOptions && (statsOptions.zonename != null)) {
+	zone.getstats(statsOptions.zonename);
+    } else {
+	console.log("missing zone alias or uuid ");
+    }
+    break;
+    
+case "top":
+    const topDefinitions = [
+	{
+	    name: 'zonename',
+	    alias: 'z'
+	},
+	{
+	    name: 'psargs'
+	},
+    ];
+    const topOptions = commandLineArgs(topDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = topOptions._unknown || [];
+
+    if ("zonename" in topOptions && (topOptions.zonename != null)) {
+	zone.container_top(topOptions.zonename, topOptions.psargs);
+    } else {
+	console.log("missing zone alias or uuid ");
+    }
+    break;
+    
+case "logs":    
+    const logsDefinitions = [
+	{
+	    name: 'zonename',
+	    alias: 'z'
+	},
+	{
+	    name: 'stderr',
+	    type: Boolean,
+	    default: false
+	},
+	{
+	    name: 'stdout',
+	    type: Boolean,
+	    default: false
+	},
+	
+    ];
+    const logsOptions = commandLineArgs(logsDefinitions, {
+	argv,
+	slogsAtFirstUnknown: true
+    });
+    argv = logsOptions._unknown || [];
+
+    if ("zonename" in logsOptions && (logsOptions.zonename != null)) {
+	zone.container_logs(logsOptions.zonename, logsOptions.stdout, logsOptions.stderr);
+    } else {
+	console.log("missing zone alias or uuid ");
+    }
+    break;
+case "export":
+        const exportDefinitions = [
+	{
+	    name: 'zonename',
+	    alias: 'z'
+	}];
+    const exportOptions = commandLineArgs(exportDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = exportOptions._unknown || [];
+
+    if ("zonename" in exportOptions && (exportOptions.zonename != null)) {
+	zone.container_export(exportOptions.zonename);
+    } else {
+	console.log("missing zone alias or uuid ");
+    }
+    break;
 default:
     if (mainCommand.name)
 	console.log("zcage:\n unknown subcommand '" + mainCommand.name + "'");
