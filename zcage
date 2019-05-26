@@ -296,6 +296,14 @@ case "-v":
     console.log(ZCAGE_VERSION);
     break;
 
+case "vnics":
+	zone.vnic_list();
+	break;
+
+case "networks":
+	zone.network_list();
+	break;
+
 case "activate":
     if (img.Isactivated() != 0) {
 	img.ActivateZcage();
@@ -362,12 +370,14 @@ case "images":
 		    );
 		}
 		break;
+
+	   default: 
+		    img.container_images();
+		    break;
 	    }
 	} else {
-	    console.log(
-		"You need to specify to list remote or local images or from docker hub for example :\n \
-zcage images --list (local | joyent | proxmox | docker <ubuntu, alpine, centos..>)"
-	    );
+	    
+		    img.container_images();
 	}
     }
     break;
@@ -646,6 +656,10 @@ function help(helpOptions) {
 
     case 'export':
 	console.log('export -z <zonename>: Export container as image');
+	break;
+
+    case 'vnic-list':
+	console.log('vnic-list : show current vnics and container usage');
 	break;
 
     default:
