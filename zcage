@@ -515,13 +515,13 @@ case "logs":
 	},
 	{
 	    name: 'stderr',
-	    type: Boolean,
-	    default: false
+	    defaultValue: false,
+	    type: Boolean
 	},
 	{
 	    name: 'stdout',
 	    type: Boolean,
-	    default: false
+	    defaultValue: false,
 	},
 	
     ];
