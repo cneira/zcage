@@ -297,18 +297,38 @@ case "-v":
     break;
 
 case "vnics":
-	zone.vnic_list();
-	break;
+    zone.vnic_list();
+    break;
 
 case "networks":
-	zone.network_list();
-	break;
+    zone.network_list();
+    break;
 
 case "activate":
-    if (img.Isactivated() != 0) {
-	img.ActivateZcage();
+    const activateDefinitions = [
+	{
+	    name: 'pool',
+	}];
+    const activateOptions = commandLineArgs(activateDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = activateOptions._unknown || [];
+    if(!img.Isactivated()) {
+	console.log("zcage is already activated using pool :" + img.GetPool()); 
+	return;
+    }	
+    if ("pool" in activateOptions)  {
+	try {
+	    fs.writeFileSync(img.ZCAGE.CONFIG, JSON.stringify({ pool: activateOptions.pool },null,4),"utf-8");
+	} catch (e) {
+	    console.log("Could not write zcage pool config to : "+ img.ZCAGE.CONFIG);
+	    console.log("Try pfexec zcage activate --pool <pool where to store zcage data>");
+	    return;
+	}
+	img.ActivateZcage(activateOptions.pool);
     } else {
-	console.log("zcage is already activated, you should be able to create zones.");
+	console.log("zcage activate --pool <pool name where to store zcage data>");
     }
     break;
 
@@ -371,13 +391,13 @@ case "images":
 		}
 		break;
 
-	   default: 
-		    img.container_images();
-		    break;
+	    default: 
+		img.container_images();
+		break;
 	    }
 	} else {
 	    
-		    img.container_images();
+	    img.container_images();
 	}
     }
     break;
