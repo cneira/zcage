@@ -8,14 +8,15 @@
  */
 
 
-const zone = require('./lib/zonelib');
-const img = require('./lib/imageadm');
+const zone = require('./lib/zone');
+const img = require('./lib/imgadm');
+const api = require('./lib/api');
 const commandLineArgs = require('command-line-args');
 const commandLineUsage = require('command-line-usage');
 var os = require('os');
 var fs = require('fs');
 
-const ZCAGE_VERSION = '1.4.6';
+const ZCAGE_VERSION = '1.4.7';
 
 let mainDefinitions = [{
     name: 'name',
@@ -114,12 +115,12 @@ case "destroy":
 	name: 'zonename',
 	alias: 'z'
     } ,
-	{
-	    name: 'with-zvol',
-	    defaultValue: false,
-	    type: Boolean
-	},
-];
+				{
+				    name: 'with-zvol',
+				    defaultValue: false,
+				    type: Boolean
+				},
+			       ];
     const destroyOptions = commandLineArgs(destroyDefinitions, {
 	argv,
 	stopAtFirstUnknown: true
@@ -147,7 +148,7 @@ case "ps":
 
     argv = listOptions._unknown || [];
 
-    zone.listzones(listOptions);
+    let zones = zone.listzones(listOptions);
     break;
 
 case "start":
@@ -292,14 +293,42 @@ case "info":
 
 case "version":
 case "-v":
-   console.log(ZCAGE_VERSION);
+    console.log(ZCAGE_VERSION);
+    break;
+
+case "vnics":
+    zone.vnic_list();
+    break;
+
+case "networks":
+    zone.network_list();
     break;
 
 case "activate":
-    if (img.Isactivated() != 0) {
-	img.ActivateZcage();
+    const activateDefinitions = [
+	{
+	    name: 'pool',
+	}];
+    const activateOptions = commandLineArgs(activateDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = activateOptions._unknown || [];
+    if(!img.Isactivated()) {
+	console.log("zcage is already activated using pool :" + img.GetPool()); 
+	return;
+    }	
+    if ("pool" in activateOptions)  {
+	try {
+	    fs.writeFileSync(img.ZCAGE.CONFIG, JSON.stringify({ pool: activateOptions.pool },null,4),"utf-8");
+	} catch (e) {
+	    console.log("Could not write zcage pool config to : "+ img.ZCAGE.CONFIG);
+	    console.log("Try pfexec zcage activate --pool <pool where to store zcage data>");
+	    return;
+	}
+	img.ActivateZcage(activateOptions.pool);
     } else {
-	console.log("zcage is already activated, you should be able to create zones.");
+	console.log("zcage activate --pool <pool name where to store zcage data>");
     }
     break;
 
@@ -361,12 +390,14 @@ case "images":
 		    );
 		}
 		break;
+
+	    default: 
+		img.container_images();
+		break;
 	    }
 	} else {
-	    console.log(
-		"You need to specify to list remote or local images or from docker hub for example :\n \
-zcage images --list (local | joyent | proxmox | docker <ubuntu, alpine, centos..>)"
-	    );
+	    
+	    img.container_images();
 	}
     }
     break;
@@ -398,7 +429,7 @@ case "pull":
 	    if (pullOptions.image)
 		img.getzss(pullOptions.image, pullOptions.provider);
 	else
-	    console.log("specify image to pull --image uuid ");
+	    console.log("specify image to pull --image <uuid> --provider <joyent|cloud-init|docker|proxmox>");
     } else {
 	console.log(
 	    "zcage must be activated to be able to pull images : zcage activate "
@@ -439,10 +470,118 @@ case "fetch":
 	help("fetch");
     break;
 
+case "daemon" :
+
+    const daemonDefinitions = [ { name: 'port'} ];
+    const daemonOptions = commandLineArgs(daemonDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = daemonOptions._unknown || [];
+    
+    if (daemonOptions.port)
+	api.start_daemon(daemonOptions.port);
+    else
+	help("port");
+    break;
+
+case "stats" :
+    const statsDefinitions = [
+	{
+	    name: 'zonename',
+	    alias: 'z'
+	}];
+    const statsOptions = commandLineArgs(statsDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = statsOptions._unknown || [];
+
+    if ("zonename" in statsOptions && (statsOptions.zonename != null)) {
+	zone.getstats(statsOptions.zonename);
+    } else {
+	console.log("missing zone alias or uuid ");
+    }
+    break;
+    
+case "top":
+    const topDefinitions = [
+	{
+	    name: 'zonename',
+	    alias: 'z'
+	},
+	{
+	    name: 'psargs'
+	},
+    ];
+    const topOptions = commandLineArgs(topDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = topOptions._unknown || [];
+
+    if ("zonename" in topOptions && (topOptions.zonename != null)) {
+	zone.container_top(topOptions.zonename, topOptions.psargs);
+    } else {
+	console.log("missing zone alias or uuid ");
+    }
+    break;
+    
+case "logs":    
+    const logsDefinitions = [
+	{
+	    name: 'zonename',
+	    alias: 'z'
+	},
+	{
+	    name: 'stderr',
+	    defaultValue: false,
+	    type: Boolean
+	},
+	{
+	    name: 'stdout',
+	    type: Boolean,
+	    defaultValue: false,
+	},
+	
+    ];
+    const logsOptions = commandLineArgs(logsDefinitions, {
+	argv,
+	slogsAtFirstUnknown: true
+    });
+    argv = logsOptions._unknown || [];
+
+    if ("zonename" in logsOptions && (logsOptions.zonename != null)) {
+	zone.container_logs(logsOptions.zonename, logsOptions.stdout, logsOptions.stderr);
+    } else {
+	console.log("missing zone alias or uuid ");
+    }
+    break;
+    
+case "export":
+    const exportDefinitions = [
+	{
+	    name: 'zonename',
+	    alias: 'z'
+	}];
+    const exportOptions = commandLineArgs(exportDefinitions, {
+	argv,
+	stopAtFirstUnknown: true
+    });
+    argv = exportOptions._unknown || [];
+
+    if ("zonename" in exportOptions && (exportOptions.zonename != null)) {
+	zone.container_export(exportOptions.zonename);
+    } else {
+	console.log("missing zone alias or uuid ");
+    }
+    break;
+    
 default:
     if (mainCommand.name)
 	console.log("zcage:\n unknown subcommand '" + mainCommand.name + "'");
     help();
+    
 }
 
 function help(helpOptions) {
@@ -514,9 +653,35 @@ function help(helpOptions) {
 		'    --quota:      Updates disk quota \n\n'
 	);
 	break;
+	
     case 'fetch':
 	console.log('fetch <url> : Download image from url for later use ');
 	break;
+	
+    case 'port':
+	console.log('daemon <port number> : Start listening on port number for requests');
+	break;
+	
+    case 'logs':
+	console.log('logs --stderr=true|false --stdout=true|false : Get logs from stderr or out from container.');
+	break;
+	
+    case 'stats':
+	console.log('stats -z <zonename>: Get statistics counters from container.');
+	break;
+	
+    case 'top':
+	console.log('top -z <zonename>: Return processes running in container.');
+	break;
+
+    case 'export':
+	console.log('export -z <zonename>: Export container as image');
+	break;
+
+    case 'vnic-list':
+	console.log('vnic-list : show current vnics and container usage');
+	break;
+
     default:
 	console.log('\nOptions:');
 	console.log('-----------------------');
