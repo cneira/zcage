@@ -15,6 +15,10 @@ and images. Also zcage checks if required packages are already installed.
 Once zcage is ready  users are able to immediately
 begin creating zones and downloading images for lx branded zones.
 
+```bash
+# pfexec zcage activate --pool <pool that zcage will use to store data>
+```
+
 ## Fetching images 
 ------------------
 Fetching images is only needed when creating lx branded zones. 

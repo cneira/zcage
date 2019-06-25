@@ -19,7 +19,7 @@ export TOKEN="$(
   curl \
     --silent \
     --header 'GET' \
-    "https://auth.docker.io/token?service=registry.docker.io&scope=repository:library/${1}:pull" |
+    "https://auth.docker.io/token?service=registry.docker.io&scope=repository:${1}:pull" |
     $JQ -r '.token'
 )"
 
@@ -27,8 +27,9 @@ curl \
   --silent \
   --request 'GET' \
   --header "Authorization: Bearer ${TOKEN}" \
-  "https://registry-1.docker.io/v2/library/${1}/manifests/${2}" |
+  "https://registry-1.docker.io/v2/${1}/manifests/${2}" |
   $JQ -r '.fsLayers[].blobSum' >$blobsums
+
 
 while read BLOBSUM; do
   pfexec curl \
@@ -36,11 +37,11 @@ while read BLOBSUM; do
     --location \
     --request 'GET' \
     --header "Authorization: Bearer ${TOKEN}" \
-    "https://registry-1.docker.io/v2/library/${1}/blobs/${BLOBSUM}" \
+    "https://registry-1.docker.io/v2/${1}/blobs/${BLOBSUM}" \
     >$IMAGE
 done <$blobsums
 
 # Clean up
-rm $blobsums
+#rm $blobsums
 
 echo $IMAGE

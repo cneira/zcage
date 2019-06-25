@@ -104,7 +104,7 @@ case "create":
 	help();
 	return;
     }
-    if (img.Isactivated() == 0) {
+    if (img.Isactivated() ) {
 	zone.build(createOptions);
     }
 
@@ -307,15 +307,15 @@ case "networks":
 case "activate":
     const activateDefinitions = [
 	{
-	    name: 'pool',
+	    name: 'pool'
 	}];
     const activateOptions = commandLineArgs(activateDefinitions, {
 	argv,
 	stopAtFirstUnknown: true
     });
     argv = activateOptions._unknown || [];
-    if(!img.Isactivated()) {
-	console.log("zcage is already activated using pool :" + img.GetPool()); 
+    if(img.Isactivated()) {
+	console.log("zcage is already activated using pool: " + img.GetPool()); 
 	return;
     }	
     if ("pool" in activateOptions)  {
@@ -356,15 +356,19 @@ case "images":
 	stopAtFirstUnknown: true
     });
     argv = listimgOptions._unknown || [];
+    if (img.Isactivated() ) {
+	if (listimgOptions.list != undefined) {
 
-    if (img.Isactivated() == 0) {
-	if (listimgOptions.list) {
 	    switch (listimgOptions.list) {
+
 	    case 'local':
+
+	console.log(listimgOptions.list);
 		img.list_avail();
 		break;
 
 	    case 'joyent':
+
 		img.list_images();
 		break;
 
@@ -397,6 +401,7 @@ case "images":
 	    }
 	} else {
 	    
+		console.log('default');
 	    img.container_images();
 	}
     }
@@ -417,7 +422,7 @@ case "pull":
 	stopAtFirstUnknown: true
     });
     argv = pullOptions._unknown || [];
-    if (img.Isactivated() == 0) {
+    if (img.Isactivated() ) {
 	if (pullOptions.provider == 'cloud-init' && pullOptions.image) {
 	    if (pullOptions._unknown)
 		img.fetch_by_provider('cloud-init', pullOptions._unknown[0],

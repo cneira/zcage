@@ -3,7 +3,7 @@
 * zcage needs to be activated before any zone could be created, it will create all the needed datasets for zone management.
 
 ```bash
-# zcage activate
+# zcage activate --pool <pool that you want zcage to use>
 ```
 ## Requirements
 
