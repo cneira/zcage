@@ -314,7 +314,7 @@ case "activate":
 	stopAtFirstUnknown: true
     });
     argv = activateOptions._unknown || [];
-    if(img.Isactivated()) {
+    if(img.Isactivated(true)) {
 	console.log("zcage is already activated using pool: " + img.GetPool()); 
 	return;
     }	
