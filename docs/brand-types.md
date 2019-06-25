@@ -61,20 +61,20 @@ You can update zones on a running system (at the cost of losing some log state d
 Linux Branded Zone (lx) 
 ------------------------
 
-Linux branded zones are creating by specifying ***--type lx*** on creation, this type of brand needs an 
+Linux branded zones are creating by specifying ***--brand lx*** on creation, this type of brand needs an 
 extra parameter to be specified on creation ***--image*** or ***--docker***.
   
 When using the **--image** flag the user needs to specify an already download linux image, 
 this image could be downloaded using ***zcage pull --image***. 
 
 ```
-# zcage images --list remote
+# zcage images --list joyent
 ```
 ```
-# zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205
+# zcage pull --image  96bb1fac-c87d-11e5-b5bf-ff4703459205 --provider joyent
 ```
 ```
-# zcage create --alias=test07 --net "omni0|192.168.1.225/24|192.168.1.1" --type lx --ram 2gb --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205
+# zcage create --alias=test07 --net "omni0|192.168.1.225/24|192.168.1.1" --brand lx --ram 2gb --with-image 96bb1fac-c87d-11e5-b5bf-ff4703459205
 ```
   
 When using the ***--docker*** flag the user needs to specify the container image name from docker hub (https://hub.docker.com/search?q=&type=image) that will be used when creating the zone.

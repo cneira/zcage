@@ -30,7 +30,7 @@ Fetching images is only needed when creating lx branded zones.
 `zcage images --list docker ubuntu` lists docker images for ubuntu.
   
 Then users can choose which image to download, using 
-`zcage pull --image <uuid>` as seen in this example:
+`zcage pull --image <uuid> --provider <provider name>` as seen in this example:
 
 ```
 # zcage images --list proxmox
