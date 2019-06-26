@@ -8,18 +8,24 @@ JQ=jq-solaris11-64
 
 if [ $# -lt 2 ]; then
   echo "you need to specify library, tag and destination.\nfor example :" \
-    "\npull-by-tag.sh alpine latest"
+    "\npull-by-tag.sh library/alpine latest"
+    "\npull-by-tag.sh gitea/gitea latest"
   exit 1
 fi
-
-IMAGE="/zcage/images/$1-$2-$(uuidgen).gz"
+NAME=$(echo ${1} | cut -d/ -f2)
+IMAGE="/zcage/images/docker-$NAME-${2}-$(uuidgen).gz"
+IMAGEDIR="/tmp/docker-$NAME-${2}-$(uuidgen)"
 blobsums="/tmp/blobsums-$(uuidgen).txt"
+blobs="/tmp/blobs-$(uuidgen).txt"
+TMPDIR=/tmp/$(uuidgen)
+mkdir $TMPDIR
+mkdir $IMAGEDIR
 
 export TOKEN="$(
   curl \
     --silent \
     --header 'GET' \
-    "https://auth.docker.io/token?service=registry.docker.io&scope=repository:${1}:pull" |
+    "https://auth.docker.io/token?service=registry.docker.io&scope=repository:${1}:pull&service=registry.docker.io" |
     $JQ -r '.token'
 )"
 
@@ -38,10 +44,21 @@ while read BLOBSUM; do
     --request 'GET' \
     --header "Authorization: Bearer ${TOKEN}" \
     "https://registry-1.docker.io/v2/${1}/blobs/${BLOBSUM}" \
-    >$IMAGE
+    >"/tmp/${BLOBSUM}.gz"  
+  gtar xfvz "/tmp/${BLOBSUM}.gz"  -C ${IMAGEDIR}  
 done <$blobsums
 
+
+while read BLOBS; do
+     echo "extracting blob ${BLOBS}"
+    gtar xfvz /tmp/${BLOBS} -C ${IMAGEDIR} 
+done <$blobs
+
+gtar cfvz  ${IMAGE} -C ${IMAGEDIR} . 
+
 # Clean up
-#rm $blobsums
+rm $blobsums
+rm -rf ${IMAGEDIR}
+rm -rf ${TMPDIR}
 
 echo $IMAGE
