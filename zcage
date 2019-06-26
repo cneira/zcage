@@ -88,7 +88,8 @@ case "create":
 	    type: Boolean
 	},
 	{
-	    name: "docker"
+	    name: "docker",
+	    multiple: true
 	},
 	{
 	    name: "udata"
@@ -104,6 +105,7 @@ case "create":
 	help();
 	return;
     }
+	
     if (img.Isactivated() ) {
 	zone.build(createOptions);
     }
@@ -378,7 +380,7 @@ case "images":
 		break;
 
 	    case 'docker':
-		if (listimgOptions._unknown)
+		if (listimgOptions._unknown) 
 		    img.docker_list(listimgOptions._unknown[0]);
 		else
 		    console.log("Usage: --docker <library> for ex: --docker ubuntu");

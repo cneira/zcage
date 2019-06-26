@@ -45,16 +45,12 @@ while read BLOBSUM; do
     --header "Authorization: Bearer ${TOKEN}" \
     "https://registry-1.docker.io/v2/${1}/blobs/${BLOBSUM}" \
     >"/tmp/${BLOBSUM}.gz"  
-  gtar xfvz "/tmp/${BLOBSUM}.gz"  -C ${IMAGEDIR}  
+  gtar xfvz "/tmp/${BLOBSUM}.gz"  -C ${IMAGEDIR} > /dev/null 
+  rm "/tmp/${BLOBSUM}.gz"
 done <$blobsums
 
 
-while read BLOBS; do
-     echo "extracting blob ${BLOBS}"
-    gtar xfvz /tmp/${BLOBS} -C ${IMAGEDIR} 
-done <$blobs
-
-gtar cfvz  ${IMAGE} -C ${IMAGEDIR} . 
+gtar cfvz  ${IMAGE} -C ${IMAGEDIR} .  > /dev/null
 
 # Clean up
 rm $blobsums
