@@ -31,3 +31,6 @@ It's intended to be easy to use with simple command syntax.
    [Brand types](https://github.com/cneira/zcage/blob/master/docs/brand-types.md)  
    [Options available](https://github.com/cneira/zcage/blob/master/docs/Options.md)    
    [Rest Api](https://documenter.getpostman.com/view/7074848/S1EWPEso)
+
+## Support
+It's also possible to support the project on [Patreon](https://www.patreon.com/neirac)
