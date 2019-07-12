@@ -33,4 +33,7 @@ It's intended to be easy to use with simple command syntax.
    [Rest Api](https://documenter.getpostman.com/view/7074848/S1EWPEso)
 
 ## Support
+
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J4YM9U)
+
 It's also possible to support the project on [Patreon](https://www.patreon.com/neirac)
