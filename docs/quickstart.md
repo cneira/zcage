@@ -20,7 +20,7 @@ zcage needs the following packages to be installed to work properly:
 
 which are available in Omniosce.
 ```bash
-# pkg install cdrtools brand/bhyve brand/kvm brand/lx brand/pkgsrc brand/sparse brand/lipkg system/kvm
+# pkg install cdrtools brand/bhyve brand/kvm brand/lx brand/pkgsrc brand/sparse brand/lipkg system/kvm jq
 ```
 ## EXAMPLES
 First we need to setup a virtual nic for zones using dladm.
@@ -60,7 +60,7 @@ UUID                                            NAME                            
 * List images available in docker hub
 
 ```bash
-# zcage images --list docker alpine  
+# zcage images --list docker library/alpine  
 {
   "name": "library/alpine",
   "tags": [
@@ -101,7 +101,7 @@ UUID                                            NAME                            
 ```
 * Also you could specify an image from docker hub using the docker parameter
 ```bash
-# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --docker alpine/latest --alias lxvm --brand lx
+# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --docker library/alpine latest --alias lxvm --brand lx
 ```
 
 Now you can reference the container by it's alias test07. If you don't provide an alias a UUID will be generated.

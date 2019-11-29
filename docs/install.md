@@ -29,6 +29,10 @@ To start creating zones the following packages are needed :
 * brand/lipkg
 * system/kvm (provides qemu-img)
 
+```bash
+# pkg install cdrtools brand/bhyve brand/kvm brand/lx brand/pkgsrc brand/sparse brand/lipkg system/kvm jq
+```
+
 
 ```
 ***If you are running Omnios Bloody you could create pkgsrc zones, for that you 

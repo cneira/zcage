@@ -388,7 +388,7 @@ case "images":
 				if (listimgOptions._unknown) 
 					img.docker_list(listimgOptions._unknown[0]);
 				else
-					console.log("Usage: --docker <library> for ex: --docker ubuntu");
+					console.log("Usage: --docker <library> for ex: --docker library/ubuntu");
 				break;
 
 			case 'cloud-init':

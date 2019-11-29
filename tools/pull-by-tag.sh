@@ -4,7 +4,8 @@
 # $2 image tag , for example : latest
 # pull-by-tag.sh  ubuntu latest
 # JQ is needed for now, https://github.com/stedolan/jq/releases/download/jq-1.4/jq-solaris11-64
-JQ=jq-solaris11-64
+#JQ=jq-solaris11-64
+JQ=jq
 
 if [ $# -lt 2 ]; then
   echo "you need to specify library, tag and destination.\nfor example :" \

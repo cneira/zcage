@@ -4,8 +4,8 @@
 #
 #!/bin/sh
 # JQ is needed for now, https://github.com/stedolan/jq/releases/download/jq-1.4/jq-solaris11-64
-JQ=jq-solaris11-64
-
+#JQ=jq-solaris11-64
+JQ=jq
 if [ $# -eq 0 ]; then
   echo "you need to specify where to search for tags.\nfor example :" \
     "\nlist-tags.sh library/alpine latest"
