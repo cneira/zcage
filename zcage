@@ -310,14 +310,21 @@ case "activate":
     const activateDefinitions = [
 	{
 	    name: 'pool'
-	}];
+
+	},
+	{
+	    name: "force",
+	    defaultValue: false,
+	    type: Boolean
+	}
+];
     const activateOptions = commandLineArgs(activateDefinitions, {
 	argv,
 	stopAtFirstUnknown: true
     });
     argv = activateOptions._unknown || [];
-    if(img.Isactivated(true)) {
-	console.log("zcage is already activated using pool: " + img.GetPool()); 
+    if(img.Isactivated(true) && (activateOptions.force != true) ) {
+	console.log("zcage is already activated using pool: " + img.GetPool() + " use --force to activate anyways"); 
 	return;
     }	
     if ("pool" in activateOptions)  {
@@ -358,55 +365,53 @@ case "images":
 	stopAtFirstUnknown: true
     });
     argv = listimgOptions._unknown || [];
-    if (img.Isactivated() ) {
+    if (img.Isactivated()) {
 	if (listimgOptions.list != undefined) {
 
-	    switch (listimgOptions.list) {
+		switch (listimgOptions.list) {
 
-	    case 'local':
+			case 'local':
+				img.list_avail();
+				break;
 
-	console.log(listimgOptions.list);
-		img.list_avail();
-		break;
+			case 'joyent':
 
-	    case 'joyent':
+				img.list_images();
+				break;
 
-		img.list_images();
-		break;
+			case 'proxmox':
+				if (img.list_datasource('proxmox') == null)
+					help('images');
+				break;
 
-	    case 'proxmox':
-		if (img.list_datasource('proxmox') == null)
-		    help('images');
-		break;
+			case 'docker':
+				if (listimgOptions._unknown) 
+					img.docker_list(listimgOptions._unknown[0]);
+				else
+					console.log("Usage: --docker <library> for ex: --docker ubuntu");
+				break;
 
-	    case 'docker':
-		if (listimgOptions._unknown) 
-		    img.docker_list(listimgOptions._unknown[0]);
-		else
-		    console.log("Usage: --docker <library> for ex: --docker ubuntu");
-		break;
+			case 'cloud-init':
+				if (listimgOptions._unknown) {
+					if (img.list_datasource('cloud-init', listimgOptions._unknown[0]) == null)
+						help('images');
+				} else {
+					console.log(
+							"Usage: --cloud-init <ubuntu|fedora|centos>/<version> for ex: --cloud-init ubuntu/bionic"
+						   );
+				}
+				break;
 
-	    case 'cloud-init':
-		if (listimgOptions._unknown) {
-		    if (img.list_datasource('cloud-init', listimgOptions._unknown[0]) == null)
-			help('images');
-		} else {
-		    console.log(
-			"Usage: --cloud-init <ubuntu|fedora|centos>/<version> for ex: --cloud-init ubuntu/bionic"
-		    );
+			default: 
+				img.list_avail();
+				break;
 		}
-		break;
-
-	    default: 
-		img.container_images();
-		break;
-	    }
-	} else {
-	    
-		console.log('default');
-	    img.container_images();
 	}
-    }
+	else {    
+	 help('images');
+	}
+}
+
     break;
 
 
