@@ -19,7 +19,9 @@ zcage needs the following packages to be installed to work properly:
 * system/kvm (provides qemu-img)
 
 which are available in Omniosce.
-
+```bash
+# pkg install cdrtools brand/bhyve brand/kvm brand/lx brand/pkgsrc brand/sparse brand/lipkg system/kvm
+```
 ## EXAMPLES
 First we need to setup a virtual nic for zones using dladm.
 Currently each container need to have a different vnic otherwise it won't start.
