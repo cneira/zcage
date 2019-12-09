@@ -62,6 +62,12 @@ You can update zones on a running system (at the cost of losing some log state d
 dpkg (Only Dilos)
 ----------------
 
+The default scheduler in Dilos is not FSS, to make provisioning work we should set the default as FSS.
+
+```bash
+# sudo dispadmin -d FSS
+```
+
 dpkg zones are created by specifying ***--type dpkg*** on creation
    
 
