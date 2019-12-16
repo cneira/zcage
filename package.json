@@ -25,7 +25,7 @@
     "docker-names": "^1.1.1",
     "install": "^0.11.0",
     "ipaddr.js": "^1.7.0",
-    "npm": "^6.7.0",
+    "npm": "^6.13.4",
     "request": "^2.87.0",
     "restify": "^8.2.0",
     "underscore": "^1.9.1",
