@@ -9,10 +9,11 @@ zcage supports the following zone brands:
 * lx
 * bhyve
 * kvm
+* dpkg
 
 All brand types have specific benefits and drawbacks, serving a variety
 of unique needs. This section describes and has creation examples for
-each of these brand types.
+each of these brand types. dpkg is the only available support brand on Dilos.
 
   
 Sparse (default)
@@ -57,6 +58,26 @@ the linked-image zones get updated alongside it. This means going forward, an up
 require detaching and reattaching the zone. 
 You can update zones on a running system (at the cost of losing some log state during the time of the upgrade and the time of a reboot), or you can simply halt the zones, do the upgrade, and reboot with all linked-image zones automatically updated(https://omniosce.org/info/linked_images.html).
   
+
+dpkg (Only Dilos)
+----------------
+
+The default scheduler in Dilos is not FSS, to make provisioning work we should set the default as FSS.
+
+```bash
+# sudo dispadmin -d FSS
+```
+
+dpkg zones are created by specifying ***--type dpkg*** on creation
+   
+
+```
+# zcage create --alias=test07 --net "omni0|192.168.1.225/24|192.168.1.1" --brand=dpkg --ram 2gb
+```
+Provisioning of the dpkg zone will take a couple of minutes as it apt fetches all the required packages to start the zone.   
+
+
+
   
 Linux Branded Zone (lx) 
 ------------------------

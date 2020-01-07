@@ -6,7 +6,7 @@ and technologies from Illumos. It is intended to be
 easy to use with a simple command line syntax.   
   
   
-**zcage currently only works in Omniosce https://omniosce.org/** 
+**zcage currently only works in Omniosce https://omniosce.org/ and Dilos http://www.dilos.org** 
 
 ## Using github
   
@@ -27,6 +27,9 @@ To start creating zones the following packages are needed :
 * brand/sparse
 * brand/lipkg
 * system/kvm (provides qemu-img)
+
+
+*** In Dilos you could only create dpkg zones at this point ***
 
 ```bash
 # pkg install cdrtools brand/bhyve brand/kvm brand/lx brand/pkgsrc brand/sparse brand/lipkg system/kvm jq
