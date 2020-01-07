@@ -110,6 +110,13 @@ Bhyve (bhyve) and KVM (kvm)
 Bhyve and kvm zones are creating by specifying ***--type bhyve*** or ***--type kvm*** on creation, this type of brand needs an extra
 parameters to be specified on creation ***--disk <zfs dataset>***.
 To create a bhyve or kvm branded zone, first we need to create a disk for it to use:
+On Linux guest you could find the issue ***Boot Failed. EFI Misc Device*** and you will be dropped into the UEFI shell, to fix this follow these steps:  
+* Enter UEFI "Boot Maintenance Manager" 
+* Choosing "Boot From File"
+* Browsing the directory and locate grubx64.efi under the folder named after the operating system, for example: centos/grubx64.efi 
+* Copy the efi file to BOOT/BOOTX64.EFI
+
+More detailed instructions here: (https://www.jongibbins.com/solving-uefi-boot-problems-on-bhyve-freenas-vm/)
    
 ```
 # zfs create -V 30G rpool/vm0
