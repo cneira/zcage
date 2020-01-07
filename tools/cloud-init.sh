@@ -7,8 +7,8 @@
 # $1 =  customer_data
 # $2 =  zone data set to store data.
 # JQ is needed for now, https://github.com/stedolan/jq/releases/download/jq-1.4/jq-solaris11-64
-JQ=jq-solaris11-64
-
+#JQ=jq-solaris11-64
+JQ=jq
 if [ $# -lt 1 ]; then
 	echo "Error: a cloud-init config data needs to be specified"
 	exit 2
