@@ -19,7 +19,6 @@ To install from github (for stability use a released version)
  
 To start creating zones the following packages are needed :
    
-```
 * cdrtools 
 * brand/bhyve
 * brand/kvm
@@ -34,7 +33,6 @@ To start creating zones the following packages are needed :
 ```
 
 
-```
 ***If you are running Omnios Bloody you could create pkgsrc zones, for that you 
 need the following package***
    
