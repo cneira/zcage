@@ -104,13 +104,13 @@ switch (mainCommand.name) {
             help();
             return;
         }
-        if (img.can_create_vm == true) {
+        if (img.can_create_vm() == true) {
             if (img.Isactivated()) {
                 zone.build(createOptions);
             }
-        } else {
+       } else {
             console.log("Not able to create zones, try using pfexec or running as root");
-        }
+       }
         break;
 
     case "destroy":
