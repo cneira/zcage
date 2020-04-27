@@ -108,9 +108,9 @@ switch (mainCommand.name) {
             if (img.Isactivated()) {
                 zone.build(createOptions);
             }
-       } else {
+        } else {
             console.log("Not able to create zones, try using pfexec or running as root");
-       }
+        }
         break;
 
     case "destroy":
