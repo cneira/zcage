@@ -163,9 +163,8 @@ switch (mainCommand.name) {
             argv,
             stopAtFirstUnknown: true
         });
-        cmd = runOptions._unknown.join( ' ');
-        argv = runOptions._unknown || [];
-        zone.container_run_entrypoint(runOptions.zonename, cmd);
+        argv = runOptions._unknown.join(' ') || [];
+        zone.container_run_entrypoint(runOptions.zonename, argv);
         break;
 
 
