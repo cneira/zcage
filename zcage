@@ -153,6 +153,23 @@ switch (mainCommand.name) {
         let zones = zone.listzones(listOptions);
         break;
 
+    case "run":
+        const runDefinitions = [{
+                name: 'zonename',
+                alias: 'z'
+            }
+       ];
+        const runOptions = commandLineArgs(runDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        cmd = runOptions._unknown.join( ' ');
+        argv = runOptions._unknown || [];
+        zone.container_run_entrypoint(runOptions.zonename, cmd);
+        break;
+
+
+
     case "start":
 
         const startDefinitions = [{
