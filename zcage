@@ -100,7 +100,7 @@ switch (mainCommand.name) {
         });
         argv = createOptions._unknown || [];
 
-        if (createOptions.net == undefined) {
+        if (createOptions.net == undefined && createOptions.docker == undefined) {
             help();
             return;
         }
@@ -155,15 +155,18 @@ switch (mainCommand.name) {
 
     case "run":
         const runDefinitions = [{
-                name: 'zonename',
-                alias: 'z'
-            }
-       ];
+            name: 'zonename',
+            alias: 'z'
+        }];
         const runOptions = commandLineArgs(runDefinitions, {
             argv,
             stopAtFirstUnknown: true
         });
-        argv = runOptions._unknown.join(' ') || [];
+        if (runOptions._unknown != undefined) {
+            argv = runOptions._unknown.join(' ');
+        } else {
+            argv = [];
+        }
         zone.container_run_entrypoint(runOptions.zonename, argv);
         break;
 
