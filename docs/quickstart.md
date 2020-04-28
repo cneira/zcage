@@ -42,7 +42,7 @@ Currently each container need to have a different vnic otherwise it won't start.
 * List remotely available linux images from Joyent
 
 ```bash
-# zcage images --list  avail
+# zcage images --list joyent | grep lx-
 UID                                            NAME                            VERSION         OS                      PUBLISHED
 f7c19252-c998-11e4-be95-3315493f3741             lx-centos-6                     20150313        linux           2015-03-13T15:52:35Z
 818cc79e-ceb3-11e4-99ee-7bc8c674e754             lx-ubuntu-14.04                 20150320        linux           2015-03-20T03:45:09Z
@@ -60,7 +60,7 @@ UUID                                            NAME                            
 * List images available in docker hub
 
 ```bash
-# zcage images --list docker library/alpine  
+# zcage images --list docker alpine  
 {
   "name": "library/alpine",
   "tags": [
@@ -101,7 +101,7 @@ UUID                                            NAME                            
 ```
 * Also you could specify an image from docker hub using the docker parameter
 ```bash
-# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --docker library/alpine latest --alias lxvm --brand lx
+# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb  --docker alpine latest --alias lxvm --brand lx
 ```
 
 Now you can reference the container by it's alias test07. If you don't provide an alias a UUID will be generated.
