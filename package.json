@@ -1,6 +1,6 @@
 {
   "name": "zcage",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "description": "Zone administration API for Illumos",
   "main": "zcage",
   "keywords": [
@@ -25,9 +25,10 @@
     "docker-names": "^1.1.1",
     "install": "^0.11.0",
     "ipaddr.js": "^1.7.0",
-    "npm": "^6.13.4",
+    "npm": "^6.14.4",
     "request": "^2.87.0",
     "restify": "^8.2.0",
+    "source-map-support": "^0.5.19",
     "underscore": "^1.9.1",
     "uuid": "^3.2.1",
     "validator": "^10.4.0",

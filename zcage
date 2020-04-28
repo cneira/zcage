@@ -16,7 +16,7 @@ const commandLineUsage = require('command-line-usage');
 var os = require('os');
 var fs = require('fs');
 
-const ZCAGE_VERSION = '1.4.7';
+const ZCAGE_VERSION = '1.5.0';
 
 let mainDefinitions = [{
     name: 'name',
@@ -29,683 +29,693 @@ let argv = mainCommand._unknown || [];
 
 if ((os.type() != 'SunOS')) {
     console.log(
-	'Kid, get yerself a System  https://wiki.illumos.org/display/illumos/Distributions'
+        'Kid, get yerself a System  https://wiki.illumos.org/display/illumos/Distributions'
     );
     return null;
 }
 
 switch (mainCommand.name) {
 
-case "create":
-    const createDefinitions = [
-	{
-	    name: 'alias'
-	},
-	{
-	    name: 'brand',
-	    defaultValue: "sparse"
-	},
-	{
-	    name: 'net',
-	    multiple: true
-	},
-	{
-	    name: 'autoboot',
-	    type: Boolean
-	},
-	{
-	    name: "ram",
-	    defaultValue: '1gb'
-	},
-	{
-	    name: "with-image"
-	},
-	{
-	    name: "fs-allowed"
-	},
-	{
-	    name: "limitpriv"
-	},
-	{
-	    name: "disk"
-	},
-	{
-	    name: "hostbridge"
-	},
-	{
-	    name: "cpu"
-	},
-	{
-	    name: "quota",
-	    defaultValue: "10G"
-	},
-	{
-	    name: "cdrom"
-	},
-	{
-	    name: "debug",
-	    defaultValue: false,
-	    type: Boolean
-	},
-	{
-	    name: "docker",
-	    multiple: true
-	},
-	{
-	    name: "udata"
-	},
-    ];
-    const createOptions = commandLineArgs(createDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = createOptions._unknown || [];
+    case "create":
+        const createDefinitions = [{
+                name: 'alias'
+            },
+            {
+                name: 'brand',
+                defaultValue: "sparse"
+            },
+            {
+                name: 'net',
+                multiple: true
+            },
+            {
+                name: 'autoboot',
+                type: Boolean
+            },
+            {
+                name: "ram",
+                defaultValue: '1gb'
+            },
+            {
+                name: "with-image"
+            },
+            {
+                name: "fs-allowed"
+            },
+            {
+                name: "limitpriv"
+            },
+            {
+                name: "disk"
+            },
+            {
+                name: "hostbridge"
+            },
+            {
+                name: "cpu"
+            },
+            {
+                name: "quota",
+                defaultValue: "10G"
+            },
+            {
+                name: "cdrom"
+            },
+            {
+                name: "debug",
+                defaultValue: false,
+                type: Boolean
+            },
+            {
+                name: "docker",
+                multiple: true
+            },
+            {
+                name: "udata"
+            },
+        ];
+        const createOptions = commandLineArgs(createDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = createOptions._unknown || [];
 
-    if (createOptions.net == undefined) {
-	help();
-	return;
-    }
-	
-    if (img.Isactivated() ) {
-	zone.build(createOptions);
-    }
+        if (createOptions.net == undefined && createOptions.docker == undefined) {
+            help();
+            return;
+        }
+        if (img.can_create_vm() == true) {
+            if (img.Isactivated()) {
+                zone.build(createOptions);
+            }
+        } else {
+            console.log("Not able to create zones, try using pfexec or running as root");
+        }
+        break;
 
-    break;
+    case "destroy":
+        const destroyDefinitions = [{
+                name: 'zonename',
+                alias: 'z'
+            },
+            {
+                name: 'with-zvol',
+                defaultValue: false,
+                type: Boolean
+            },
+        ];
+        const destroyOptions = commandLineArgs(destroyDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = destroyOptions._unknown || [];
 
-case "destroy":
-    const destroyDefinitions = [{
-	name: 'zonename',
-	alias: 'z'
-    } ,
-				{
-				    name: 'with-zvol',
-				    defaultValue: false,
-				    type: Boolean
-				},
-			       ];
-    const destroyOptions = commandLineArgs(destroyDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = destroyOptions._unknown || [];
+        if ("zonename" in destroyOptions && (destroyOptions.zonename != null)) {
+            zone.destroy(destroyOptions.zonename, destroyOptions['with-zvol']);
+        } else {
+            console.log("zcage destroy -z <zone name or UUID> Needed name to destroy zone");
+        }
+        break;
 
-    if ("zonename" in destroyOptions && (destroyOptions.zonename != null)) {
-	zone.destroy(destroyOptions.zonename, destroyOptions['with-zvol']);
-    } else {
-	console.log("zcage destroy -z <zone name or UUID> Needed name to destroy zone");
-    }
-    break;
+    case "list":
+    case "ps":
 
-case "list":
-case "ps":
+        const listDefinitions = [{
+            name: 'state',
+        }];
+        const listOptions = commandLineArgs(listDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
 
-    const listDefinitions = [
-	{
-	    name: 'state',
-	}];
-    const listOptions = commandLineArgs(listDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
+        argv = listOptions._unknown || [];
 
-    argv = listOptions._unknown || [];
+        let zones = zone.listzones(listOptions);
+        break;
 
-    let zones = zone.listzones(listOptions);
-    break;
-
-case "start":
-
-    const startDefinitions = [
-	{
-	    name: 'zonename',
-	    alias: 'z'
-	},
-	{
-	    name: "debug",
-	    defaultValue: false,
-	    type: Boolean
-	},
-	{
-	    name: 'with-iso'
-	}
-    ];
-    const startOptions = commandLineArgs(startDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = startOptions._unknown || [];
-
-    if (("with-iso" in startOptions) && !(fs.existsSync(startOptions['with-iso']))) {
-	console.log("Error:" + startOptions['with-iso'] + ": does not exists.");
-	return;
-    }
-
-    if (("zonename" in startOptions) && !("with-iso" in startOptions)) {
-	zone.start(startOptions.zonename);
-    } else if (("zonename" in startOptions) && ("with-iso" in startOptions)) {
-	zone.start(startOptions.zonename, startOptions['with-iso']);
-    } else {
-	console.log("need zone alias or uuid to start");
-    }
-    break;
-
-case "stop":
-
-    const stopDefinitions = [
-	{
-	    name: 'zonename',
-	    alias: 'z'
-	}];
-    const stopOptions = commandLineArgs(stopDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = stopOptions._unknown || [];
-
-    if ("zonename" in stopOptions && (stopOptions.zonename != null)) {
-	zone.halt(stopOptions.zonename);
-    } else {
-	console.log("need zone alias or uuid to stop");
-    }
-    break;
-
-case "reboot":
-
-    const rebootDefinitions = [{
-	name: 'zonename',
-	alias: 'z'
-    }];
-    const rebootOptions = commandLineArgs(rebootDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = rebootOptions._unknown || [];
-
-    if (("zonename" in rebootOptions) && (rebootOptions.zonename != null)) {
-	zone.reboot(rebootOptions.zonename);
-    } else {
-	console.log("need zone alias or uuid to reboot");
-    }
-    break;
+    case "run":
+        const runDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        }];
+        const runOptions = commandLineArgs(runDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        if (runOptions._unknown != undefined) {
+            argv = runOptions._unknown.join(' ');
+        } else {
+            argv = [];
+        }
+        zone.container_run_entrypoint(runOptions.zonename, argv);
+        break;
 
 
-case "update":
 
-    const rctlDefinitions = [
-	{
-	    name: 'zonename',
-	    alias: 'z'
-	},
-	{
-	    name: "ram"
-	},
-	{
-	    name: "cpu-shares"
-	},
-	{
-	    name: "dedicated-cpu"
-	},
-	{
-	    name: "dedicated-cpu-importance"
-	},
-	{
-	    name: "max-lwps"
-	},
-	{
-	    name: "autoboot",
-	    type: Boolean
-	},
-	{
-	    name: "quota"
-	}
-    ];
-    const rctlOptions = commandLineArgs(rctlDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = rctlOptions._unknown || [];
+    case "start":
 
-    if ("zonename" in rctlOptions && (rctlOptions.zonename != null)) {
-	zone.rctl(rctlOptions.zonename, rctlOptions);
-    } else {
-	console.log("need zone alias or uuid  to update");
-    }
-    break;
+        const startDefinitions = [{
+                name: 'zonename',
+                alias: 'z'
+            },
+            {
+                name: "debug",
+                defaultValue: false,
+                type: Boolean
+            },
+            {
+                name: 'with-iso'
+            }
+        ];
+        const startOptions = commandLineArgs(startDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = startOptions._unknown || [];
 
-case "info":
+        if (("with-iso" in startOptions) && !(fs.existsSync(startOptions['with-iso']))) {
+            console.log("Error:" + startOptions['with-iso'] + ": does not exists.");
+            return;
+        }
 
-    const getDefinitions = [
-	{
-	    name: 'zonename',
-	    alias: 'z'
-	}];
-    const getOptions = commandLineArgs(getDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = getOptions._unknown || [];
+        if (("zonename" in startOptions) && !("with-iso" in startOptions)) {
+            zone.start(startOptions.zonename);
+        } else if (("zonename" in startOptions) && ("with-iso" in startOptions)) {
+            zone.start(startOptions.zonename, startOptions['with-iso']);
+        } else {
+            console.log("need zone alias or uuid to start");
+        }
+        break;
 
-    if ("zonename" in getOptions && (getOptions.zonename != null)) {
-	zone.getzonedata(getOptions.zonename);
-    } else {
-	console.log("missing zone alias or uuid ");
-    }
-    break;
+    case "stop":
 
+        const stopDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        }];
+        const stopOptions = commandLineArgs(stopDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = stopOptions._unknown || [];
 
-case "version":
-case "-v":
-    console.log(ZCAGE_VERSION);
-    break;
+        if ("zonename" in stopOptions && (stopOptions.zonename != null)) {
+            zone.halt(stopOptions.zonename);
+        } else {
+            console.log("need zone alias or uuid to stop");
+        }
+        break;
 
-case "vnics":
-    zone.vnic_list();
-    break;
+    case "reboot":
 
-case "networks":
-    zone.network_list();
-    break;
+        const rebootDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        }];
+        const rebootOptions = commandLineArgs(rebootDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = rebootOptions._unknown || [];
 
-case "activate":
-    const activateDefinitions = [
-	{
-	    name: 'pool'
-
-	},
-	{
-	    name: "force",
-	    defaultValue: false,
-	    type: Boolean
-	}
-];
-    const activateOptions = commandLineArgs(activateDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = activateOptions._unknown || [];
-    if(img.Isactivated(true) && (activateOptions.force != true) ) {
-	console.log("zcage is already activated using pool: " + img.GetPool() + " use --force to activate anyways"); 
-	return;
-    }	
-    if ("pool" in activateOptions)  {
-	try {
-	    fs.writeFileSync(img.ZCAGE.CONFIG, JSON.stringify({ pool: activateOptions.pool },null,4),"utf-8");
-	} catch (e) {
-	    console.log("Could not write zcage pool config to : "+ img.ZCAGE.CONFIG);
-	    console.log("Try pfexec zcage activate --pool <pool where to store zcage data>");
-	    return;
-	}
-	img.ActivateZcage(activateOptions.pool);
-    } else {
-	console.log("zcage activate --pool <pool name where to store zcage data>");
-    }
-    break;
-
-case "images":
-    const listimgDefinitions = [
-	{
-	    name: 'os'
-	},
-	{
-	    name: 'version'
-	},
-	{
-	    name: 'name'
-	},
-	{
-	    name: 'uuid'
-	},
-	{
-	    name: 'list',
-	    alias: 'l'
-	}
-    ];
-    const listimgOptions = commandLineArgs(listimgDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = listimgOptions._unknown || [];
-    if (img.Isactivated()) {
-	if (listimgOptions.list != undefined) {
-
-		switch (listimgOptions.list) {
-
-			case 'local':
-				img.list_avail();
-				break;
-
-			case 'joyent':
-
-				img.list_images();
-				break;
-
-			case 'proxmox':
-				if (img.list_datasource('proxmox') == null)
-					help('images');
-				break;
-
-			case 'docker':
-				if (listimgOptions._unknown) 
-					img.docker_list(listimgOptions._unknown[0]);
-				else
-					console.log("Usage: --docker <library> for ex: --docker library/ubuntu");
-				break;
-
-			case 'cloud-init':
-				if (listimgOptions._unknown) {
-					if (img.list_datasource('cloud-init', listimgOptions._unknown[0]) == null)
-						help('images');
-				} else {
-					console.log(
-							"Usage: --cloud-init <ubuntu|fedora|centos>/<version> for ex: --cloud-init ubuntu/bionic"
-						   );
-				}
-				break;
-
-			default: 
-				img.list_avail();
-				break;
-		}
-	}
-	else {    
-	 help('images');
-	}
-}
-
-    break;
+        if (("zonename" in rebootOptions) && (rebootOptions.zonename != null)) {
+            zone.reboot(rebootOptions.zonename);
+        } else {
+            console.log("need zone alias or uuid to reboot");
+        }
+        break;
 
 
-case "pull":
-    const pullDefinitions = [
-	{
-	    name: 'image'
-	},
-	{
-	    name: 'provider'
-	}
-    ];
-    const pullOptions = commandLineArgs(pullDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = pullOptions._unknown || [];
-    if (img.Isactivated() ) {
-	if (pullOptions.provider == 'cloud-init' && pullOptions.image) {
-	    if (pullOptions._unknown)
-		img.fetch_by_provider('cloud-init', pullOptions._unknown[0],
-				      pullOptions.image);
-	    else
-		console.log("Usage: --provider cloud-init centos  for ex: --docker ubuntu");
-	    break;
-	} else
-	    if (pullOptions.image)
-		img.getzss(pullOptions.image, pullOptions.provider);
-	else
-	    console.log("specify image to pull --image <uuid> --provider <joyent|cloud-init|docker|proxmox>");
-    } else {
-	console.log(
-	    "zcage must be activated to be able to pull images : zcage activate "
-	);
-    }
-    break;
+    case "update":
 
-case "help":
-    const helpDefinitions = [
-	{
-	    name: 'notused'
-	}];
-    const helpOptions = commandLineArgs(helpDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = helpOptions._unknown || [];
+        const rctlDefinitions = [{
+                name: 'zonename',
+                alias: 'z'
+            },
+            {
+                name: "ram"
+            },
+            {
+                name: "cpu-shares"
+            },
+            {
+                name: "dedicated-cpu"
+            },
+            {
+                name: "dedicated-cpu-importance"
+            },
+            {
+                name: "max-lwps"
+            },
+            {
+                name: "autoboot",
+                type: Boolean
+            },
+            {
+                name: "quota"
+            }
+        ];
+        const rctlOptions = commandLineArgs(rctlDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = rctlOptions._unknown || [];
 
-    if (helpOptions._unknown)
-	help(helpOptions._unknown[0]);
-    else
-	help("full");
-    break;
+        if ("zonename" in rctlOptions && (rctlOptions.zonename != null)) {
+            zone.rctl(rctlOptions.zonename, rctlOptions);
+        } else {
+            console.log("need zone alias or uuid  to update");
+        }
+        break;
 
-case "fetch":
-    const fetchDefinitions = [{
-	name: 'notused'
-    }];
-    const fetchOptions = commandLineArgs(fetchDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = fetchOptions._unknown || [];
+    case "info":
 
-    if (fetchOptions._unknown)
-	img.fetch(fetchOptions._unknown[0]);
-    else
-	help("fetch");
-    break;
+        const getDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        }];
+        const getOptions = commandLineArgs(getDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = getOptions._unknown || [];
 
-case "daemon" :
+        if ("zonename" in getOptions && (getOptions.zonename != null)) {
+            zone.getzonedata(getOptions.zonename);
+        } else {
+            console.log("missing zone alias or uuid ");
+        }
+        break;
 
-    const daemonDefinitions = [ { name: 'port'} ];
-    const daemonOptions = commandLineArgs(daemonDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = daemonOptions._unknown || [];
-    
-    if (daemonOptions.port)
-	api.start_daemon(daemonOptions.port);
-    else
-	help("port");
-    break;
 
-case "stats" :
-    const statsDefinitions = [
-	{
-	    name: 'zonename',
-	    alias: 'z'
-	}];
-    const statsOptions = commandLineArgs(statsDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = statsOptions._unknown || [];
+    case "version":
+    case "-v":
+        console.log(ZCAGE_VERSION);
+        break;
 
-    if ("zonename" in statsOptions && (statsOptions.zonename != null)) {
-	zone.getstats(statsOptions.zonename);
-    } else {
-	console.log("missing zone alias or uuid ");
-    }
-    break;
-    
-case "top":
-    const topDefinitions = [
-	{
-	    name: 'zonename',
-	    alias: 'z'
-	},
-	{
-	    name: 'psargs'
-	},
-    ];
-    const topOptions = commandLineArgs(topDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = topOptions._unknown || [];
+    case "vnics":
+        zone.vnic_list();
+        break;
 
-    if ("zonename" in topOptions && (topOptions.zonename != null)) {
-	zone.container_top(topOptions.zonename, topOptions.psargs);
-    } else {
-	console.log("missing zone alias or uuid ");
-    }
-    break;
-    
-case "logs":    
-    const logsDefinitions = [
-	{
-	    name: 'zonename',
-	    alias: 'z'
-	},
-	{
-	    name: 'stderr',
-	    defaultValue: false,
-	    type: Boolean
-	},
-	{
-	    name: 'stdout',
-	    type: Boolean,
-	    defaultValue: false,
-	},
-	
-    ];
-    const logsOptions = commandLineArgs(logsDefinitions, {
-	argv,
-	slogsAtFirstUnknown: true
-    });
-    argv = logsOptions._unknown || [];
+    case "networks":
+        zone.network_list();
+        break;
 
-    if ("zonename" in logsOptions && (logsOptions.zonename != null)) {
-	zone.container_logs(logsOptions.zonename, logsOptions.stdout, logsOptions.stderr);
-    } else {
-	console.log("missing zone alias or uuid ");
-    }
-    break;
-    
-case "export":
-    const exportDefinitions = [
-	{
-	    name: 'zonename',
-	    alias: 'z'
-	}];
-    const exportOptions = commandLineArgs(exportDefinitions, {
-	argv,
-	stopAtFirstUnknown: true
-    });
-    argv = exportOptions._unknown || [];
+    case "activate":
+        const activateDefinitions = [{
+                name: 'pool'
 
-    if ("zonename" in exportOptions && (exportOptions.zonename != null)) {
-	zone.container_export(exportOptions.zonename);
-    } else {
-	console.log("missing zone alias or uuid ");
-    }
-    break;
-    
-default:
-    if (mainCommand.name)
-	console.log("zcage:\n unknown subcommand '" + mainCommand.name + "'");
-    help();
-    
+            },
+            {
+                name: "force",
+                defaultValue: false,
+                type: Boolean
+            }
+        ];
+        const activateOptions = commandLineArgs(activateDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = activateOptions._unknown || [];
+        if (img.Isactivated(true) && (activateOptions.force != true)) {
+            console.log("zcage is already activated using pool: " + img.GetPool() + " use --force to activate anyways");
+            return;
+        }
+        if ("pool" in activateOptions) {
+            try {
+                fs.writeFileSync(img.ZCAGE.CONFIG, JSON.stringify({
+                    pool: activateOptions.pool
+                }, null, 4), "utf-8");
+            } catch (e) {
+                console.log("Could not write zcage pool config to : " + img.ZCAGE.CONFIG);
+                console.log("Try pfexec zcage activate --pool <pool where to store zcage data>");
+                return;
+            }
+            img.ActivateZcage(activateOptions.pool);
+        } else {
+            console.log("zcage activate --pool <pool name where to store zcage data>");
+        }
+        break;
+
+    case "images":
+        const listimgDefinitions = [{
+                name: 'os'
+            },
+            {
+                name: 'version'
+            },
+            {
+                name: 'name'
+            },
+            {
+                name: 'uuid'
+            },
+            {
+                name: 'list',
+                alias: 'l'
+            }
+        ];
+        const listimgOptions = commandLineArgs(listimgDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = listimgOptions._unknown || [];
+        if (img.Isactivated()) {
+            if (listimgOptions.list != undefined) {
+
+                switch (listimgOptions.list) {
+
+                    case 'local':
+                        img.list_avail();
+                        break;
+
+                    case 'joyent':
+
+                        img.list_images();
+                        break;
+
+                    case 'proxmox':
+                        if (img.list_datasource('proxmox') == null)
+                            help('images');
+                        break;
+
+                    case 'docker':
+                        if (listimgOptions._unknown)
+                            img.docker_list(listimgOptions._unknown[0]);
+                        else
+                            console.log("Usage: --docker <library> for ex: --docker library/ubuntu");
+                        break;
+
+                    case 'cloud-init':
+                        if (listimgOptions._unknown) {
+                            if (img.list_datasource('cloud-init', listimgOptions._unknown[0]) == null)
+                                help('images');
+                        } else {
+                            console.log(
+                                "Usage: --cloud-init <ubuntu|fedora|centos>/<version> for ex: --cloud-init ubuntu/bionic"
+                            );
+                        }
+                        break;
+
+                    default:
+                        img.list_avail();
+                        break;
+                }
+            } else {
+                help('images');
+            }
+        }
+
+        break;
+
+
+    case "pull":
+        const pullDefinitions = [{
+                name: 'image'
+            },
+            {
+                name: 'provider'
+            }
+        ];
+        const pullOptions = commandLineArgs(pullDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = pullOptions._unknown || [];
+        if (img.Isactivated()) {
+            if (pullOptions.provider == 'cloud-init' && pullOptions.image) {
+                if (pullOptions._unknown)
+                    img.fetch_by_provider('cloud-init', pullOptions._unknown[0],
+                        pullOptions.image);
+                else
+                    console.log("Usage: --provider cloud-init centos  for ex: --docker ubuntu");
+                break;
+            } else
+            if (pullOptions.image)
+                img.getzss(pullOptions.image, pullOptions.provider);
+            else
+                console.log("specify image to pull --image <uuid> --provider <joyent|cloud-init|docker|proxmox>");
+        } else {
+            console.log(
+                "zcage must be activated to be able to pull images : zcage activate "
+            );
+        }
+        break;
+
+    case "help":
+        const helpDefinitions = [{
+            name: 'notused'
+        }];
+        const helpOptions = commandLineArgs(helpDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = helpOptions._unknown || [];
+
+        if (helpOptions._unknown)
+            help(helpOptions._unknown[0]);
+        else
+            help("full");
+        break;
+
+    case "fetch":
+        const fetchDefinitions = [{
+            name: 'notused'
+        }];
+        const fetchOptions = commandLineArgs(fetchDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = fetchOptions._unknown || [];
+
+        if (fetchOptions._unknown)
+            img.fetch(fetchOptions._unknown[0]);
+        else
+            help("fetch");
+        break;
+
+    case "daemon":
+
+        const daemonDefinitions = [{
+            name: 'port'
+        }];
+        const daemonOptions = commandLineArgs(daemonDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = daemonOptions._unknown || [];
+
+        if (daemonOptions.port)
+            api.start_daemon(daemonOptions.port);
+        else
+            help("port");
+        break;
+
+    case "stats":
+        const statsDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        }];
+        const statsOptions = commandLineArgs(statsDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = statsOptions._unknown || [];
+
+        if ("zonename" in statsOptions && (statsOptions.zonename != null)) {
+            zone.getstats(statsOptions.zonename);
+        } else {
+            console.log("missing zone alias or uuid ");
+        }
+        break;
+
+    case "top":
+        const topDefinitions = [{
+                name: 'zonename',
+                alias: 'z'
+            },
+            {
+                name: 'psargs'
+            },
+        ];
+        const topOptions = commandLineArgs(topDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = topOptions._unknown || [];
+
+        if ("zonename" in topOptions && (topOptions.zonename != null)) {
+            zone.container_top(topOptions.zonename, topOptions.psargs);
+        } else {
+            console.log("missing zone alias or uuid ");
+        }
+        break;
+
+    case "logs":
+        const logsDefinitions = [{
+                name: 'zonename',
+                alias: 'z'
+            },
+            {
+                name: 'stderr',
+                defaultValue: false,
+                type: Boolean
+            },
+            {
+                name: 'stdout',
+                type: Boolean,
+                defaultValue: false,
+            },
+
+        ];
+        const logsOptions = commandLineArgs(logsDefinitions, {
+            argv,
+            slogsAtFirstUnknown: true
+        });
+        argv = logsOptions._unknown || [];
+
+        if ("zonename" in logsOptions && (logsOptions.zonename != null)) {
+            zone.container_logs(logsOptions.zonename, logsOptions.stdout, logsOptions.stderr);
+        } else {
+            console.log("missing zone alias or uuid ");
+        }
+        break;
+
+    case "export":
+        const exportDefinitions = [{
+            name: 'zonename',
+            alias: 'z'
+        }];
+        const exportOptions = commandLineArgs(exportDefinitions, {
+            argv,
+            stopAtFirstUnknown: true
+        });
+        argv = exportOptions._unknown || [];
+
+        if ("zonename" in exportOptions && (exportOptions.zonename != null)) {
+            zone.container_export(exportOptions.zonename);
+        } else {
+            console.log("missing zone alias or uuid ");
+        }
+        break;
+
+    default:
+        if (mainCommand.name)
+            console.log("zcage:\n unknown subcommand '" + mainCommand.name + "'");
+        help();
+
 }
 
 function help(helpOptions) {
     switch (helpOptions) {
-    case 'version':
-	console.log('\nversion: Returns current version of zcage\n');
-	break;
-    case 'create':
-	console.log('\ncreate:\n' +
-		    '    --net:         Configures network ex: --net="vnic|zoneip/netmask|gateway".\n\n' +
-		    '    --ram :        Maximum memory allowed ex: 2gb|2048mb.\n\n' +
-		    '    --with-image:  Image uuid to use (lx only)\n\n' +
-		    '    --alias:       Names a zone\n\n' +
-		    '    --brand:       Specifies brand for the zone\n\n' +
-		    '    --disk:        Uses zfs volume as disk (bhyve and kvm only)\n\n' +
-		    '    --fs-allowed:  Allows file system mounts other than the default for ex: --fs-allowed=ufs\n\n' +
-		    '    --limitpriv:   Adds privileges to a zone,for ex:--limitpriv="default,dtrace_user,dtrace_proc".\n\n' +
-		    '    --cpu:         Number of cpus the vm will use (bhyve and kvm only).\n\n' +
-		    '    --hostbridge:  Hostbridge presented to the guest(bhyve and kvm only).\n\n' +
-		    '    --autoboot:    Zone will be started at startup, default: false.\n\n' +
-		    '    --docker:      Docker hub v2 image to use (lx only) for ex: ubuntu/latest.\n\n'
-		   );
-	break;
-    case 'start':
-	console.log(
-	    '\nstart:\n\n    -z :       Starts a zone by name or UUID\n' +
-		'    -with-iso: Starts zone using iso image (bhyve and kvm only)\n\n');
-	break;
-    case 'stop':
-	console.log(
-	    '\nstop:\n\n    -z <container name or UUID>: Stops the running zone\n\n');
-	break;
-    case 'info':
-	console.log(
-	    '\ninfo:\n\n    -z <container name or UUID>: Returns information for the zone.\n\n'
-	);
-	break;
+        case 'version':
+            console.log('\nversion: Returns current version of zcage\n');
+            break;
+        case 'create':
+            console.log('\ncreate:\n' +
+                '    --net:         Configures network ex: --net="vnic|zoneip/netmask|gateway".\n\n' +
+                '    --ram :        Maximum memory allowed ex: 2gb|2048mb.\n\n' +
+                '    --with-image:  Image uuid to use (lx only)\n\n' +
+                '    --alias:       Names a zone\n\n' +
+                '    --brand:       Specifies brand for the zone\n\n' +
+                '    --disk:        Uses zfs volume as disk (bhyve and kvm only)\n\n' +
+                '    --fs-allowed:  Allows file system mounts other than the default for ex: --fs-allowed=ufs\n\n' +
+                '    --limitpriv:   Adds privileges to a zone,for ex:--limitpriv="default,dtrace_user,dtrace_proc".\n\n' +
+                '    --cpu:         Number of cpus the vm will use (bhyve and kvm only).\n\n' +
+                '    --hostbridge:  Hostbridge presented to the guest(bhyve and kvm only).\n\n' +
+                '    --autoboot:    Zone will be started at startup, default: false.\n\n' +
+                '    --docker:      Docker hub v2 image to use (lx only) for ex: ubuntu/latest.\n\n'
+            );
+            break;
+        case 'start':
+            console.log(
+                '\nstart:\n\n    -z :       Starts a zone by name or UUID\n' +
+                '    -with-iso: Starts zone using iso image (bhyve and kvm only)\n\n');
+            break;
+        case 'stop':
+            console.log(
+                '\nstop:\n\n    -z <container name or UUID>: Stops the running zone\n\n');
+            break;
+        case 'info':
+            console.log(
+                '\ninfo:\n\n    -z <container name or UUID>: Returns information for the zone.\n\n'
+            );
+            break;
 
-    case 'destroy':
-	console.log(
-	    '\ndestroy:\n\n    -z <container name or UUID>: Destroys the zone, cannot be undone.\n\n'
-	);
-	break;
-    case 'pull':
-	console.log(
-	    '\npull:\n\n    --image <uuid> :  Retrieves image using uuid and stores for later usage.\n\n\n'
-	);
-	break;
-    case 'reboot':
-	console.log(
-	    '\nreboot:\n    -z <uuid or alias> :  Restarts the zone.\n\n\n'
-	);
-	break;
+        case 'destroy':
+            console.log(
+                '\ndestroy:\n\n    -z <container name or UUID>: Destroys the zone, cannot be undone.\n\n'
+            );
+            break;
+        case 'pull':
+            console.log(
+                '\npull:\n\n    --image <uuid> :  Retrieves image using uuid and stores for later usage.\n\n\n'
+            );
+            break;
+        case 'reboot':
+            console.log(
+                '\nreboot:\n    -z <uuid or alias> :  Restarts the zone.\n\n\n'
+            );
+            break;
 
-    case 'images':
-	console.log(
-	    '\nimages:\n\n   --list  avail|local|joyent|proxmox|docker <library>|cloud-init <distro/version> : Displays available images in remote host or locally available\n'
-	);
-	break;
+        case 'images':
+            console.log(
+                '\nimages:\n\n   --list  avail|local|joyent|proxmox|docker <library>|cloud-init <distro/version> : Displays available images in remote host or locally available\n'
+            );
+            break;
 
-    case 'update':
-	console.log(
-	    'update:\n\t-z  <uuid or alias> : zone to update\n' +
-		'\n\nflags:\n' +
-		'    --ram:        Updates maximum of allowed ram for ex: 2gb or 2048mb\n\n' +
-		'    --cpu-shares: Updates the zone cpu-shares for ex: 3000\n\n' +
-		'    --max-lwps:   Updates the maximum amont of lwps default value is 3000 \n\n' +
-		'    --autoboot:   Updates the zone cpu-shares values are true or false\n\n' +
-		'    --quota:      Updates disk quota \n\n'
-	);
-	break;
-	
-    case 'fetch':
-	console.log('fetch <url> : Download image from url for later use ');
-	break;
-	
-    case 'port':
-	console.log('daemon <port number> : Start listening on port number for requests');
-	break;
-	
-    case 'logs':
-	console.log('logs --stderr=true|false --stdout=true|false : Get logs from stderr or out from container.');
-	break;
-	
-    case 'stats':
-	console.log('stats -z <zonename>: Get statistics counters from container.');
-	break;
-	
-    case 'top':
-	console.log('top -z <zonename>: Return processes running in container.');
-	break;
+        case 'update':
+            console.log(
+                'update:\n\t-z  <uuid or alias> : zone to update\n' +
+                '\n\nflags:\n' +
+                '    --ram:        Updates maximum of allowed ram for ex: 2gb or 2048mb\n\n' +
+                '    --cpu-shares: Updates the zone cpu-shares for ex: 3000\n\n' +
+                '    --max-lwps:   Updates the maximum amont of lwps default value is 3000 \n\n' +
+                '    --autoboot:   Updates the zone cpu-shares values are true or false\n\n' +
+                '    --quota:      Updates disk quota \n\n'
+            );
+            break;
 
-    case 'export':
-	console.log('export -z <zonename>: Export container as image');
-	break;
+        case 'fetch':
+            console.log('fetch <url> : Download image from url for later use ');
+            break;
 
-    case 'vnic-list':
-	console.log('vnic-list : show current vnics and container usage');
-	break;
+        case 'port':
+            console.log('daemon <port number> : Start listening on port number for requests');
+            break;
 
-    default:
-	console.log('\nOptions:');
-	console.log('-----------------------');
-	console.log(
-        'info:\t Returns information of a zone\ncreate:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nreboot:\t Restarts a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\nversion: Prints zcage version\nfetch:\t Downloads an image from url for later use (lx,bhyve and kvm brands)\n'
-	);
-	console.log('For help on a specific command type zcage help <Option>\n');
-	console.log(
-	    'Examples:\n\nTo create a zone with 2gb of ram using with ip address/mask 192.168.1.225/24 and gateway 192.168.1.1:\n\n' +
-		'# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb' +
-		"\n");
+        case 'logs':
+            console.log('logs --stderr=true|false --stdout=true|false : Get logs from stderr or out from container.');
+            break;
 
-	break;
+        case 'stats':
+            console.log('stats -z <zonename>: Get statistics counters from container.');
+            break;
+
+        case 'top':
+            console.log('top -z <zonename>: Return processes running in container.');
+            break;
+
+        case 'export':
+            console.log('export -z <zonename>: Export container as image');
+            break;
+
+        case 'vnic-list':
+            console.log('vnic-list : show current vnics and container usage');
+            break;
+
+        default:
+            console.log('\nOptions:');
+            console.log('-----------------------');
+            console.log(
+                'info:\t Returns information of a zone\ncreate:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nreboot:\t Restarts a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\nversion: Prints zcage version\nfetch:\t Downloads an image from url for later use (lx,bhyve and kvm brands)\n'
+            );
+            console.log('For help on a specific command type zcage help <Option>\n');
+            console.log(
+                'Examples:\n\nTo create a zone with 2gb of ram using with ip address/mask 192.168.1.225/24 and gateway 192.168.1.1:\n\n' +
+                '# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb' +
+                "\n");
+
+            break;
     }
 }
