@@ -659,7 +659,7 @@ function help(helpOptions) {
       console.log(
         "\ncreate:\n" +
           '    --net:         Configures network ex: --net="vnic|zoneip/netmask|gateway".\n\n' +
-          "    --ram :        Maximum memory allowed ex: 2gb|2048mb.\n\n" +
+          "    --ram :        Maximum memory allowed ex: 2gb|2048mb|2G|2000M.\n\n" +
           "    --with-image:  Image uuid to use (lx only)\n\n" +
           "    --alias:       Names a zone\n\n" +
           "    --brand:       Specifies brand for the zone\n\n" +
@@ -761,12 +761,12 @@ function help(helpOptions) {
       console.log("\nOptions:");
       console.log("-----------------------");
       console.log(
-        "info:\t Returns information of a zone\ncreate:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nreboot:\t Restarts a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\nversion: Prints zcage version\nfetch:\t Downloads an image from url for later use (lx,bhyve and kvm brands)\n"
+        "info:\t Returns information of a zone\ncreate:\t Creates a zone.\nstart:\t Starts a zone\nstop:\t Stops a zone\nreboot:\t Restarts a zone\nimages:\t List available images\npull:\t Download images\ndestroy: Destroys a zone\nupdate:\t Updates zone resources\nversion: Prints zcage version\nfetch:\t Downloads an image from url for later use (lx,bhyve and kvm brands)\ndaemon:\t starts zcage rest api daemon on port\n"
       );
       console.log("For help on a specific command type zcage help <Option>\n");
       console.log(
-        "Examples:\n\nTo create a zone with 2gb of ram using with ip address/mask 192.168.1.225/24 and gateway 192.168.1.1:\n\n" +
-          '# zcage create --net "vnic0|192.168.1.225/24|192.168.1.1" --ram 2gb' +
+        "Examples:\n\nTo create a zone with 2G of ram using with ip address/mask 192.168.1.225/24 and gateway 192.168.1.1:\n\n" +
+          '# zcage create --net "igb0|192.168.1.225/24|192.168.1.1" --ram 2G' +
           "\n"
       );
 

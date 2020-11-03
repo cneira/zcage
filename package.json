@@ -1,7 +1,7 @@
 {
   "name": "zcage",
-  "version": "1.5.2",
-  "description": "Zone administration API for Illumos",
+  "version": "1.5.3",
+  "description": "Zone administration API for illumos",
   "main": "zcage",
   "keywords": [
     "illumos",
