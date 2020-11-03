@@ -421,6 +421,10 @@ switch (mainCommand.name) {
             img.list_images();
             break;
 
+          case "omnios":
+            img.list_omnios_images();
+            break;
+
           case "proxmox":
             if (img.list_datasource("proxmox") == null) help("images");
             break;
