@@ -24,10 +24,12 @@ begin creating zones and downloading images for lx branded zones.
 Fetching images is only needed when creating lx branded zones. 
   
 `zcage images --list joyent` lists linux images from [Joyent](https://www.joyent.com/).
+
+`zcage images --list omnios` lists linux images from [Omniosce](https://www.omniosce.com/).
   
 `zcage images --list proxmox` lists [Proxmox images](https://www.proxmox.com/en/).
   
-`zcage images --list docker ubuntu` lists docker images for ubuntu.
+`zcage images --list docker library/ubuntu` lists docker images for ubuntu.
   
 Then users can choose which image to download, using 
 `zcage pull --image <uuid> --provider <provider name>` as seen in this example:
@@ -71,7 +73,7 @@ eb4128ec-cf12-11e4-960d-8780cec6463f      lx-centos-6         20150320    linux 
 ```
   
 ```
-# zcage images --list docker alpine
+# zcage images --list docker library/alpine
 {
   "name": "library/alpine",
   "tags": [
@@ -124,6 +126,11 @@ To fetch an image from Proxmox, just use proxmox as the provider.
 ```
 # zcage pull --image  alpine-3.7-default_20180913_amd64.tar  --provider proxmox
 ```
+To fetch an lx image from Omniosce, we just use the uuid and the provider name.
+  
+```
+# zcage pull --image 5c796a71-8723-4c9c-d96f-9c32ea53d5a4  --provider omnios
+```
   
 ## Basic Zone Creation
    
@@ -131,7 +138,7 @@ To fetch an image from Proxmox, just use proxmox as the provider.
 Create a Zone 
 -------------
 
-There are five types of brands: **sparse**, **bhyve**, **kvm**, **lx**, **lipkg** and
+There are five types of brands: **sparse**, **bhyve**, **kvm**, **lx**, **lipkg**, **illumos** and
 **pkgsrc**. More details about these zone brands can be found in the 
 [Brands types](https://github.com/cneira/zcage/blob/master/docs/brand-types.md) sections of this documentation. 
 
@@ -154,7 +161,12 @@ capped to use 2GB of RAM:
 ```
 # zcage create --alias=test07 --net "omni0|192.168.1.225/24|192.168.1.1" --ram 2gb
 ```
-   
+Also you could just specify the nic that will be used to create a vnic on zone creation  
+
+```
+# zcage create --alias=test07 --net "e1000g0|192.168.1.225/24|192.168.1.1" --ram 2gb
+```
+ 
 
 After a zone is created and running we could update it's previously defined capped memory 
 also set or update a disk quota of the zfs dataset for that zone.
