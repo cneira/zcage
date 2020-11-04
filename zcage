@@ -35,6 +35,13 @@ if (os.type() != "SunOS") {
   return null;
 }
 
+
+  if (!img.can_create_vm()) {
+      console.log( "You must be root or use pfexec to use zcage");
+	return;
+    }
+
+
 switch (mainCommand.name) {
   case "create":
     const createDefinitions = [
