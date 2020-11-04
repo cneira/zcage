@@ -288,6 +288,10 @@ switch (mainCommand.name) {
             stopAtFirstUnknown: true,
         });
         argv = rctlOptions._unknown || [];
+	if(rctlOptions._unknown) {
+		console.log("incorrect option");
+        	break;
+	}	
 
         if ("zonename" in rctlOptions && rctlOptions.zonename != null) {
             zone.rctl(rctlOptions.zonename, rctlOptions);
