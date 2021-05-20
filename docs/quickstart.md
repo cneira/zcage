@@ -22,6 +22,13 @@ which are available in Omniosce.
 ```bash
 # pkg install cdrtools brand/bhyve brand/kvm brand/lx brand/pkgsrc brand/sparse brand/lipkg system/kvm jq
 ```
+
+
+Scheduler should be set to FSS by default using DISPADMIN(1M)   
+```bash
+# dispadmin -d FSS
+```
+
 ## EXAMPLES
 First we need to setup a virtual nic for zones using dladm.
 Currently each container need to have a different vnic otherwise it won't start.

@@ -28,6 +28,12 @@ To start creating zones the following packages are needed :
 * brand/lipkg
 * system/kvm (provides qemu-img)
 
+Scheduler should be set to FSS by default using DISPADMIN(1M)   
+```bash
+# dispadmin -d FSS
+```
+
+
 
 *** In Dilos you could only create dpkg zones at this point ***
 
