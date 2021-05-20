@@ -34,6 +34,8 @@ It's intended to be easy to use with simple command syntax.
 
 ## Support
 
+I can only work on this on my free time so any help to support this project is really appreciated.
+
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J4YM9U)
 
 It's also possible to support the project on [Patreon](https://www.patreon.com/neirac)
