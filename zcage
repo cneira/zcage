@@ -1,4 +1,4 @@
-#!/usr/bin/env node  --abort_on_uncaught_exception
+#!/usr/bin/env node   --abort_on_uncaught_exception 
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -16,7 +16,7 @@ const commandLineUsage = require('command-line-usage');
 var os = require('os');
 var fs = require('fs');
 
-const ZCAGE_VERSION = '1.5.0';
+const ZCAGE_VERSION = '1.5.1';
 
 let mainDefinitions = [{
     name: 'name',
